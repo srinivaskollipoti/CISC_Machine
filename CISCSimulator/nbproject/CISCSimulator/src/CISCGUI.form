@@ -1,0 +1,383 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
+  <NonVisualComponents>
+    <Component class="javax.swing.JColorChooser" name="jColorChooser1">
+    </Component>
+  </NonVisualComponents>
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="3"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+    <SyntheticProperty name="generateCenter" type="boolean" value="false"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
+                      <Component id="labelInstruction" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="236" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="82" max="-2" attributes="0"/>
+                      <Component id="buttonRun" min="-2" pref="127" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
+                      <Component id="buttonSingleStep" min="-2" pref="123" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                      <Component id="buttonIPL" min="-2" pref="113" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="labelMFR" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="textFieldMFR" max="32767" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="labelMAR" min="-2" pref="33" max="-2" attributes="0"/>
+                              <EmptySpace max="32767" attributes="0"/>
+                              <Component id="textFieldMAR" min="-2" pref="110" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="103" alignment="1" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="labelPC" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Component id="textFieldPC" min="-2" pref="112" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="labelR0" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                          <Component id="labelR3" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="labelR1" alignment="0" max="32767" attributes="0"/>
+                                          <Component id="labelR2" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                      <Component id="textFieldR0" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="textFieldR1" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="textFieldR2" alignment="0" max="32767" attributes="0"/>
+                                      <Component id="textFieldR3" alignment="0" min="-2" pref="112" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="textFieldIX2" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="textFieldIX3" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="textFieldIR" alignment="0" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="labelMBR" max="32767" attributes="0"/>
+                                  <Component id="labelIR" alignment="1" max="32767" attributes="0"/>
+                                  <Component id="labelCC" alignment="1" min="-2" pref="26" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="textFieldMBR" max="32767" attributes="0"/>
+                                  <Component id="textFieldCC" min="-2" pref="114" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="labelIX1" max="32767" attributes="0"/>
+                                  <Component id="labelIX2" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="labelIX3" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="textFieldIX1" min="-2" pref="114" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="buttonSave" alignment="1" min="-2" pref="146" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+                              <Component id="jScrollPane1" min="-2" pref="397" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" alignment="1" attributes="0">
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="labelLogger" min="-2" pref="119" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="114" max="-2" attributes="0"/>
+                          </Group>
+                      </Group>
+                  </Group>
+              </Group>
+              <EmptySpace pref="42" max="32767" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="buttonRun" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="buttonSingleStep" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="buttonIPL" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
+                      <Component id="jScrollPane2" min="-2" pref="102" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                      <Component id="labelInstruction" min="-2" pref="54" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace pref="15" max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelR0" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldR0" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelIX1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldIX1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelR1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldR1" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelIX2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldIX2" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelR2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldR2" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelIX3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldIX3" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelR3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldR3" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldIR" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelIR" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelPC" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldPC" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelCC" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldCC" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="labelMAR" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldMAR" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="textFieldMBR" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelMBR" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="buttonSave" alignment="3" min="-2" pref="46" max="-2" attributes="0"/>
+                          <Component id="textFieldMFR" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="labelMFR" alignment="3" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Component id="labelLogger" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="301" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JLabel" name="labelInstruction">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Instruction"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="buttonRun">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Run"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonRunActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="buttonIPL">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="IPL"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonIPLActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="buttonSingleStep">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="SingleStep"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelLogger">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Logger"/>
+      </Properties>
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextArea" name="textArea">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+            <Property name="columns" type="int" value="20"/>
+            <Property name="rows" type="int" value="5"/>
+          </Properties>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Component class="javax.swing.JLabel" name="labelR0">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="R0"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelR1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="R1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelR2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="R2"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelR3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="R3"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldR0">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldR0ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldR1">
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldR2">
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldR3">
+    </Component>
+    <Component class="javax.swing.JButton" name="buttonSave">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Save"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonSaveActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelIX1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="IX1"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelIX2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="IX2"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelIX3">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="IX3"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldIX1">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldIX1ActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldIX2">
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldIX3">
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelIR">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="IR"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldIR">
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelPC">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="PC"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldPC">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="textFieldPCActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelMAR">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="MAR"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelMBR">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="MBR"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldMAR">
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldMFR">
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelCC">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="CC"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldCC">
+    </Component>
+    <Component class="javax.swing.JLabel" name="labelMFR">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="MFR"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="textFieldMBR">
+    </Component>
+    <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+      <AuxValues>
+        <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+      </AuxValues>
+
+      <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+      <SubComponents>
+        <Component class="javax.swing.JTextPane" name="textFieldInstruction">
+        </Component>
+      </SubComponents>
+    </Container>
+  </SubComponents>
+</Form>
