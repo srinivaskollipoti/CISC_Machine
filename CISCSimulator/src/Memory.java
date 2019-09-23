@@ -29,27 +29,60 @@ public class Memory {
 	public boolean init()
 	{
 		for(WORD word:memory) {
-			if(word!=null)word.clear();
+			word.clear();
 		}
 		return true;
 	}
 	
 	public boolean store(int address, WORD input) throws IOException
 	{
-		if(address>MAX_MEMORY || address<BOOT_MEMORY_START)
-			throw new IOException("Memory violation");
+		return store(address,input,false);
+	}
+
+	public boolean store(int address, WORD input, boolean isSystem) throws IOException
+	{
+		int limitMemoryStart=BOOT_MEMORY_START;
+		if(isSystem==false) limitMemoryStart=userMemoryStart;
+		if(address>=MAX_MEMORY)
+			throw new IOException("Memory violation : access over memory("+address+")");
+		else if(address<limitMemoryStart)
+			throw new IOException("Memory violation : access system address("+address+")");
+		if (input==null)
+			throw new IOException("Memory violation : insert null data("+address+")");
+		
 		memory[address]=input;
 		return true;
 	}
+
 	
-	public boolean store(int address, ArrayList<WORD> input) throws IOException
+	public boolean storeUserCode(ArrayList<WORD> arrCode)
 	{
-		for(WORD word : input) {
-			if(!store(address,word)) return false;
+		int address=userMemoryStart;
+		for(WORD code : arrCode) {
+			try {
+			if(!store(address,code)) return false;
+			}catch(IOException e) {
+				e.getStackTrace();
+				return false;
+			}
 			address++;
 		}
+		memory[address++].clear();
 		return true;
 	}
+	
+	public boolean storeBootCode(ArrayList<WORD> arrCode) throws IOException
+	{
+		int address=BOOT_MEMORY_START;
+		for(WORD word : arrCode) {
+			if(!store(address,word,true)) return false;
+			address++;
+		}
+		memory[address].clear();
+		userMemoryStart=address;
+		return true;
+	}
+	
 	
 	public WORD load(int address) throws IOException
 	{
@@ -58,6 +91,20 @@ public class Memory {
 		return memory[address];
 	}
 	
+	public String getString() 
+	{
+		StringBuffer buffer=new StringBuffer();
+		for(int i =0; i<MAX_MEMORY;i++)
+		{
+			if(!memory[i].isEmpty())
+			{
+				String message=String.format("Memory [%03d]  %s (%d)\n", i,memory[i].getString(),memory[i].getLong());
+				buffer.append(message);
+//				buffer.append("Memory ["+i+"] "+memory[i].getString()+"\n");
+			}
+		}
+		return buffer.toString();
+	}
 	
 	public String toString() 
 	{
@@ -69,6 +116,7 @@ public class Memory {
 		}
 		return buffer.toString();
 	}
+	
 
 	/**
 	 * @package : /Memory.java
@@ -77,10 +125,8 @@ public class Memory {
 	 * @param i
 	 * Memory
 	 */
-	public void setUserMemoryLocation(int offset) {
-		userMemoryStart=BOOT_MEMORY_START+offset;
-		// TODO Auto-generated method stub
-		
+	public int getUserMemoryLocation() {
+		return userMemoryStart;
 	}
 
 }

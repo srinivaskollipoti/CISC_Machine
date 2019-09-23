@@ -1,5 +1,6 @@
 import java.util.BitSet;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 /**
  * 
  */
@@ -9,7 +10,8 @@ import java.util.BitSet;
  *
  */
 public class GBitSet extends java.util.BitSet {
-
+         private final static Logger LOG = Logger.getGlobal();
+	
 	int length;
 	public GBitSet(int bitSet)
 	{
@@ -26,7 +28,12 @@ public class GBitSet extends java.util.BitSet {
 	
 	public GBitSet subSet(int from,int to)
 	{
-		GBitSet subSet= new GBitSet(to-from+1);
+                 if(to<=from)
+                 {
+                     LOG.warning("Wrong Parameter in subStr() ["+from+" ~ "+to+"]");
+                     return null;
+                 }
+		GBitSet subSet= new GBitSet(to-from);
 		subSet.or(get(from, to));
 		return subSet;
 	}
@@ -58,6 +65,19 @@ public class GBitSet extends java.util.BitSet {
 		this.clear();
 		this.or(input);
 		return true;
+	}
+	
+	
+	public String getString()
+	{
+		StringBuffer buffer=new StringBuffer();
+		for (int i=length-1; i>=0;i--)
+		{
+			if(get(i)) buffer.append("1");
+			else buffer.append("0");
+			if(i%8==0) buffer.append(" ");
+		}
+		return buffer.toString();	
 	}
 	
 	

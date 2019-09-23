@@ -28,8 +28,9 @@ public class ControlUnit {
 	WORD MAR=new WORD();
 	WORD MFR=new WORD();
 	WORD IR=new WORD();
-	
-	
+	InstructionHandler ih=new InstructionHandler(this);
+	private String message;
+
 	enum CPUState
 	{
 		LOAD_MAR("LOAD MAR"), LOAD_MBR("LOAD MBR"), LOAD_IR("LOAD IR"), 
@@ -102,10 +103,11 @@ public class ControlUnit {
 		for(GBitSet register:IX) register.clear();
 		
 		PC.setLong(Memory.BOOT_MEMORY_START);
+		state=CPUState.LOAD_MAR;
 		return true;
 	}
 	
-	public boolean isNextInstruction()
+	private boolean isNextInstruction()
 	{
 		WORD inst=new WORD();
 		try {
@@ -118,17 +120,25 @@ public class ControlUnit {
 		return !result;
 	}
 	
+	public boolean isCurrentInstruction()
+	{
+		return state!=CPUState.NO_INST;
+	}
+	
 	public boolean clock()
 	{
+		message="";
 		switch(state){
 		case LOAD_MAR:
 			if(!isNextInstruction())
 			{
+				message="[TERMINATED] End of instruction";
 				state=CPUState.NO_INST;
 				return false;
 			}
 			MAR.copy(PC);
 			state=CPUState.LOAD_MBR;
+			message="[CPU] MAR <- PC";
 			break;
 		case LOAD_MBR:
 			try {
@@ -138,21 +148,34 @@ public class ControlUnit {
 				return false;
 			}
 			state=CPUState.LOAD_IR;
+			message="[FETCH] MBR <- MEM[MAR]";
 			break;
 		case LOAD_IR:
 			IR.copy(MBR);
 			increasePC();
+			message="[FETCH] IR <- MBR";
 			state=CPUState.EXECUTE;
 			break;
 		case EXECUTE:
 			execute();
 			state=CPUState.LOAD_MAR;
+			message="[EXECUTE] "+ih.getAsmCode();
 			break;
 		}
-		//showRegister();
 		return true;
 	}
 
+	public String getMessage()
+	{
+		return message;
+	}
+	
+	public void addMessage(String message)
+	{
+		this.message+=this.message+message;
+	}
+
+	
 	/**
 	 * @package : /ControlUnit.java
 	 * @author : cozyu  
@@ -160,6 +183,7 @@ public class ControlUnit {
 	 * @return
 	 * ControlUnit
 	 */
+	/*
 	public boolean loadROM() {
 		
 		ROM rom= new ROM();
@@ -168,15 +192,76 @@ public class ControlUnit {
 		ArrayList<WORD> bootCode = new ArrayList<WORD>();
 		InstructionHelper.Translate(romCode, bootCode);
 		try {
-			memory.store(Memory.BOOT_MEMORY_START, bootCode);
+			memory.storeBootCode(bootCode);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return false;
 		}
-		memory.setUserMemoryLocation(bootCode.size());
 		PC.setLong(Memory.BOOT_MEMORY_START);
+		state=CPUState.LOAD_MAR;
 		return true;
 	}
+	*/
+	
+	public boolean loadROM()
+	{
+		ROM rom= new ROM();
+		String[] arrAsmCode=rom.getCode();
+		
+		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
+		for(String asmCode:arrAsmCode)
+		{
+			WORD binCode=ih.getBinCode(asmCode);
+			if(binCode==null) {
+				LOG.warning("Failed to parse boot code\n"+asmCode);
+				return false;
+			}
+			arrBinCode.add(binCode);
+		}
+		
+	    try {
+			if(memory.storeBootCode(arrBinCode)==false)
+			{
+				LOG.warning("Failed to store boot code\n"+String.join("\n", arrAsmCode));
+				return false;
+			}
+		} catch (IOException e) {
+			LOG.warning("Failed to store boot code\n"+String.join("\n", arrAsmCode));
+			LOG.warning(e.getMessage());
+			return false;
+		}
+	    PC.setLong(Memory.BOOT_MEMORY_START);
+	    state=CPUState.LOAD_MAR;
+	    showMemory();
+		return true;
+		
+	}
+	
+	public boolean executeInstruction(String[] arrAsmCode) {
+		try {
+			memory.store(13,new WORD());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		ArrayList<WORD> arrBinCode = new ArrayList<WORD>();
+		for (String asmCode:arrAsmCode)
+		{
+			WORD binCode=ih.getBinCode(asmCode);
+			if(binCode==null)
+			{
+				LOG.warning("Wrong assemble code : "+asmCode);;
+				continue;
+			}
+			arrBinCode.add(binCode);
+		}
+		
+		
+		return true;
+	}
+
 	
 	public boolean increasePC() {
 		long result=PC.getLong()+1;
@@ -186,7 +271,6 @@ public class ControlUnit {
 	
 
 	public boolean execute() {
-		InstructionSet ih=new InstructionSet(this);
 		ih.showInstruction();
 		try {
 			ih.execute();
@@ -197,5 +281,29 @@ public class ControlUnit {
 		}
 		return true;
 	}
+	public boolean setUserCode(String[] arrAsmCode) {
+		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
+		for(String asmCode:arrAsmCode)
+		{
+			WORD binCode=ih.getBinCode(asmCode);
+			if(binCode==null) {
+				LOG.warning("Failed to parse user code\n"+asmCode);
+				return false;
+			}
+			arrBinCode.add(binCode);
+		}
+		
+	    if(memory.storeUserCode(arrBinCode)==false)
+	    {
+	    	LOG.warning("Failed to store user code\n"+String.join("\n", arrAsmCode));
+			return false;
+		}
+	    PC.setLong(memory.getUserMemoryLocation());
+	    state=CPUState.LOAD_MAR;
+	    showMemory();
+		return true;
+	}
+	
+	
 
 }

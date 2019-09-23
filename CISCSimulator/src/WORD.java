@@ -28,4 +28,5 @@ public class WORD extends GBitSet {
 		or(GBitSet.valueOf(highLong));
 	}
 	
+	
 }
