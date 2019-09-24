@@ -141,7 +141,7 @@ public class CISCSimulator {
 	
 	/**
 	 * Set the user code to controller.
-	 * @return A boolean indicating if success.
+	 * @return A boolean indicating if success.C
 	 */
 	public boolean setUserCode(String[] arrInst)
 	{
