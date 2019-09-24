@@ -6,6 +6,10 @@ import java.util.logging.Logger;
  *
  */
  
+/**
+ * @author youcao
+ * Operates the simulator(basic machine) according to the user input. See below for detailed descriptions. 
+ */
 public class CISCSimulator {
 	private final static Logger LOG = Logger.getGlobal();
 	private ControlUnit controller;
@@ -26,6 +30,10 @@ public class CISCSimulator {
 		}
 	}	
 	
+	/**
+	 * A constructor that create a simulator given a GUI panel with state on POWEROFF.
+	 * @param panel A graphic user interface.
+	 */
 	public CISCSimulator(CISCGUI panel){
 		memory=new Memory();
 		//panel=new FrontPanel(this);
@@ -34,6 +42,10 @@ public class CISCSimulator {
 		state = StateType.POWEROFF;
 	}
 	
+	/**
+	 * Print out the register and memory informations on the user interface and set state to ready.
+	 * @return A boolean indicating if success. 
+	 */
 	public boolean initProcessor()
 	{
 		if(!controller.init())
@@ -49,6 +61,10 @@ public class CISCSimulator {
 		return true;
 	}
 	
+	/**
+	 * Execute the whole process for the input instruction and print out memory information when done.
+	 * @return A boolean indicating if the process is success.
+	 */
 	public boolean run()
 	{
 		StringBuffer buffer=new StringBuffer();
@@ -83,7 +99,9 @@ public class CISCSimulator {
 		return state==StateType.POWEROFF;
 	}
 
-	
+	/**
+	 * Execute only one more clock from the last step according to the instruction.
+	 */
 	public void singleStep()
 	{
 		message="";
@@ -110,6 +128,7 @@ public class CISCSimulator {
 		state=StateType.READY;
 		return;
 	}
+	
 	public ControlUnit getCPU()
 	{	
 		return controller;
@@ -120,6 +139,10 @@ public class CISCSimulator {
 		return memory;
 	}
 	
+	/**
+	 * Set the user code to controller.
+	 * @return A boolean indicating if success.
+	 */
 	public boolean setUserCode(String[] arrInst)
 	{
 		if(isPowerOff()==true)
@@ -138,6 +161,9 @@ public class CISCSimulator {
 		state=StateType.POWEROFF;
 	}
 
+	/**
+	 * Save the register with given data.
+	 */
 	public void saveRegister(long R0, long R1,long R2, long R3, 
 			long IX1, long IX2, long IX3, 
 			long IR, long PC, long CC, 
