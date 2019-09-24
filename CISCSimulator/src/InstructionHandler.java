@@ -2,11 +2,6 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
-/**
- * 
- */
-
-
 class Instruction
 {
 	private String name; 
@@ -40,7 +35,7 @@ class Instruction
 
 /**
  * @author cozyu
- *
+ * A class that process given instructions.
  */
 public class InstructionHandler {
 	private final static Logger LOG = Logger.getGlobal();
@@ -64,6 +59,10 @@ public class InstructionHandler {
 	Hashtable< Integer, Instruction> instSet= new Hashtable< Integer, Instruction>();
 	Hashtable< String, Integer> textToCode= new Hashtable< String, Integer>();
 	
+	/**
+	 * A constructor initializes with given controller.
+	 * @param controller
+	 */
 	public InstructionHandler(ControlUnit controller)
 	{
 		this.controller=controller;
@@ -85,6 +84,11 @@ public class InstructionHandler {
 		return setIR(controller.getIR());
 	}
 	
+	/**
+	 * Set up the intruction code by parts from given translated instruction.
+	 * @param ir A WORD containing the translated instruction. Format is explained in user guide.
+	 * @return A boolean indicating if done.
+	 */
 	public boolean setIR(WORD ir)
 	{
 		this.ir.copy(ir);
@@ -97,6 +101,9 @@ public class InstructionHandler {
 		return true;
 	}
         
+	/**
+	 * Load register from a given memory address.
+	 */
 	//LDR 2,0,13    000001 	10 	00 	0 	01101   => R[2] = M[13], R[2]=8
 	public boolean executeLDR() throws IOException {
 		int eAddress=getEA();
@@ -104,6 +111,9 @@ public class InstructionHandler {
 		return true;
 	}
 
+	/**
+	 * Load register with address
+	 */
 	//LDA 1,0,8     000011 	01 	00 	0 	01000   => R[1] = 8
 	public boolean executeLDA() throws IOException {
 		int eAddress=getEA();
@@ -111,7 +121,9 @@ public class InstructionHandler {
 	    return true;
 	}
 	
-
+	/**
+	 * Load Index Register from Memory.
+	 */
 	//LDX 1,13      100001 	00 	01 	0 	01101   => X[1] = M[13], X[1]=8
 	public boolean executeLDX() throws IOException {
 		int eAddress=getEAWithouIReg();
@@ -119,6 +131,9 @@ public class InstructionHandler {
 		return true;
 	}
 
+	/**
+	 * Store Register To Memory.
+	 */
 	//STR 1,0,13    000010 	01 	00 	0 	01101   => M[13] = 8
 	public boolean executeSTR() throws IOException {
 		int eAddress=getEA();
@@ -128,6 +143,9 @@ public class InstructionHandler {
 		return true;
 	}
 
+	/**
+	 * Store Index Register to Memory.
+	 */
 	//STX 1,31 		100010 	00 	01 	0 	11111   => M[31] = X[1], M[31]=8
 	public boolean executeSTX() throws IOException {
 		int eAddress=getEAWithouIReg();
@@ -137,6 +155,10 @@ public class InstructionHandler {
 		return true;
 	}
 	
+	/**
+	 * Get the effective address without given register
+	 * @return an integer for the effective address.
+	 */
 	public int getEAWithouIReg() throws IOException
 	{
 		int eAddress=address;
@@ -153,6 +175,10 @@ public class InstructionHandler {
 		
 	}
 	
+	/**
+	 * Get the effective address with given register.
+	 * @return An integer of the effective address.
+	 */
 	public int getEA() throws IOException
 	{
 		int eAddress=address;
@@ -179,6 +205,10 @@ public class InstructionHandler {
 	}
 	
 	
+	/**
+	 * Execute instructions and print out the information in register and memory
+	 * @return a boolean indicating it is done.
+	 */
 	public boolean execute() throws IOException
 	{
 		setIR();
@@ -208,7 +238,9 @@ public class InstructionHandler {
 		return true;
 	}
 
-	
+	/**
+	 * Print out the instruction meaning by parts.
+	 */
 	public void showInstruction()
 	{
 		System.out.println("### IR STATUS START ###");
@@ -239,7 +271,11 @@ public class InstructionHandler {
 		return flag;
 	}
 	
-	
+	/**
+	 * Store the input instruction by parts to buffer given the asmCode.
+	 * @asmCode A WORD storing each parts of the input instructions.
+	 * @return A string of the result.
+	 */
 	public String getAsmCode(WORD asmCode)
 	{
 		StringBuffer buffer=new StringBuffer();
@@ -259,7 +295,11 @@ public class InstructionHandler {
 		
 		return buffer.toString();
 	}
-	
+
+	/**
+	 * Slice the input instruction by parts
+	 * @return A string of the result.
+	 */
 	public String getAsmCode()
 	{
 		StringBuffer buffer=new StringBuffer();
@@ -278,6 +318,10 @@ public class InstructionHandler {
 		return buffer.toString();
 	}
 	
+	/**
+	 * Convert the input instruction into a binary code.
+	 * @return the binary code in WORD format.
+	 */
 	public WORD getBinCode(String assemCode)
 	{
 		WORD result=new WORD();
