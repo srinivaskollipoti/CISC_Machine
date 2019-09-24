@@ -6,8 +6,10 @@ import java.util.logging.Logger;
 
 /**
  * @author cozyu
+ * This class manages memory of the simulator, see details below.
  *
  */
+
 public class Memory {
 	private final static Logger LOG = Logger.getGlobal();
 	private WORD memory[];
@@ -16,6 +18,11 @@ public class Memory {
 	public static final int MAX_MEMORY=2048;
 	public static final int BOOT_MEMORY_START=010;
 	
+	/**
+	 * A constructor
+	 * Initializes memory with the max size 2048. The memory is an array of type WORD.
+	 * Set userMemoryStart to 010.
+	 */
 	public Memory()
 	{		
 		memory= new WORD[MAX_MEMORY];
@@ -26,6 +33,10 @@ public class Memory {
 		userMemoryStart=BOOT_MEMORY_START;
 	}
 	
+	/**
+	 * Set every elements in the memory array to null.
+	 * @return true
+	 */
 	public boolean init()
 	{
 		for(WORD word:memory) {
@@ -34,11 +45,21 @@ public class Memory {
 		return true;
 	}
 	
+	/**
+	 * Store the input data to a memory with specific address.
+	 * @param address A integer indicating the memory slot to access.
+	 * @param input A WORD argument containing the input data for the memory to store.
+	 * @return Boolean indicating if the execution is success.
+	 * 
+	 */
 	public boolean store(int address, WORD input) throws IOException
 	{
 		return store(address,input,false);
 	}
 
+	/**
+	 * 
+	 */
 	public boolean store(int address, WORD input, boolean isSystem) throws IOException
 	{
 		int limitMemoryStart=BOOT_MEMORY_START;
@@ -54,7 +75,11 @@ public class Memory {
 		return true;
 	}
 
-	
+	/**
+	 * Store a list of user code starting from a specified memory address defined by the user
+	 * @param arrCode A WORD array list containing the input code.
+	 * @return A boolean indicating if the execution is success.
+	 */
 	public boolean storeUserCode(ArrayList<WORD> arrCode)
 	{
 		int address=userMemoryStart;
@@ -71,6 +96,11 @@ public class Memory {
 		return true;
 	}
 	
+	/**
+	 * Store a list of boot code starting from a specified memory address.
+	 * @param arrCode A WORD array list containing the input code.
+	 * @return A boolean indicating if the execution is success.
+	 */
 	public boolean storeBootCode(ArrayList<WORD> arrCode) throws IOException
 	{
 		int address=BOOT_MEMORY_START;
@@ -83,7 +113,11 @@ public class Memory {
 		return true;
 	}
 	
-	
+	/**
+	 * Load data from a memory given address.
+	 * @param address an integer of the memory address the machine wants to access.
+	 * @return The data stored in the memory slot.
+	 */
 	public WORD load(int address) throws IOException
 	{
 		if(address>MAX_MEMORY || address<BOOT_MEMORY_START)
@@ -91,6 +125,10 @@ public class Memory {
 		return memory[address];
 	}
 	
+	/**
+	 * Get information of each memory slots, including the address and content.
+	 * @return The result in String type.
+	 */
 	public String getString() 
 	{
 		StringBuffer buffer=new StringBuffer();
@@ -106,6 +144,9 @@ public class Memory {
 		return buffer.toString();
 	}
 	
+	/**
+	 * 
+	 */
 	public String toString() 
 	{
 		StringBuffer buffer=new StringBuffer();
