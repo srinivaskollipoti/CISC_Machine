@@ -38,7 +38,6 @@ public class CISCGUI extends javax.swing.JFrame {
 
         jColorChooser1 = new javax.swing.JColorChooser();
         labelInstruction = new javax.swing.JLabel();
-        textFieldInstruction = new javax.swing.JTextField();
         buttonRun = new javax.swing.JButton();
         buttonIPL = new javax.swing.JButton();
         buttonSingleStep = new javax.swing.JButton();
@@ -72,16 +71,12 @@ public class CISCGUI extends javax.swing.JFrame {
         textFieldCC = new javax.swing.JTextField();
         labelMFR = new javax.swing.JLabel();
         textFieldMBR = new javax.swing.JTextField();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        textFieldInstruction = new javax.swing.JTextPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         labelInstruction.setText("Instruction");
-
-        textFieldInstruction.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldInstructionActionPerformed(evt);
-            }
-        });
 
         buttonRun.setText("Run");
         buttonRun.addActionListener(new java.awt.event.ActionListener() {
@@ -103,7 +98,7 @@ public class CISCGUI extends javax.swing.JFrame {
                 buttonSingleStepActionPerformed(evt);
             }
         });
-        
+
         labelLogger.setText("Logger");
 
         textArea.setEditable(false);
@@ -161,38 +156,28 @@ public class CISCGUI extends javax.swing.JFrame {
         labelCC.setText("CC");
 
         labelMFR.setText("MFR");
-        
-        textFieldR0.setText("0");
-    	textFieldR1.setText("0");
-    	textFieldR2.setText("0");
-    	textFieldR3.setText("0");
-    	textFieldIX1.setText("0");
-    	textFieldIX2.setText("0");
-    	textFieldIX3.setText("0");
-    	textFieldPC.setText("0");
-    	textFieldCC.setText("0");
-    	textFieldMAR.setText("0");
-    	textFieldMBR.setText("0");
-    	textFieldMFR.setText("0");
-    	textFieldIR.setText("0");
-    	textFieldPC.setText("0");
-    	
-    	
+
+        jScrollPane2.setViewportView(textFieldInstruction);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
                         .addComponent(labelInstruction)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(textFieldInstruction, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(buttonRun, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(82, 82, 82)
+                        .addComponent(buttonRun, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(67, 67, 67)
+                        .addComponent(buttonSingleStep, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addComponent(buttonIPL, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(75, 75, 75)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(labelMFR)
@@ -213,14 +198,14 @@ public class CISCGUI extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                             .addComponent(labelR3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                             .addComponent(labelR1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(labelR2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                            .addComponent(labelR2, javax.swing.GroupLayout.Alignment.LEADING)))
                                     .addGap(18, 18, 18)
                                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(textFieldR0)
                                         .addComponent(textFieldR1)
                                         .addComponent(textFieldR2)
                                         .addComponent(textFieldR3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(65, 65, 65)
+                        .addGap(69, 69, 69)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(33, 33, 33)
@@ -232,11 +217,11 @@ public class CISCGUI extends javax.swing.JFrame {
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(labelMBR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(labelIR, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(labelCC, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(labelCC, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(textFieldMBR, javax.swing.GroupLayout.DEFAULT_SIZE, 114, Short.MAX_VALUE)
-                                    .addComponent(textFieldCC)))
+                                    .addComponent(textFieldMBR)
+                                    .addComponent(textFieldCC, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(labelIX1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -244,53 +229,48 @@ public class CISCGUI extends javax.swing.JFrame {
                                     .addComponent(labelIX3))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(textFieldIX1, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(buttonSave, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE))))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 322, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(buttonSingleStep, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
-                        .addComponent(buttonIPL, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(labelLogger, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(116, 116, 116))
+                            .addComponent(buttonSave, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(45, 45, 45)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(labelLogger, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(114, 114, 114)))))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(textFieldInstruction, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(labelInstruction)
-                        .addComponent(buttonSingleStep)
-                        .addComponent(buttonRun)
-                        .addComponent(buttonIPL)))
-                .addGap(11, 11, 11)
-                .addComponent(labelLogger)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(64, 64, 64)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buttonRun)
+                            .addComponent(buttonSingleStep)
+                            .addComponent(buttonIPL)))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(48, 48, 48)
+                        .addComponent(labelInstruction, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelR0)
                             .addComponent(textFieldR0, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelIX1)
                             .addComponent(textFieldIX1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelR1)
                             .addComponent(textFieldR1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelIX2)
                             .addComponent(textFieldIX2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelR2)
                             .addComponent(textFieldR2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -302,7 +282,7 @@ public class CISCGUI extends javax.swing.JFrame {
                             .addComponent(textFieldR3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(textFieldIR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelIR))
-                        .addGap(27, 27, 27)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(labelPC)
                             .addComponent(textFieldPC, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -314,25 +294,24 @@ public class CISCGUI extends javax.swing.JFrame {
                             .addComponent(textFieldMAR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(textFieldMBR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelMBR))
-                        .addGap(34, 34, 34)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(buttonSave)
+                            .addComponent(buttonSave, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(textFieldMFR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(labelMFR)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(21, 53, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(labelLogger)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 301, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(40, 40, 40))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
-    private void buttonSingleStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSingleStepActionPerformed
-    	LOG.info("Simulator perform singlestep");
-    	if(simu.isPowerOff()==true) {
-    		textArea.append("[GUI] Simulator is not turned on, push the IPL button\n");
-    		return;
-    	}
+    private boolean loadUserInstruction()
+    {
     	String instructions=textFieldInstruction.getText();
     	instructions=instructions.trim();
     	if(instructions.length()>0)
@@ -340,58 +319,67 @@ public class CISCGUI extends javax.swing.JFrame {
 	    	String [] arrInst=instructions.split("\n");
 	    	if(simu.setUserCode(arrInst)==false)
 	    	{
-	    		textArea.append("Input instruction is not valid\n");
-	    		return;
+	    		printLog("[WARNING] Input instruction is not valid");
+	    		printLog(simu.getMessage());
+	    		return false;
 	    	}	
+	    	printLog(simu.getMessage());
 	    	textFieldInstruction.setText("");
     	}
-    	simu.singleStep();
-    	textArea.append(simu.getMessage()+"\n");
-    }//GEN-LAST:event_buttonSingleStepActionPerformed
+    	return true;
+    }
 
+
+    private void buttonSingleStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSingleStepActionPerformed
+    	printLog("[NOTICE] Simulator perform singlestep");
+    	if(simu.isPowerOff()==true) {
+    		printLog("[NOTICE] Simulator is not turned on, push the IPL button");
+    		return;
+    	}
+    	if(loadUserInstruction()==false)
+    		return;
+    	simu.singleStep();
+    	printLog(simu.getMessage());
+    }//GEN-LAST:event_buttonSingleStepActionPerformed
     
     private void buttonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRunActionPerformed
-    	LOG.info("Simulator starts to run");
+    	printLog("[NOTICE] Simulator starts to run");
     	if(simu.isPowerOff()==true) {
-    		textArea.append("[GUI] Simulator is not turned on, push the IPL button\n");
+    		printLog("[NOTICE] Simulator is not turned on, push the IPL button");
     		return;
     	}
-    	String instructions=textFieldInstruction.getText();
-    	instructions=instructions.trim();
-    	if(instructions.length()>0)
-    	{
-	    	String [] arrInst=instructions.split("\n");
-
-	    	if(simu.setUserCode(arrInst)==false)
-	    	{
-	    		textArea.append("Input instruction is not valid\n");
-	    		return;
-	    	}else {
-	    		textArea.append("Store user instruction into Memory["+memory.getUserMemoryLocation()+"]\n");
-	    		textArea.append(instructions+"\n");
-	    	}
-	    	textFieldInstruction.setText("");
-    	}
+    	if(loadUserInstruction()==false)
+    		return;
     	simu.run();
-    	textArea.append(simu.getMessage()+"\n");
+    	printLog(simu.getMessage());
     }//GEN-LAST:event_buttonRunActionPerformed
 
-    private void textFieldInstructionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldInstructionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldInstructionActionPerformed
+    public void printLog(String log)
+    {
+    	printLog(log,false);    	
+    }
+    
+    public void printLog(String log,boolean isOnlyPrint)
+    {
+    	String message=log+"\n";
+    	textArea.append(message);
+    	if(isOnlyPrint==false)
+    		LOG.info(message);
+    }
 
     private void buttonIPLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonIPLActionPerformed
     	if(simu.getState()==CISCSimulator.StateType.POWEROFF)
     	{
-    		LOG.info("Simulator is turned on");
+    		printLog("[NOTICE] Simulator is turned on");
 	    	boolean resultInit=simu.initProcessor();
-	        if(!resultInit) {
-	            LOG.severe("Failed to init processor");
+	    	if(!resultInit) {
+	            printLog("[WARNING] Failed to init processor");
 	            return;
 	        }
+	    	printLog(simu.getMessage());
     	}else {
     		simu.powerOff();
-    		LOG.info("Simulator is turned off");
+    		printLog("[NOTICE] Simulator is turned off");
             
     	}
     }//GEN-LAST:event_buttonIPLActionPerformed
@@ -411,7 +399,7 @@ public class CISCGUI extends javax.swing.JFrame {
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
     	
     	if(simu.isPowerOff()==true) {
-    		textArea.append("[GUI] Simulator is not turned on, push the IPL button\n");
+    		printLog("[NOTICE] Simulator is not turned on, push the IPL button");
     		return;
     	}
     	
@@ -433,9 +421,9 @@ public class CISCGUI extends javax.swing.JFrame {
     			Long.valueOf(textFieldMFR.getText()));
     	}catch(NumberFormatException e)
     	{
-    		message="[GUI] Input number is not valid\n";
+    		message="[NOTICE] Input number is not valid\n";
     	}
-    	textArea.append(message+simu.getMessage()+"\n");
+    	printLog(message+"[NOTICE] "+simu.getMessage());
     }//GEN-LAST:event_buttonSaveActionPerformed
 
     public void updateDisplay()
@@ -502,6 +490,7 @@ public class CISCGUI extends javax.swing.JFrame {
     private javax.swing.JButton buttonSingleStep;
     private javax.swing.JColorChooser jColorChooser1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelCC;
     private javax.swing.JLabel labelIR;
     private javax.swing.JLabel labelIX1;
@@ -523,7 +512,7 @@ public class CISCGUI extends javax.swing.JFrame {
     private javax.swing.JTextField textFieldIX1;
     private javax.swing.JTextField textFieldIX2;
     private javax.swing.JTextField textFieldIX3;
-    private javax.swing.JTextField textFieldInstruction;
+    private javax.swing.JTextPane textFieldInstruction;
     private javax.swing.JTextField textFieldMAR;
     private javax.swing.JTextField textFieldMBR;
     private javax.swing.JTextField textFieldMFR;

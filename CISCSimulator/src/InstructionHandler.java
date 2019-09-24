@@ -30,7 +30,7 @@ class Instruction
 	public boolean isIReg() { return this.isIReg; }
 	public boolean isAddr() { return this.isAddr; }
 	public boolean isFlag() { return this.isFlag; }
-
+	
 }
 
 /**
@@ -59,6 +59,7 @@ public class InstructionHandler {
 	Hashtable< Integer, Instruction> instSet= new Hashtable< Integer, Instruction>();
 	Hashtable< String, Integer> textToCode= new Hashtable< String, Integer>();
 	
+	private String message=new String();
 	/**
 	 * A constructor initializes with given controller.
 	 * @param controller
@@ -107,7 +108,7 @@ public class InstructionHandler {
 	//LDR 2,0,13    000001 	10 	00 	0 	01101   => R[2] = M[13], R[2]=8
 	public boolean executeLDR() throws IOException {
 		int eAddress=getEA();
-		controller.GPR[reg].copy(controller.memory.load(eAddress));
+		controller.GPR[reg].copy(controller.getMemory().load(eAddress));
 		return true;
 	}
 
@@ -127,7 +128,7 @@ public class InstructionHandler {
 	//LDX 1,13      100001 	00 	01 	0 	01101   => X[1] = M[13], X[1]=8
 	public boolean executeLDX() throws IOException {
 		int eAddress=getEAWithouIReg();
-		controller.IX[ireg].copy(controller.memory.load(eAddress));
+		controller.IX[ireg].copy(controller.getMemory().load(eAddress));
 		return true;
 	}
 
@@ -139,7 +140,7 @@ public class InstructionHandler {
 		int eAddress=getEA();
 		WORD param=new WORD();
         param.copy(controller.GPR[reg]);
-		controller.memory.store(eAddress,param);
+		controller.getMemory().store(eAddress,param);
 		return true;
 	}
 
@@ -151,7 +152,7 @@ public class InstructionHandler {
 		int eAddress=getEAWithouIReg();
 		WORD param=new WORD();
         param.copy(controller.IX[ireg]);
-		controller.memory.store(eAddress,param);
+		controller.getMemory().store(eAddress,param);
 		return true;
 	}
 	
@@ -168,7 +169,7 @@ public class InstructionHandler {
 		}
 		else if(flag==1)
 		{
-			eAddress=controller.memory.load(address).getInt();
+			eAddress=controller.getMemory().load(address).getInt();
 		}
 		else throw new IOException("Wrong indirect flag");
 		return eAddress;
@@ -194,10 +195,10 @@ public class InstructionHandler {
 		else if(flag==1)
 		{
 			if(ireg==0) {
-				eAddress=controller.memory.load(address).getInt();
+				eAddress=controller.getMemory().load(address).getInt();
 			}else {
 				int iAddress=controller.IX[ireg].getInt()+address;
-				eAddress=controller.memory.load(iAddress).getInt();
+				eAddress=controller.getMemory().load(iAddress).getInt();
 			}
 		}
 		else throw new IOException("Wrong indirect flag");
@@ -324,6 +325,7 @@ public class InstructionHandler {
 	 */
 	public WORD getBinCode(String assemCode)
 	{
+		message="";
 		WORD result=new WORD();
 		int opcode=0;
 		int reg=0;
@@ -336,19 +338,22 @@ public class InstructionHandler {
 		arrStr[0]=arrStr[0].toUpperCase();
 		Integer code=textToCode.get(arrStr[0]);
 		if(code==null) {
-			LOG.warning("Unknown OPTEXT : "+assemCode);
+			message="Unsupported Operation Text: "+arrStr[0]+"\n";
+			LOG.warning(message);
 			return null;
 		}
 		opcode=code;
 		Instruction inst=instSet.get(opcode);
 		if(inst==null) {
-			LOG.warning("Unknown OPSET : "+assemCode);
+			message="Unsupported Operation Code : "+code+"\n";
+			LOG.warning(message);
 			return null;
 		}
 		
 		if(arrStr.length<2)
 		{
-			LOG.warning("No Parameter : "+assemCode);
+			message=arrStr[0]+" accepts "+inst.getParamLength()+" parameters.\nInput parameters are not matched - "+assemCode+"\n";
+			LOG.warning(message);
 			return null;
 		}
 		
@@ -363,7 +368,8 @@ public class InstructionHandler {
 		int paramLength=arrParam.length;
 		if(paramLength!=inst.getParamLength())
 		{
-			LOG.warning("Wrong Parameter Length : "+assemCode);
+			message=arrStr[0]+" accepts "+inst.getParamLength()+" parameters.\nInput parameters are not matched - "+assemCode+"\n";
+			LOG.warning(message);			
 			return null;
 		}
 		for(int i=0;i<paramLength;i++)
@@ -382,8 +388,8 @@ public class InstructionHandler {
 		}
 		}catch(java.lang.NumberFormatException e)
 		{
-			e.getStackTrace();
-			LOG.warning("Wrong Parameter : "+assemCode);
+			message="Parameter must be number : "+assemCode+"\n";
+			LOG.warning(message);			
 			return null;
 		}
 			
@@ -399,7 +405,8 @@ public class InstructionHandler {
 			bitAddress.setLong(address);
 		}catch(IllegalArgumentException e)
 		{
-			LOG.warning("Wrong Parameter : "+assemCode);
+			message=e.getMessage()+" : "+assemCode+"\n";
+			LOG.warning(message);			
 			return null;
 		}
 
@@ -434,5 +441,8 @@ public class InstructionHandler {
 			
 		return result;
 	}
-	
+	public String getMessage()
+	{
+		return message;
+	}
 }

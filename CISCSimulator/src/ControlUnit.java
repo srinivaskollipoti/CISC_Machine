@@ -11,8 +11,8 @@ import java.util.logging.Logger;
 public class ControlUnit {
 	
 	private final static Logger LOG = Logger.getGlobal();
-	CISCSimulator simulator;
-	Memory memory;
+	private CISCSimulator simulator;
+	private Memory memory;
 	
 	CPUState state=CPUState.LOAD_MAR;
 	GBitSet PC=new GBitSet(12);
@@ -25,7 +25,7 @@ public class ControlUnit {
 	WORD MFR=new WORD();
 	WORD IR=new WORD();
 	InstructionHandler ih=new InstructionHandler(this);
-	private String message;
+	private String message=new String();
 
 	enum CPUState
 	{
@@ -38,13 +38,13 @@ public class ControlUnit {
 		}
 		public String getName() {
 			return this.name;
-		}
-		
+		}	
 	}
 	
 	public WORD getIR() {
 		return IR;
 	}
+	
 	public ControlUnit(CISCSimulator simulator)
 	{
 		this.simulator=simulator;
@@ -59,7 +59,6 @@ public class ControlUnit {
 		System.out.println("### MEMORY STATUS START ###\n");
 		System.out.println(memory);
 		System.out.println("### MEMORY STATUS END ###\n");
-
 		return true;
 	}
 	
@@ -82,7 +81,6 @@ public class ControlUnit {
 		System.out.println("[MBR ] "+MBR);
 		System.out.println("[MFR ] "+MFR);
 		System.out.println("[IR  ] "+IR);
-		
 		System.out.println("### REGISTER STATUS END ###\n");
 		return true;
 	}
@@ -117,11 +115,11 @@ public class ControlUnit {
 		WORD inst=new WORD();
 		try {
 			inst = memory.load(PC.getInt());
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException e){
+			LOG.severe(e.getMessage());
 			LOG.severe("Failed to load Next Instruction");			
 		}
-		boolean result=inst.isEmpty();
+		boolean result=inst.isEmpty();	// check if next instruction is none
 		return !result;
 	}
 	
@@ -135,42 +133,51 @@ public class ControlUnit {
 	 */
 	public boolean clock()
 	{
+		boolean result=true;
 		message="";
 		switch(state){
 		case LOAD_MAR:
 			if(!isNextInstruction())
 			{
-				message="[TERMINATED] End of instruction";
+				message="[TERMINATED] End of instruction\n";
 				state=CPUState.NO_INST;
 				return false;
 			}
 			MAR.copy(PC);
 			state=CPUState.LOAD_MBR;
-			message="[CPU] MAR <- PC";
+			message="[FETCH] MAR <- PC\n";
 			break;
 		case LOAD_MBR:
 			try {
 				MBR.copy(memory.load(MAR.getInt()));
 			} catch (IOException e) {
-				LOG.severe("Failed to process LOAD MBR");
+				LOG.severe("Failed to process LOAD MBR\n");
 				return false;
 			}
 			state=CPUState.LOAD_IR;
-			message="[FETCH] MBR <- MEM[MAR]";
+			message="[FETCH] MBR <- MEM[MAR]\n";
 			break;
 		case LOAD_IR:
 			IR.copy(MBR);
 			increasePC();
-			message="[FETCH] IR <- MBR";
+			message="[FETCH] IR <- MBR\n";
 			state=CPUState.EXECUTE;
 			break;
 		case EXECUTE:
-			execute();
+			message="";
+			if(execute()==false)
+			{
+				message="[ERROR] "+message+"Failed to execute code\n";
+				result=false;
+			}
+			message="[EXECUTE] "+ih.getAsmCode()+"\n"+message;
 			state=CPUState.LOAD_MAR;
-			message="[EXECUTE] "+ih.getAsmCode();
+			break;
+		default:
+			state=CPUState.LOAD_MAR;
 			break;
 		}
-		return true;
+		return result;
 	}
 
 	public String getMessage()
@@ -211,57 +218,13 @@ public class ControlUnit {
 	}
 	*/
 	
-	/**
-	 * Load instructions from the rom.txt file.
-	 * @return boolean indicating the process is done.
-	 */
-	public boolean loadROM()
-	{
-		ROM rom= new ROM();
-		String[] arrAsmCode=rom.getCode();
-		
-		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
-		for(String asmCode:arrAsmCode)
-		{
-			WORD binCode=ih.getBinCode(asmCode);
-			if(binCode==null) {
-				LOG.warning("Failed to parse boot code\n"+asmCode);
-				return false;
-			}
-			arrBinCode.add(binCode);
-		}
-		
-	    try {
-			if(memory.storeBootCode(arrBinCode)==false)
-			{
-				LOG.warning("Failed to store boot code\n"+String.join("\n", arrAsmCode));
-				return false;
-			}
-		} catch (IOException e) {
-			LOG.warning("Failed to store boot code\n"+String.join("\n", arrAsmCode));
-			LOG.warning(e.getMessage());
-			return false;
-		}
-	    PC.setLong(Memory.BOOT_MEMORY_START);
-	    state=CPUState.LOAD_MAR;
-	    showMemory();
-		return true;
-		
-	}
 	
 	/**
 	 * Execute a list of instructions.
 	 * @return a boolean indicating is done. 
 	 */
+/*
 	public boolean executeInstruction(String[] arrAsmCode) {
-		try {
-			memory.store(13,new WORD());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
 		ArrayList<WORD> arrBinCode = new ArrayList<WORD>();
 		for (String asmCode:arrAsmCode)
 		{
@@ -273,11 +236,9 @@ public class ControlUnit {
 			}
 			arrBinCode.add(binCode);
 		}
-		
-		
 		return true;
 	}
-
+*/
 	
 	public boolean increasePC() {
 		long result=PC.getLong()+1;
@@ -294,10 +255,50 @@ public class ControlUnit {
 		try {
 			ih.execute();
 		} catch (IOException e) {
-			e.printStackTrace();
-			LOG.severe("Failed to execute");
+			message=message+e.getMessage();
+			LOG.severe(message);
 			return false;
 		}
+		return true;
+	}
+	
+	/**
+	 * Load instructions from the rom.txt file.
+	 * @return boolean indicating the process is done.
+	 */
+	public boolean setBootCode()
+	{
+		message="[LOAD] Boot Code\n";
+		ROM rom= new ROM();
+		String[] arrAsmCode=rom.getCode();
+		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
+		for(String asmCode:arrAsmCode)
+		{
+			WORD binCode=ih.getBinCode(asmCode);
+			if(binCode==null) {
+				message="Failed to parse boot code\n"+asmCode;
+				LOG.warning(message);
+				return false;
+			}
+			arrBinCode.add(binCode);
+		}
+		
+	    try {
+			if(memory.storeBootCode(arrBinCode)==false)
+			{
+				message="Failed to store boot code\n"+String.join("\n", arrAsmCode);
+				LOG.warning(message);
+				return false;
+			}
+		} catch (IOException e) {
+			message="Failed to store boot code\n"+String.join("\n", arrAsmCode)+"\n"+e.getMessage();
+			LOG.warning(message);
+			return false;
+		}
+	    message=message+String.join("\n",arrAsmCode)+"\n";		
+	    PC.setLong(Memory.BOOT_MEMORY_START);
+	    message=message+"PC = "+Memory.BOOT_MEMORY_START+"\n";
+	    state=CPUState.LOAD_MAR;
 		return true;
 	}
 	
@@ -307,12 +308,15 @@ public class ControlUnit {
 	 * @return A boolean indicating is done.
 	 */
 	public boolean setUserCode(String[] arrAsmCode) {
+		
+		message="";
 		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
 		for(String asmCode:arrAsmCode)
 		{
 			WORD binCode=ih.getBinCode(asmCode);
 			if(binCode==null) {
-				LOG.warning("Failed to parse user code\n"+asmCode);
+				message=ih.getMessage()+"Failed to parse user code : "+asmCode;
+				LOG.warning(message);
 				return false;
 			}
 			arrBinCode.add(binCode);
@@ -320,15 +324,17 @@ public class ControlUnit {
 		
 	    if(memory.storeUserCode(arrBinCode)==false)
 	    {
-	    	LOG.warning("Failed to store user code\n"+String.join("\n", arrAsmCode));
+			message="Failed to store user code\n"+String.join("\n", arrAsmCode);
+	    	LOG.warning(message);
 			return false;
 		}
 	    PC.setLong(memory.getUserMemoryLocation());
+	    message=("[LOAD] User Code\n"+String.join("\n",arrAsmCode)+"\nPC = "+memory.getUserMemoryLocation()+"\n");
 	    state=CPUState.LOAD_MAR;
-	    showMemory();
 		return true;
 	}
-	
-	
 
+	public Memory getMemory() {
+		return this.memory;
+	}
 }

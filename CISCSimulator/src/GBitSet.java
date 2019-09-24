@@ -41,7 +41,7 @@ public class GBitSet extends java.util.BitSet {
 	public boolean setLong(long number){
 		
 		if (Math.pow(2,length)<=number || number<0)
-			throw new IllegalArgumentException("long number is out of range: "+number);
+			throw new IllegalArgumentException("Input number("+number+") is out of data range");
 		this.clear();
 		long[] temp = new long[1];
 		temp[0]=number;

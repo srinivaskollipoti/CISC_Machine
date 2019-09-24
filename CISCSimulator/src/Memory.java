@@ -121,7 +121,7 @@ public class Memory {
 	public WORD load(int address) throws IOException
 	{
 		if(address>MAX_MEMORY || address<BOOT_MEMORY_START)
-			throw new IOException("Memory violation");
+			throw new IOException("Memory access violation : ["+address+"]\n");
 		return memory[address];
 	}
 	
@@ -138,9 +138,9 @@ public class Memory {
 			{
 				String message=String.format("Memory [%03d]  %s (%d)\n", i,memory[i].getString(),memory[i].getLong());
 				buffer.append(message);
-//				buffer.append("Memory ["+i+"] "+memory[i].getString()+"\n");
 			}
 		}
+		
 		return buffer.toString();
 	}
 	
