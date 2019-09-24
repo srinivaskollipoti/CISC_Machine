@@ -5,12 +5,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * 
- */
-
-/**
  * @author cozyu
- *
+ * A class that get data and current states and status of the simulator.
  */
 public class ControlUnit {
 	
@@ -55,6 +51,9 @@ public class ControlUnit {
 		this.memory=simulator.getMemory();
 	}
 	
+	/**
+	 * Print out memory status.
+	 */
 	public boolean showMemory()
 	{
 		System.out.println("### MEMORY STATUS START ###\n");
@@ -64,6 +63,9 @@ public class ControlUnit {
 		return true;
 	}
 	
+	/**
+	 * Print out register status.
+	 */
 	public boolean showRegister()
 	{
 		System.out.println("### REGISTER STATUS START ###\n");
@@ -85,6 +87,9 @@ public class ControlUnit {
 		return true;
 	}
 	
+	/**
+	 * Initializes the machine.
+	 */
 	public boolean init()
 	{
 		memory.init();
@@ -125,6 +130,9 @@ public class ControlUnit {
 		return state!=CPUState.NO_INST;
 	}
 	
+	/**
+	 * A method that set the simulator to proper state, including load_mar, load_mbr,load_ir and execute.
+	 */
 	public boolean clock()
 	{
 		message="";
@@ -203,6 +211,10 @@ public class ControlUnit {
 	}
 	*/
 	
+	/**
+	 * Load instructions from the rom.txt file.
+	 * @return boolean indicating the process is done.
+	 */
 	public boolean loadROM()
 	{
 		ROM rom= new ROM();
@@ -237,6 +249,10 @@ public class ControlUnit {
 		
 	}
 	
+	/**
+	 * Execute a list of instructions.
+	 * @return a boolean indicating is done. 
+	 */
 	public boolean executeInstruction(String[] arrAsmCode) {
 		try {
 			memory.store(13,new WORD());
@@ -270,6 +286,9 @@ public class ControlUnit {
 	}
 	
 
+	/**
+	 * Print out instructions.
+	 */
 	public boolean execute() {
 		ih.showInstruction();
 		try {
@@ -281,6 +300,12 @@ public class ControlUnit {
 		}
 		return true;
 	}
+	
+	/**
+	 * Convert a list of insturctions to a list of binary codes and print out the memory status.
+	 * @param arrAsmCode a string list storing multiple instructions
+	 * @return A boolean indicating is done.
+	 */
 	public boolean setUserCode(String[] arrAsmCode) {
 		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
 		for(String asmCode:arrAsmCode)
