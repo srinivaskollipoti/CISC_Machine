@@ -12,27 +12,35 @@ import java.util.logging.Logger;
 public class GBitSet extends java.util.BitSet {
          private final static Logger LOG = Logger.getGlobal();
 	
-	int length;
+	int length=0;
+	int minValue=0;
+	int maxValue=0;
+	
 	public GBitSet(int bitSet)
 	{
 		super(bitSet);
 		length=bitSet;
+		maxValue=(int)Math.pow(2,length);
 	}
 	
 	public GBitSet(BitSet input)
 	{
 		super(input.size());
-		System.out.println(input.toByteArray());
 		or(input);
+	}
+	
+	public void setMinValue(int minValue)
+	{
+		this.minValue=minValue;
 	}
 	
 	public GBitSet subSet(int from,int to)
 	{
-                 if(to<=from)
-                 {
-                     LOG.warning("Wrong Parameter in subStr() ["+from+" ~ "+to+"]");
-                     return null;
-                 }
+		if(to<=from)
+		{
+			LOG.warning("Wrong Parameter in subStr() ["+from+" ~ "+to+"]");
+			return null;
+		}
 		GBitSet subSet= new GBitSet(to-from);
 		subSet.or(get(from, to));
 		return subSet;
@@ -40,7 +48,7 @@ public class GBitSet extends java.util.BitSet {
 	
 	public boolean setLong(long number){
 		
-		if (Math.pow(2,length)<=number || number<0)
+		if (maxValue<=number || number<minValue)
 			throw new IllegalArgumentException("Input number("+number+") is out of data range");
 		this.clear();
 		long[] temp = new long[1];

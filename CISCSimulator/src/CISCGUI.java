@@ -25,6 +25,7 @@ public class CISCGUI extends javax.swing.JFrame {
         simu=new CISCSimulator(this);
         cpu=simu.getCPU();
         memory=simu.getMemory();
+        this.setTitle("CISC Simulator");
     }
 
     /**

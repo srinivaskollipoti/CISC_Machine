@@ -2,6 +2,11 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
+/**
+ * @author cozyu
+ * A class that define given instructions.
+ */
+
 class Instruction
 {
 	private String name; 
@@ -29,8 +34,7 @@ class Instruction
 	public boolean isReg() { return this.isReg; }
 	public boolean isIReg() { return this.isIReg; }
 	public boolean isAddr() { return this.isAddr; }
-	public boolean isFlag() { return this.isFlag; }
-	
+	public boolean isFlag() { return this.isFlag; }	
 }
 
 /**
@@ -38,14 +42,7 @@ class Instruction
  * A class that process given instructions.
  */
 public class InstructionHandler {
-	private final static Logger LOG = Logger.getGlobal();
-		
-	static final int LDA=3;
-	static final int STR=2;
-	static final int LDR=1;
-	static final int LDX=33;
-	static final int STX=34;
-	
+	private final static Logger LOG = Logger.getGlobal();	
 	private WORD ir=new WORD();
 	private ControlUnit controller;
 	
@@ -56,6 +53,11 @@ public class InstructionHandler {
 	private int address=0;
 	private GBitSet addressBit=new GBitSet(6);
 	
+	static final int LDA=3;
+	static final int STR=2;
+	static final int LDR=1;
+	static final int LDX=33;
+	static final int STX=34;
 	Hashtable< Integer, Instruction> instSet= new Hashtable< Integer, Instruction>();
 	Hashtable< String, Integer> textToCode= new Hashtable< String, Integer>();
 	
@@ -77,12 +79,6 @@ public class InstructionHandler {
 		textToCode.put("LDR",LDR);
 		textToCode.put("LDX",LDX);
 		textToCode.put("STX",STX);
-
-	}
-	
-	public boolean setIR()
-	{
-		return setIR(controller.getIR());
 	}
 	
 	/**
@@ -105,7 +101,6 @@ public class InstructionHandler {
 	/**
 	 * Load register from a given memory address.
 	 */
-	//LDR 2,0,13    000001 	10 	00 	0 	01101   => R[2] = M[13], R[2]=8
 	public boolean executeLDR() throws IOException {
 		int eAddress=getEA();
 		controller.GPR[reg].copy(controller.getMemory().load(eAddress));
@@ -115,27 +110,15 @@ public class InstructionHandler {
 	/**
 	 * Load register with address
 	 */
-	//LDA 1,0,8     000011 	01 	00 	0 	01000   => R[1] = 8
 	public boolean executeLDA() throws IOException {
 		int eAddress=getEA();
 		controller.GPR[reg].setLong(eAddress);
 	    return true;
 	}
-	
-	/**
-	 * Load Index Register from Memory.
-	 */
-	//LDX 1,13      100001 	00 	01 	0 	01101   => X[1] = M[13], X[1]=8
-	public boolean executeLDX() throws IOException {
-		int eAddress=getEAWithouIReg();
-		controller.IX[ireg].copy(controller.getMemory().load(eAddress));
-		return true;
-	}
 
 	/**
 	 * Store Register To Memory.
 	 */
-	//STR 1,0,13    000010 	01 	00 	0 	01101   => M[13] = 8
 	public boolean executeSTR() throws IOException {
 		int eAddress=getEA();
 		WORD param=new WORD();
@@ -145,9 +128,17 @@ public class InstructionHandler {
 	}
 
 	/**
+	 * Load Index Register from Memory.
+	 */
+	public boolean executeLDX() throws IOException {
+		int eAddress=getEAWithouIReg();
+		controller.IX[ireg].copy(controller.getMemory().load(eAddress));
+		return true;
+	}
+
+	/**
 	 * Store Index Register to Memory.
 	 */
-	//STX 1,31 		100010 	00 	01 	0 	11111   => M[31] = X[1], M[31]=8
 	public boolean executeSTX() throws IOException {
 		int eAddress=getEAWithouIReg();
 		WORD param=new WORD();
@@ -212,7 +203,7 @@ public class InstructionHandler {
 	 */
 	public boolean execute() throws IOException
 	{
-		setIR();
+		setIR(controller.getIR());
 		switch(getOPCode())
 		{
 			case InstructionHandler.LDA:
@@ -234,8 +225,8 @@ public class InstructionHandler {
 				LOG.warning("Unknown Instruction(OPCODE): "+ir);
 				break;
 		}
-		controller.showRegister();
-		controller.showMemory();		
+		//controller.showRegister();
+		//controller.showMemory();		
 		return true;
 	}
 
@@ -273,31 +264,6 @@ public class InstructionHandler {
 	}
 	
 	/**
-	 * Store the input instruction by parts to buffer given the asmCode.
-	 * @asmCode A WORD storing each parts of the input instructions.
-	 * @return A string of the result.
-	 */
-	public String getAsmCode(WORD asmCode)
-	{
-		StringBuffer buffer=new StringBuffer();
-		
-		InstructionHandler temp=new InstructionHandler(controller);
-		temp.setIR(asmCode);
-		Instruction inst=instSet.get(opcode);
-		buffer.append(inst.getName());
-		if(inst.isReg()==true)
-			buffer.append(getReg());
-		if(inst.isIReg()==true)
-			buffer.append(getIReg());
-		if(inst.isFlag()==true)
-			buffer.append(getFlag());
-		if(inst.isAddr()==true)
-			buffer.append(getAddress());
-		
-		return buffer.toString();
-	}
-
-	/**
 	 * Slice the input instruction by parts
 	 * @return A string of the result.
 	 */
@@ -333,19 +299,18 @@ public class InstructionHandler {
 		int flag=0;
 		int address=0;
 		
-		assemCode=assemCode.trim();
+		assemCode=assemCode.trim().toUpperCase();
 		String[] arrStr=assemCode.split(" ",2);
-		arrStr[0]=arrStr[0].toUpperCase();
 		Integer code=textToCode.get(arrStr[0]);
 		if(code==null) {
-			message="Unsupported Operation Text: "+arrStr[0]+"\n";
+			message="Unsupported opcode: "+arrStr[0]+"\n";
 			LOG.warning(message);
 			return null;
 		}
 		opcode=code;
 		Instruction inst=instSet.get(opcode);
 		if(inst==null) {
-			message="Unsupported Operation Code : "+code+"\n";
+			message="Unsupported opcode : "+arrStr[0]+"("+code+")\n";
 			LOG.warning(message);
 			return null;
 		}
@@ -392,8 +357,17 @@ public class InstructionHandler {
 			LOG.warning(message);			
 			return null;
 		}
+		// IX range limitation for LDX, STX
+		if(opcode==33 || opcode==34) 
+		{
+			if(ireg<1 || ireg>3)
+			{
+				message="Index Register must be between 1-3 : "+assemCode+"\n";
+				LOG.warning(message);			
+				return null;
+			}
+		}
 			
-		System.out.println(assemCode);
 		GBitSet bitOP=new GBitSet(6);
 		GBitSet bitReg=new GBitSet(2);
 		GBitSet bitIReg=new GBitSet(2);
@@ -441,6 +415,11 @@ public class InstructionHandler {
 			
 		return result;
 	}
+	
+	/**
+	 * Return result string of operation.
+	 * @return result string of operation.
+	 */
 	public String getMessage()
 	{
 		return message;

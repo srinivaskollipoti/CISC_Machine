@@ -43,6 +43,6 @@ public class ROM {
 		//buffer.append("LDR 2, 0, 20\n");
 		//buffer.append("LDx 1, 20\n");
 		//buffer.append("STX 1, 31\n");
-		return buffer.toString().split("\n");
+		return buffer.toString().toUpperCase().split("\n");
 	}
 }

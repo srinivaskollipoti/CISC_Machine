@@ -41,9 +41,6 @@ public class ControlUnit {
 		}	
 	}
 	
-	public WORD getIR() {
-		return IR;
-	}
 	
 	public ControlUnit(CISCSimulator simulator)
 	{
@@ -179,67 +176,10 @@ public class ControlUnit {
 		}
 		return result;
 	}
-
-	public String getMessage()
-	{
-		return message;
-	}
-	
-	public void addMessage(String message)
-	{
-		this.message+=this.message+message;
-	}
-
 	
 	/**
-	 * @package : /ControlUnit.java
-	 * @author : cozyu  
-	 * @date : 2019. 9. 20.
-	 * @return
-	 * ControlUnit
+	 * Increase program counter
 	 */
-	/*
-	public boolean loadROM() {
-		
-		ROM rom= new ROM();
-		String romCode=rom.getCode();
-		
-		ArrayList<WORD> bootCode = new ArrayList<WORD>();
-		InstructionHelper.Translate(romCode, bootCode);
-		try {
-			memory.storeBootCode(bootCode);
-		} catch (IOException e) {
-			e.printStackTrace();
-			return false;
-		}
-		PC.setLong(Memory.BOOT_MEMORY_START);
-		state=CPUState.LOAD_MAR;
-		return true;
-	}
-	*/
-	
-	
-	/**
-	 * Execute a list of instructions.
-	 * @return a boolean indicating is done. 
-	 */
-/*
-	public boolean executeInstruction(String[] arrAsmCode) {
-		ArrayList<WORD> arrBinCode = new ArrayList<WORD>();
-		for (String asmCode:arrAsmCode)
-		{
-			WORD binCode=ih.getBinCode(asmCode);
-			if(binCode==null)
-			{
-				LOG.warning("Wrong assemble code : "+asmCode);;
-				continue;
-			}
-			arrBinCode.add(binCode);
-		}
-		return true;
-	}
-*/
-	
 	public boolean increasePC() {
 		long result=PC.getLong()+1;
 		PC.setLong(result);
@@ -311,11 +251,11 @@ public class ControlUnit {
 		
 		message="";
 		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
-		for(String asmCode:arrAsmCode)
-		{
-			WORD binCode=ih.getBinCode(asmCode);
+		for(int i=0; i<arrAsmCode.length;i++) {
+			arrAsmCode[i]=arrAsmCode[i].toUpperCase();
+			WORD binCode=ih.getBinCode(arrAsmCode[i]);
 			if(binCode==null) {
-				message=ih.getMessage()+"Failed to parse user code : "+asmCode;
+				message=ih.getMessage()+"Failed to parse user code : "+arrAsmCode[i];
 				LOG.warning(message);
 				return false;
 			}
@@ -334,6 +274,20 @@ public class ControlUnit {
 		return true;
 	}
 
+	public String getMessage()
+	{
+		return message;
+	}
+	
+	public void addMessage(String message)
+	{
+		this.message+=this.message+message;
+	}
+	
+	public WORD getIR() {
+		return IR;
+	}
+	
 	public Memory getMemory() {
 		return this.memory;
 	}
