@@ -231,7 +231,7 @@ public class CISCSimulator {
 			panel.updateDisplay();
 			return;
 		}
-		message="Saved user input data\n"+message;
+		message="Loaded register from user input\n"+message;
 		panel.updateDisplay();
 	}
 

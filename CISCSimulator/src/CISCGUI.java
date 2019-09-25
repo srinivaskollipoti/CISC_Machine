@@ -121,7 +121,7 @@ public class CISCGUI extends javax.swing.JFrame {
             }
         });
 
-        buttonSave.setText("Save");
+        buttonSave.setText("Load");
         buttonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonSaveActionPerformed(evt);
