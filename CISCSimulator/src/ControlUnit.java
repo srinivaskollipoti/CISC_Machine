@@ -1,7 +1,5 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -11,20 +9,19 @@ import java.util.logging.Logger;
 public class ControlUnit {
 	
 	private final static Logger LOG = Logger.getGlobal();
-	private CISCSimulator simulator;
 	private Memory memory;
+	private InstructionHandler ih=new InstructionHandler(this);
 	
-	CPUState state=CPUState.LOAD_MAR;
-	GBitSet PC=new GBitSet(12);
-	GBitSet GPR[] = new GBitSet[4];
-	GBitSet IX[] = new GBitSet[4];
-	GBitSet CC=new GBitSet(4);
+	private CPUState state=CPUState.LOAD_MAR;
+	private GBitSet PC=new GBitSet(12);
+	private GBitSet GPR[] = new GBitSet[4];
+	private GBitSet IX[] = new GBitSet[4];
+	private GBitSet CC=new GBitSet(4);
 	
-	WORD MBR=new WORD();
-	WORD MAR=new WORD();
-	WORD MFR=new WORD();
-	WORD IR=new WORD();
-	InstructionHandler ih=new InstructionHandler(this);
+	private WORD MBR=new WORD();
+	private WORD MAR=new WORD();
+	private WORD MFR=new WORD();
+	private WORD IR=new WORD();
 	private String message=new String();
 
 	enum CPUState
@@ -44,7 +41,6 @@ public class ControlUnit {
 	
 	public ControlUnit(CISCSimulator simulator)
 	{
-		this.simulator=simulator;
 		this.memory=simulator.getMemory();
 	}
 	
@@ -83,7 +79,7 @@ public class ControlUnit {
 	}
 	
 	/**
-	 * Initializes the machine.
+	 * Initialize all register and transfer control to boot program.
 	 */
 	public boolean init()
 	{
@@ -117,7 +113,7 @@ public class ControlUnit {
 	{
 		WORD inst=new WORD();
 		try {
-			inst = memory.load(PC.getInt());
+			inst = memory.load(PC.getLong());
 		} catch (IOException e){
 			LOG.severe(e.getMessage());
 			LOG.severe("Failed to load Next Instruction");			
@@ -192,7 +188,7 @@ public class ControlUnit {
 	/**
 	 * Increase program counter
 	 */
-	public boolean increasePC() {
+	private boolean increasePC() {
 		long result=PC.getLong()+1;
 		PC.setLong(result);
 		return true;
@@ -200,9 +196,9 @@ public class ControlUnit {
 	
 
 	/**
-	 * Print out instructions.
+	 * Execute instructions.
 	 */
-	public boolean execute() {
+	private boolean execute() {
 		ih.showInstruction();
 		try {
 			ih.execute();
@@ -220,15 +216,21 @@ public class ControlUnit {
 	 */
 	public boolean setBootCode()
 	{
-		message="[LOAD] Boot Code\n";
+		message="[LOAD] Boot Program\n";
 		ROM rom= new ROM();
 		String[] arrAsmCode=rom.getCode();
+		if(arrAsmCode==null)
+		{
+			message="Failed to load boot program\n";
+			LOG.warning(message);
+			return false;
+		}
 		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
 		for(String asmCode:arrAsmCode)
 		{
 			WORD binCode=ih.getBinCode(asmCode);
 			if(binCode==null) {
-				message="Failed to parse boot code\n"+asmCode;
+				message="Failed to parse boot program\n"+asmCode;
 				LOG.warning(message);
 				return false;
 			}
@@ -238,12 +240,12 @@ public class ControlUnit {
 	    try {
 			if(memory.storeBootCode(arrBinCode)==false)
 			{
-				message="Failed to store boot code\n"+String.join("\n", arrAsmCode);
+				message="Failed to store boot program\n"+String.join("\n", arrAsmCode);
 				LOG.warning(message);
 				return false;
 			}
 		} catch (IOException e) {
-			message="Failed to store boot code\n"+String.join("\n", arrAsmCode)+"\n"+e.getMessage();
+			message="Failed to store boot program\n"+String.join("\n", arrAsmCode)+"\n"+e.getMessage();
 			LOG.warning(message);
 			return false;
 		}
@@ -267,7 +269,7 @@ public class ControlUnit {
 			arrAsmCode[i]=arrAsmCode[i].toUpperCase();
 			WORD binCode=ih.getBinCode(arrAsmCode[i]);
 			if(binCode==null) {
-				message=ih.getMessage()+"Failed to parse user code : "+arrAsmCode[i];
+				message=ih.getMessage()+"Failed to parse user program : "+arrAsmCode[i];
 				LOG.warning(message);
 				return false;
 			}
@@ -276,31 +278,32 @@ public class ControlUnit {
 		
 	    if(memory.storeUserCode(arrBinCode)==false)
 	    {
-			message="Failed to store user code\n"+String.join("\n", arrAsmCode);
+			message="Failed to store user program\n"+String.join("\n", arrAsmCode);
 	    	LOG.warning(message);
 			return false;
 		}
 	    PC.setLong(memory.getUserMemoryLocation());
-	    message=("[LOAD] User Code\n"+String.join("\n",arrAsmCode)+"\nPC = "+memory.getUserMemoryLocation()+"\n");
+	    message=("[LOAD] User program\n"+String.join("\n",arrAsmCode)+"\nPC = "+memory.getUserMemoryLocation()+"\n");
 	    state=CPUState.LOAD_MAR;
 		return true;
 	}
 
-	public String getMessage()
-	{
-		return message;
-	}
 	
 	public void addMessage(String message)
 	{
 		this.message+=this.message+message;
 	}
+
+	public String getMessage(){ return message;}
+
+	public GBitSet getGPR(int i) { return GPR[i]; }
+	public GBitSet getIX(int i) { return IX[i]; }
+	public GBitSet getPC() { return PC; }
+	public GBitSet getCC() { return CC; }
+	public WORD getMAR() { return MAR; }
+	public WORD getMBR() { return MBR; }
+	public WORD getMFR() { return MFR; }	
+	public WORD getIR() { return IR; }
 	
-	public WORD getIR() {
-		return IR;
-	}
-	
-	public Memory getMemory() {
-		return this.memory;
-	}
+	public Memory getMemory() {	return this.memory; }
 }

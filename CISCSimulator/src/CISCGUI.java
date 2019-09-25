@@ -14,9 +14,8 @@ public class CISCGUI extends javax.swing.JFrame {
 
 	private final static Logger LOG = Logger.getGlobal();
 	
-    CISCSimulator simu; 
-    ControlUnit cpu;
-    Memory memory;
+    private CISCSimulator simu; 
+    private ControlUnit cpu;
     /**
      * Creates new form CISCGUI2
      */
@@ -24,7 +23,6 @@ public class CISCGUI extends javax.swing.JFrame {
         initComponents();
         simu=new CISCSimulator(this);
         cpu=simu.getCPU();
-        memory=simu.getMemory();
         this.setTitle("CISC Simulator");
     }
 
@@ -115,12 +113,6 @@ public class CISCGUI extends javax.swing.JFrame {
 
         labelR3.setText("R3");
 
-        textFieldR0.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldR0ActionPerformed(evt);
-            }
-        });
-
         buttonSave.setText("Load");
         buttonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -134,21 +126,9 @@ public class CISCGUI extends javax.swing.JFrame {
 
         labelIX3.setText("IX3");
 
-        textFieldIX1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldIX1ActionPerformed(evt);
-            }
-        });
-
         labelIR.setText("IR");
 
         labelPC.setText("PC");
-
-        textFieldPC.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textFieldPCActionPerformed(evt);
-            }
-        });
 
         labelMAR.setText("MAR");
 
@@ -360,21 +340,21 @@ public class CISCGUI extends javax.swing.JFrame {
     	printLog(log,false);    	
     }
     
-    public void printLog(String log,boolean isOnlyPrint)
+    public void printLog(String log,boolean isOnlyDisplay)
     {
     	String message=log+"\n";
     	textArea.append(message);
-    	if(isOnlyPrint==false)
+    	if(isOnlyDisplay==false)
     		LOG.info(message);
     }
 
     private void buttonIPLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonIPLActionPerformed
-    	if(simu.getState()==CISCSimulator.StateType.POWEROFF)
+    	if(simu.isPowerOff()==true)
     	{
     		printLog("[NOTICE] Simulator is turned on");
 	    	boolean resultInit=simu.initProcessor();
 	    	if(!resultInit) {
-	            printLog("[WARNING] Failed to init processor");
+	            printLog(simu.getMessage());
 	            return;
 	        }
 	    	printLog(simu.getMessage());
@@ -385,18 +365,6 @@ public class CISCGUI extends javax.swing.JFrame {
     	}
     }//GEN-LAST:event_buttonIPLActionPerformed
 
-    private void textFieldR0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldR0ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldR0ActionPerformed
-
-    private void textFieldIX1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldIX1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldIX1ActionPerformed
-
-    private void textFieldPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldPCActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textFieldPCActionPerformed
-
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
     	
     	if(simu.isPowerOff()==true) {
@@ -406,7 +374,7 @@ public class CISCGUI extends javax.swing.JFrame {
     	
     	String message="";
     	try {
-    	simu.saveRegister(
+    	simu.loadRegister(
     			Long.valueOf(textFieldR0.getText()),
     			Long.valueOf(textFieldR1.getText()),
     			Long.valueOf(textFieldR2.getText()),
@@ -429,21 +397,20 @@ public class CISCGUI extends javax.swing.JFrame {
 
     public void updateDisplay()
     {
-    	textFieldR0.setText(Long.toString(cpu.GPR[0].getLong()));
-    	textFieldR1.setText(Long.toString(cpu.GPR[1].getLong()));
-    	textFieldR2.setText(Long.toString(cpu.GPR[2].getLong()));
-    	textFieldR3.setText(Long.toString(cpu.GPR[3].getLong()));
-    	textFieldIX1.setText(Long.toString(cpu.IX[1].getLong()));
-    	textFieldIX2.setText(Long.toString(cpu.IX[2].getLong()));
-    	textFieldIX3.setText(Long.toString(cpu.IX[3].getLong()));
-    	textFieldPC.setText(Long.toString(cpu.PC.getLong()));
-    	textFieldCC.setText(Long.toString(cpu.CC.getLong()));
-    	textFieldMAR.setText(Long.toString(cpu.MAR.getLong()));
-    	textFieldMBR.setText(Long.toString(cpu.MBR.getLong()));
-    	textFieldMFR.setText(Long.toString(cpu.MFR.getLong()));
-    	textFieldIR.setText(Long.toString(cpu.IR.getLong()));
-    	textFieldPC.setText(Long.toString(cpu.PC.getLong()));
-    	
+    	textFieldR0.setText(Long.toString(cpu.getGPR(0).getLong()));
+    	textFieldR1.setText(Long.toString(cpu.getGPR(1).getLong()));
+    	textFieldR2.setText(Long.toString(cpu.getGPR(2).getLong()));
+    	textFieldR3.setText(Long.toString(cpu.getGPR(3).getLong()));
+    	textFieldIX1.setText(Long.toString(cpu.getIX(1).getLong()));
+    	textFieldIX2.setText(Long.toString(cpu.getIX(2).getLong()));
+    	textFieldIX3.setText(Long.toString(cpu.getIX(3).getLong()));
+    	textFieldPC.setText(Long.toString(cpu.getPC().getLong()));
+    	textFieldCC.setText(Long.toString(cpu.getCC().getLong()));
+    	textFieldMAR.setText(Long.toString(cpu.getMAR().getLong()));
+    	textFieldMBR.setText(Long.toString(cpu.getMBR().getLong()));
+    	textFieldMFR.setText(Long.toString(cpu.getMFR().getLong()));
+    	textFieldIR.setText(Long.toString(cpu.getIR().getLong()));
+    	textFieldPC.setText(Long.toString(cpu.getPC().getLong()));
     }
     /**
      * @param args the command line arguments

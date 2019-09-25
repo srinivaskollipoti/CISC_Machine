@@ -36,7 +36,11 @@ public class CISCSimulator {
 	 * @param panel A graphic user interface.
 	 */
 	public CISCSimulator(CISCGUI panel){
-		memory=new Memory();
+		try {
+			memory=new Memory();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 		controller=new ControlUnit(this);
 		this.panel=panel;
 		state = StateType.POWEROFF;
@@ -48,10 +52,8 @@ public class CISCSimulator {
 			SimpleFormatter formatter = new SimpleFormatter();  
 	        fh.setFormatter(formatter);  
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}
@@ -64,9 +66,19 @@ public class CISCSimulator {
 	{
 		message="";
 		if(!controller.init())
+		{
+			message=controller.getMessage();
+			message="[WARNING] Failed to initialize processor\n+"+message;
+			state=StateType.POWEROFF;
 			return false;
+		}
 		if(!controller.setBootCode())
-			return false;
+		{
+			message=controller.getMessage();
+			message="[WARNING] Failed to load boot program\n+"+message;
+			//state=StateType.POWEROFF;
+			//return false;
+		}
 		controller.showRegister();
 		controller.showMemory();
 		
@@ -114,13 +126,18 @@ public class CISCSimulator {
 		message="";
 		if(isPowerOff()==true)
 		{
-			message=("Simulator is not turned on, push the IPL button");
+			message=("Simulator is not turned on, push the IPL button\n");
 			return;
 		}
 		
-		if(controller.isCurrentInstruction()==false)
+		// if current program is terminated, initialize simulator.
+		if(state==StateType.TERMINATE)
 		{
-			initProcessor();
+			if(initProcessor()==false)
+			{
+				LOG.severe("Failed to initialize processor");
+				return;
+			}
 		}
 		
 		state=StateType.RUNNING;
@@ -131,18 +148,18 @@ public class CISCSimulator {
 		if(controller.isCurrentInstruction()==false)
 		{
 			state=StateType.TERMINATE;
-			LOG.warning("No more instruction");
-			return;
+			LOG.warning("No more instruction");	
+		}else {
+			state=StateType.READY;
 		}
 		panel.updateDisplay();
-		state=StateType.READY;
 		return;
 	}
 	
 	/**
-	 * Save the register with given data.
+	 * Load the register with given data.
 	 */
-	public void saveRegister(long R0, long R1,long R2, long R3, 
+	public void loadRegister(long R0, long R1,long R2, long R3, 
 			long IX1, long IX2, long IX3, 
 			long IR, long PC, long CC, 
 			long MAR, long MBR, long MFR) 
@@ -154,32 +171,32 @@ public class CISCSimulator {
 			return;
 		}
 		try {
-		if(R0!=controller.GPR[0].getLong()) message=message+"R0 ="+R0+"\n";
-		controller.GPR[0].setLong(R0);
-		if(R1!=controller.GPR[1].getLong()) message=message+"R1 = "+R1+"\n";
-		controller.GPR[1].setLong(R1);
-		if(R2!=controller.GPR[2].getLong()) message=message+"R2 = "+R2+"\n";
-		controller.GPR[2].setLong(R2);
-		if(R3!=controller.GPR[3].getLong()) message=message+"R3 = "+R3+"\n";
-		controller.GPR[3].setLong(R3);
-		if(IX1!=controller.IX[1].getLong()) message=message+"IX1 = "+IX1+"\n";
-		controller.IX[1].setLong(IX1);
-		if(IX2!=controller.IX[2].getLong()) message=message+"IX2 = "+IX2+"\n";
-		controller.IX[2].setLong(IX2);
-		if(IX3!=controller.IX[3].getLong()) message=message+"IX3 = "+IX3+"\n";
-		controller.IX[3].setLong(IX3);
-		if(IR!=controller.IR.getLong()) message=message+"IR = "+IR+"\n";
-		controller.IR.setLong(IR);
-		if(PC!=controller.PC.getLong()) message=message+"PC = "+PC+"\n";
-		controller.PC.setLong(PC);
-		if(MAR!=controller.MAR.getLong()) message=message+"MAR = "+MAR+"\n";
-		controller.MAR.setLong(MAR);
-		if(MBR!=controller.MBR.getLong()) message=message+"MBR = "+MBR+"\n";
-		controller.MBR.setLong(MBR);
-		if(MFR!=controller.MFR.getLong()) message=message+"MFR = "+MFR+"\n";
-		controller.MFR.setLong(MFR);
-		if(CC!=controller.CC.getLong()) message=message+"CC = "+CC+"\n";
-		controller.CC.setLong(CC);
+		if(R0!=controller.getGPR(0).getLong()) message=message+"R0 ="+R0+"\n";
+		controller.getGPR(0).setLong(R0);
+		if(R1!=controller.getGPR(1).getLong()) message=message+"R1 = "+R1+"\n";
+		controller.getGPR(1).setLong(R1);
+		if(R2!=controller.getGPR(2).getLong()) message=message+"R2 = "+R2+"\n";
+		controller.getGPR(2).setLong(R2);
+		if(R3!=controller.getGPR(3).getLong()) message=message+"R3 = "+R3+"\n";
+		controller.getGPR(3).setLong(R3);
+		if(IX1!=controller.getIX(1).getLong()) message=message+"IX1 = "+IX1+"\n";
+		controller.getIX(1).setLong(IX1);
+		if(IX2!=controller.getIX(2).getLong()) message=message+"IX2 = "+IX2+"\n";
+		controller.getIX(2).setLong(IX2);
+		if(IX3!=controller.getIX(3).getLong()) message=message+"IX3 = "+IX3+"\n";
+		controller.getIX(3).setLong(IX3);
+		if(IR!=controller.getIR().getLong()) message=message+"IR = "+IR+"\n";
+		controller.getIR().setLong(IR);
+		if(PC!=controller.getPC().getLong()) message=message+"PC = "+PC+"\n";
+		controller.getPC().setLong(PC);
+		if(MAR!=controller.getMAR().getLong()) message=message+"MAR = "+MAR+"\n";
+		controller.getMAR().setLong(MAR);
+		if(MBR!=controller.getMBR().getLong()) message=message+"MBR = "+MBR+"\n";
+		controller.getMBR().setLong(MBR);
+		if(MFR!=controller.getMFR().getLong()) message=message+"MFR = "+MFR+"\n";
+		controller.getMFR().setLong(MFR);
+		if(CC!=controller.getCC().getLong()) message=message+"CC = "+CC+"\n";
+		controller.getCC().setLong(CC);
 		}catch(IllegalArgumentException e)
 		{
 			message="Failed to save user input\n+ "+e.getMessage();
@@ -204,6 +221,8 @@ public class CISCSimulator {
 		}
 		boolean result=controller.setUserCode(arrInst);
 		message=controller.getMessage();
+		if(result==true)
+			state=StateType.READY;
 		return result;
 	}
 	

@@ -51,15 +51,14 @@ public class InstructionHandler {
 	private int ireg=0;
 	private int flag=0;
 	private int address=0;
-	private GBitSet addressBit=new GBitSet(6);
 	
 	static final int LDA=3;
 	static final int STR=2;
 	static final int LDR=1;
 	static final int LDX=33;
 	static final int STX=34;
-	Hashtable< Integer, Instruction> instSet= new Hashtable< Integer, Instruction>();
-	Hashtable< String, Integer> textToCode= new Hashtable< String, Integer>();
+	private Hashtable< Integer, Instruction> instSet= new Hashtable< Integer, Instruction>();
+	private Hashtable< String, Integer> textToCode= new Hashtable< String, Integer>();
 	
 	private String message=new String();
 	/**
@@ -86,43 +85,42 @@ public class InstructionHandler {
 	 * @param ir A WORD containing the translated instruction. Format is explained in user guide.
 	 * @return A boolean indicating if done.
 	 */
-	public boolean setIR(WORD ir)
+	private boolean parseIR(WORD ir)
 	{
 		this.ir.copy(ir);
         opcode=ir.subSet(10,16).getInt();
 		reg=ir.subSet(8,10).getInt();
 		ireg=ir.subSet(6,8).getInt();
 		flag=ir.subSet(5,6).getInt();
-		addressBit.copy(ir.subSet(0,5));
-		address=addressBit.getInt();
+		address=ir.subSet(0,5).getInt();
 		return true;
 	}
         
 	/**
 	 * Load register from a given memory address.
 	 */
-	public boolean executeLDR() throws IOException {
+	private boolean executeLDR() throws IOException {
 		int eAddress=getEA();
-		controller.GPR[reg].copy(controller.getMemory().load(eAddress));
+		controller.getGPR(reg).copy(controller.getMemory().load(eAddress));
 		return true;
 	}
 
 	/**
 	 * Load register with address
 	 */
-	public boolean executeLDA() throws IOException {
+	private boolean executeLDA() throws IOException {
 		int eAddress=getEA();
-		controller.GPR[reg].setLong(eAddress);
+		controller.getGPR(reg).setLong(eAddress);
 	    return true;
 	}
 
 	/**
 	 * Store Register To Memory.
 	 */
-	public boolean executeSTR() throws IOException {
+	private boolean executeSTR() throws IOException {
 		int eAddress=getEA();
 		WORD param=new WORD();
-        param.copy(controller.GPR[reg]);
+        param.copy(controller.getGPR(reg));
 		controller.getMemory().store(eAddress,param);
 		return true;
 	}
@@ -130,19 +128,19 @@ public class InstructionHandler {
 	/**
 	 * Load Index Register from Memory.
 	 */
-	public boolean executeLDX() throws IOException {
-		int eAddress=getEAWithouIReg();
-		controller.IX[ireg].copy(controller.getMemory().load(eAddress));
+	private boolean executeLDX() throws IOException {
+		int eAddress=getEAWithoutIX();
+		controller.getIX(ireg).copy(controller.getMemory().load(eAddress));
 		return true;
 	}
 
 	/**
 	 * Store Index Register to Memory.
 	 */
-	public boolean executeSTX() throws IOException {
-		int eAddress=getEAWithouIReg();
+	private boolean executeSTX() throws IOException {
+		int eAddress=getEAWithoutIX();
 		WORD param=new WORD();
-        param.copy(controller.IX[ireg]);
+        param.copy(controller.getIX(ireg));
 		controller.getMemory().store(eAddress,param);
 		return true;
 	}
@@ -151,7 +149,7 @@ public class InstructionHandler {
 	 * Get the effective address without given register
 	 * @return an integer for the effective address.
 	 */
-	public int getEAWithouIReg() throws IOException
+	private int getEAWithoutIX() throws IOException
 	{
 		int eAddress=address;
 		if(flag==0)
@@ -171,7 +169,7 @@ public class InstructionHandler {
 	 * Get the effective address with given register.
 	 * @return An integer of the effective address.
 	 */
-	public int getEA() throws IOException
+	private int getEA() throws IOException
 	{
 		int eAddress=address;
 		if(flag==0)
@@ -180,7 +178,7 @@ public class InstructionHandler {
 				eAddress=address;
 			}
 			else{
-				eAddress=controller.IX[ireg].getInt()+address;
+				eAddress=controller.getIX(ireg).getInt()+address;
 			};			
 		}
 		else if(flag==1)
@@ -188,7 +186,7 @@ public class InstructionHandler {
 			if(ireg==0) {
 				eAddress=controller.getMemory().load(address).getInt();
 			}else {
-				int iAddress=controller.IX[ireg].getInt()+address;
+				int iAddress=controller.getIX(ireg).getInt()+address;
 				eAddress=controller.getMemory().load(iAddress).getInt();
 			}
 		}
@@ -203,7 +201,7 @@ public class InstructionHandler {
 	 */
 	public boolean execute() throws IOException
 	{
-		setIR(controller.getIR());
+		parseIR(controller.getIR());
 		switch(getOPCode())
 		{
 			case InstructionHandler.LDA:
@@ -289,7 +287,7 @@ public class InstructionHandler {
 	 * Convert the input instruction into a binary code.
 	 * @return the binary code in WORD format.
 	 */
-	public WORD getBinCode(String assemCode)
+	public WORD getBinCode(String asmCode)
 	{
 		message="";
 		WORD result=new WORD();
@@ -299,8 +297,8 @@ public class InstructionHandler {
 		int flag=0;
 		int address=0;
 		
-		assemCode=assemCode.trim().toUpperCase();
-		String[] arrStr=assemCode.split(" ",2);
+		asmCode=asmCode.trim().toUpperCase();
+		String[] arrStr=asmCode.split(" ",2);
 		Integer code=textToCode.get(arrStr[0]);
 		if(code==null) {
 			message="Unsupported opcode: "+arrStr[0]+"\n";
@@ -317,7 +315,7 @@ public class InstructionHandler {
 		
 		if(arrStr.length<2)
 		{
-			message=arrStr[0]+" accepts "+inst.getParamLength()+" parameters.\nInput parameters are not matched - "+assemCode+"\n";
+			message=arrStr[0]+" accepts "+inst.getParamLength()+" parameters.\nInput parameters are not matched - "+asmCode+"\n";
 			LOG.warning(message);
 			return null;
 		}
@@ -333,7 +331,7 @@ public class InstructionHandler {
 		int paramLength=arrParam.length;
 		if(paramLength!=inst.getParamLength())
 		{
-			message=arrStr[0]+" accepts "+inst.getParamLength()+" parameters.\nInput parameters are not matched - "+assemCode+"\n";
+			message=arrStr[0]+" accepts "+inst.getParamLength()+" parameters.\nInput parameters are not matched - "+asmCode+"\n";
 			LOG.warning(message);			
 			return null;
 		}
@@ -353,7 +351,7 @@ public class InstructionHandler {
 		}
 		}catch(java.lang.NumberFormatException e)
 		{
-			message="Parameter must be number : "+assemCode+"\n";
+			message="Parameter must be number : "+asmCode+"\n";
 			LOG.warning(message);			
 			return null;
 		}
@@ -362,7 +360,7 @@ public class InstructionHandler {
 		{
 			if(ireg<1 || ireg>3)
 			{
-				message="Index Register must be between 1-3 : "+assemCode+"\n";
+				message="Index Register must be between 1-3 : "+asmCode+"\n";
 				LOG.warning(message);			
 				return null;
 			}
@@ -379,7 +377,7 @@ public class InstructionHandler {
 			bitAddress.setLong(address);
 		}catch(IllegalArgumentException e)
 		{
-			message=e.getMessage()+" : "+assemCode+"\n";
+			message=e.getMessage()+" : "+asmCode+"\n";
 			LOG.warning(message);			
 			return null;
 		}

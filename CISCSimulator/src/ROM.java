@@ -35,14 +35,11 @@ public class ROM {
 	        bufReader.close();
 	    } catch (FileNotFoundException e) {
 	      e.printStackTrace();
+	      return null;
 	    } catch (IOException e) {
 	      e.printStackTrace();
+	      return null;
 	    }
-		//buffer.append("LDA 1, 0, 31\n");
-		//buffer.append("STR 1, 0, 20\n");
-		//buffer.append("LDR 2, 0, 20\n");
-		//buffer.append("LDx 1, 20\n");
-		//buffer.append("STX 1, 31\n");
 		return buffer.toString().toUpperCase().split("\n");
 	}
 }

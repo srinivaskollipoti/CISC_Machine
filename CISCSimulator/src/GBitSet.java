@@ -12,21 +12,15 @@ import java.util.logging.Logger;
 public class GBitSet extends java.util.BitSet {
          private final static Logger LOG = Logger.getGlobal();
 	
-	int length=0;
-	int minValue=0;
-	int maxValue=0;
+	public final int length;
+	private int minValue=0;
+	private int maxValue=0;
 	
-	public GBitSet(int bitSet)
+	public GBitSet(int length)
 	{
-		super(bitSet);
-		length=bitSet;
-		maxValue=(int)Math.pow(2,length);
-	}
-	
-	public GBitSet(BitSet input)
-	{
-		super(input.size());
-		or(input);
+		super(length);
+		this.length=length;
+		maxValue=(int)Math.pow(2,length)-1;
 	}
 	
 	public void setMinValue(int minValue)
@@ -48,7 +42,7 @@ public class GBitSet extends java.util.BitSet {
 	
 	public boolean setLong(long number){
 		
-		if (maxValue<=number || number<minValue)
+		if (maxValue<number || number<minValue)
 			throw new IllegalArgumentException("Input number("+number+") is out of data range");
 		this.clear();
 		long[] temp = new long[1];
@@ -66,7 +60,15 @@ public class GBitSet extends java.util.BitSet {
 	}
 	
 	public int getInt(){
-		return (int)getLong();	
+		long input=getLong();
+		int result=(int)input;
+		double checkOverflow=result*input;
+		if(checkOverflow<0)
+		{
+			LOG.severe("Buffer overflow");
+			result=-1;
+		}
+		return result;	
 	}
 
 	public boolean copy(GBitSet input){

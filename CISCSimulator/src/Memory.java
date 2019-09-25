@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -11,26 +10,39 @@ import java.util.logging.Logger;
  */
 
 public class Memory {
-	private final static Logger LOG = Logger.getGlobal();
+	private static final Logger LOG = Logger.getGlobal();
 	private WORD memory[];
-	private static int userMemoryStart;
+	private static final int DEFAULT_MEMORY=2048;
+	private static final int MAX_MEMORY=4096;
+	private static final int MIN_MEMORY=512;
+	private int userMemoryStart;
 	
-	public static final int MAX_MEMORY=2048;
 	public static final int BOOT_MEMORY_START=010;
 	
 	/**
 	 * A constructor
 	 * Initializes memory with the max size 2048. The memory is an array of type WORD.
 	 * Set userMemoryStart to 010.
+	 * @throws IOException 
 	 */
-	public Memory()
+	public Memory() throws IOException
 	{		
-		memory= new WORD[MAX_MEMORY];
+		setMemory(DEFAULT_MEMORY);
+	}
+	
+	public boolean setMemory(int size) throws IOException
+	{
+		memory= new WORD[size];
+		if(size<MIN_MEMORY || size>MAX_MEMORY)
+		{
+			throw new IOException("Invalid memory size");
+		}
 
-		for (int i=0; i<MAX_MEMORY;i++) {
+		for (int i=0; i<size;i++) {
 			memory[i]=new WORD();
 		}
-		userMemoryStart=BOOT_MEMORY_START;
+		userMemoryStart=BOOT_MEMORY_START;	
+		return true;
 	}
 	
 	/**
@@ -58,13 +70,18 @@ public class Memory {
 	}
 
 	/**
+	 * Store the input data to a memory with specific address.
+	 * @param address A integer indicating the memory slot to access.
+	 * @param input A WORD argument containing the input data for the memory to store.
+	 * @param isSystem A boolean indicating to access boot address.
+	 * @return Boolean indicating if the execution is success.
 	 * 
 	 */
 	public boolean store(int address, WORD input, boolean isSystem) throws IOException
 	{
 		int limitMemoryStart=BOOT_MEMORY_START;
 		if(isSystem==false) limitMemoryStart=userMemoryStart;
-		if(address>=MAX_MEMORY)
+		if(address>=memory.length)
 			throw new IOException("Memory violation : access over memory("+address+")");
 		else if(address<limitMemoryStart)
 			throw new IOException("Memory violation : access system address("+address+")");
@@ -120,9 +137,14 @@ public class Memory {
 	 */
 	public WORD load(int address) throws IOException
 	{
-		if(address>MAX_MEMORY || address<BOOT_MEMORY_START)
+		if(address>=memory.length || address<BOOT_MEMORY_START)
 			throw new IOException("Memory access violation : ["+address+"]\n");
 		return memory[address];
+	}
+	
+	public WORD load(long address) throws IOException
+	{
+		return load((int)address);
 	}
 	
 	/**
@@ -132,7 +154,7 @@ public class Memory {
 	public String getString() 
 	{
 		StringBuffer buffer=new StringBuffer();
-		for(int i =0; i<MAX_MEMORY;i++)
+		for(int i =0; i<memory.length;i++)
 		{
 			if(!memory[i].isEmpty())
 			{
@@ -145,12 +167,13 @@ public class Memory {
 	}
 	
 	/**
-	 * 
+	 * Get information of each memory slots, including the address and content.
+	 * @return The result in String type.
 	 */
 	public String toString() 
 	{
 		StringBuffer buffer=new StringBuffer();
-		for(int i =0; i<MAX_MEMORY;i++)
+		for(int i =0; i<memory.length;i++)
 		{
 			if(!memory[i].isEmpty())
 				buffer.append("Memory ["+i+"] is "+memory[i]+"\n");
@@ -160,11 +183,8 @@ public class Memory {
 	
 
 	/**
-	 * @package : /Memory.java
-	 * @author : cozyu  
-	 * @date : 2019. 9. 20.
-	 * @param i
-	 * Memory
+	 * Get starting location for user program.
+	 * @return starting location for user program.
 	 */
 	public int getUserMemoryLocation() {
 		return userMemoryStart;
