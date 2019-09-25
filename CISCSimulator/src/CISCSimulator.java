@@ -1,13 +1,11 @@
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 /**
  * @author cozyu
  *
  */
-import java.util.logging.SimpleFormatter;
  
 /**
  * @author youcao
@@ -15,11 +13,11 @@ import java.util.logging.SimpleFormatter;
  */
 public class CISCSimulator {
 	final static Logger LOG = Logger.getGlobal();
-	private ControlUnit controller;
-	private Memory memory;
-	private CISCGUI panel;
-	private StateType state;
-	String message=new String();
+	private ControlUnit controller;			// cpu of computer
+	private Memory memory;					// memory of comuter
+	private CISCGUI panel;					// panel of computer
+	private StateType state;				// state of computer
+	private String message=new String();	// state message of computer
 	
 	enum StateType{
 		POWEROFF("Power off"), READY("Ready"), RUNNING("Running"), HALT("Halted"), TERMINATE("Terminated");
@@ -59,7 +57,7 @@ public class CISCSimulator {
 	}
 	
 	/**
-	 * Print out the register and memory informations on the user interface and set state to ready.
+	 * Initialize all register and memory and load boot program from ROM and transfers control to the boot program and set state to ready.
 	 * @return A boolean indicating if success. 
 	 */
 	public boolean initProcessor()
@@ -80,6 +78,13 @@ public class CISCSimulator {
 	}
 
 	/**
+	 * Turn off the simulator 
+	 */
+	public void powerOff() {
+		state=StateType.POWEROFF;
+	}
+
+	/**
 	 * Execute the whole process for the input instruction and print out memory information when done.
 	 * @return A boolean indicating if the process is success.
 	 */
@@ -96,25 +101,9 @@ public class CISCSimulator {
 		do{
 			singleStep();
 			buffer.append(message+"\n");
-			/*
-		    try        
-			{
-			    Thread.sleep(100);
-			} 
-			catch(InterruptedException ex) 
-			{
-			    Thread.currentThread().interrupt();
-			}
-			*/
 		}while(state==StateType.READY);
 		message=buffer.toString();
 		return true;
-	}
-
-
-	public boolean isPowerOff()
-	{
-		return state==StateType.POWEROFF;
 	}
 
 	/**
@@ -150,40 +139,6 @@ public class CISCSimulator {
 		return;
 	}
 	
-	public ControlUnit getCPU()
-	{	
-		return controller;
-	}
-	
-	public Memory getMemory()
-	{
-		return memory;
-	}
-	
-	/**
-	 * Set the user code to controller.
-	 * @return A boolean indicating if success.C
-	 */
-	public boolean setUserCode(String[] arrInst)
-	{
-		if(isPowerOff()==true)
-		{
-			message=("Simulator is not turned on, push the IPL button");
-			return false;
-		}
-		boolean result=controller.setUserCode(arrInst);
-		message=controller.getMessage();
-		return result;
-	}
-
-	public StateType getState() {
-		return state;
-	}
-
-	public void powerOff() {
-		state=StateType.POWEROFF;
-	}
-
 	/**
 	 * Save the register with given data.
 	 */
@@ -233,6 +188,46 @@ public class CISCSimulator {
 		}
 		message="Loaded register from user input\n"+message;
 		panel.updateDisplay();
+	}
+
+		
+	/**
+	 * Set the user code to controller.
+	 * @return A boolean indicating if success.C
+	 */
+	public boolean setUserCode(String[] arrInst)
+	{
+		if(isPowerOff()==true)
+		{
+			message=("Simulator is not turned on, push the IPL button");
+			return false;
+		}
+		boolean result=controller.setUserCode(arrInst);
+		message=controller.getMessage();
+		return result;
+	}
+	
+	/**
+	 * check if the simulator is turned off
+	 * @return A boolean indicating if the simulator is turned off.
+	 */
+	public boolean isPowerOff()
+	{
+		return state==StateType.POWEROFF;
+	}
+	
+	public ControlUnit getCPU()
+	{	
+		return controller;
+	}
+	
+	public Memory getMemory()
+	{
+		return memory;
+	}
+	
+	public StateType getState() {
+		return state;
 	}
 
 	public String getMessage() {

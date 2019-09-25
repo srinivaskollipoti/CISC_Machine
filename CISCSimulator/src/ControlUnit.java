@@ -107,6 +107,12 @@ public class ControlUnit {
 		return true;
 	}
 	
+	/**
+	 * Check if there is next instruction
+	 * @return 
+	 * true : there is next instruction
+	 * false : there is not next instruction
+	 */
 	private boolean isNextInstruction()
 	{
 		WORD inst=new WORD();
@@ -120,6 +126,12 @@ public class ControlUnit {
 		return !result;
 	}
 	
+	/**
+	 * Check if there is current instruction in IR
+	 * @return 
+	 * true : there is current instruction
+	 * false : there is not current instruction
+	 */
 	public boolean isCurrentInstruction()
 	{
 		return state!=CPUState.NO_INST;
