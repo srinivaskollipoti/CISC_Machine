@@ -8,7 +8,7 @@ import java.util.logging.SimpleFormatter;
  */
  
 /**
- * @author youcao
+ * @author youcao  documented by youcao.
  * Operates the simulator(basic machine) according to the user input. See below for detailed descriptions. 
  */
 public class CISCSimulator {

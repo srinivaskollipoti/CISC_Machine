@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 /**
  * @author cozyu
+ * @author youcao  documented by youcao.
  * This class manages memory of the simulator, see details below.
  *
  */
@@ -29,7 +30,12 @@ public class Memory {
 	{		
 		setMemory(DEFAULT_MEMORY);
 	}
-	
+
+	/**
+	 * Initializes memory with given size.
+	 * @return true
+	 */
+
 	public boolean setMemory(int size) throws IOException
 	{
 		memory= new WORD[size];

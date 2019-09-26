@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 /**
  *
  * @author cozyu
+ * @author youcao  documented by youcao.
  */
 public class CISCGUI extends javax.swing.JFrame {
 

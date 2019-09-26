@@ -10,7 +10,8 @@ import java.io.IOException;
 
 /**
  * @author cozyu
- *
+ * @author youcao  documented by youcao.
+ * A class that retrieves instructions from rom.txt.
  */
 public class ROM {
 	

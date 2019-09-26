@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 /**
  * @author cozyu
+ * @author youcao  documented by youcao.
  * A class that get data and current states and status of the simulator.
  */
 public class ControlUnit {
@@ -288,7 +289,10 @@ public class ControlUnit {
 		return true;
 	}
 
-	
+	/**
+	 * Append new message to the original one.
+	 * @param message a string message wanted to be appended.
+	 */
 	public void addMessage(String message)
 	{
 		this.message+=this.message+message;
