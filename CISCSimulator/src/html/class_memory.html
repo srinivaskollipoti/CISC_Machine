@@ -72,8 +72,10 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a18ff0d806d11ea959fbb5e6357a1f63e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory.html#a18ff0d806d11ea959fbb5e6357a1f63e">Memory</a> ()</td></tr>
+<tr class="memitem:a18ff0d806d11ea959fbb5e6357a1f63e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory.html#a18ff0d806d11ea959fbb5e6357a1f63e">Memory</a> ()  throws IOException 	</td></tr>
 <tr class="separator:a18ff0d806d11ea959fbb5e6357a1f63e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0838e22ad523751246e4e82bda66643c"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory.html#a0838e22ad523751246e4e82bda66643c">setMemory</a> (int size)  throws IOException 	</td></tr>
+<tr class="separator:a0838e22ad523751246e4e82bda66643c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4b36166151e63068919fa9326775e8d"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory.html#af4b36166151e63068919fa9326775e8d">init</a> ()</td></tr>
 <tr class="separator:af4b36166151e63068919fa9326775e8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4e97269709dac80a052d620ab4e8aa30"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory.html#a4e97269709dac80a052d620ab4e8aa30">store</a> (int address, <a class="el" href="class_w_o_r_d.html">WORD</a> input)  throws IOException 	</td></tr>
@@ -86,6 +88,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a74c8416c64a8b1e1395247409d309614"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36e78c87eaff8adaa861216b5647dffb"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_w_o_r_d.html">WORD</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory.html#a36e78c87eaff8adaa861216b5647dffb">load</a> (int address)  throws IOException 	</td></tr>
 <tr class="separator:a36e78c87eaff8adaa861216b5647dffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f392b5c83e6e30082f2d26fbb0b33e7"><td class="memItemLeft" align="right" valign="top"><a id="a8f392b5c83e6e30082f2d26fbb0b33e7"></a>
+<a class="el" href="class_w_o_r_d.html">WORD</a>&#160;</td><td class="memItemRight" valign="bottom"><b>load</b> (long address)  throws IOException 	</td></tr>
+<tr class="separator:a8f392b5c83e6e30082f2d26fbb0b33e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5e399bc0078142345e5122f59f25aaf6"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory.html#a5e399bc0078142345e5122f59f25aaf6">getString</a> ()</td></tr>
 <tr class="separator:a5e399bc0078142345e5122f59f25aaf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45c16fbed000105573cba5d6b1f4e727"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory.html#a45c16fbed000105573cba5d6b1f4e727">toString</a> ()</td></tr>
@@ -95,13 +100,14 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:afcdd4049333d611606c5c90502ae8209"><td class="memItemLeft" align="right" valign="top">static final int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory.html#afcdd4049333d611606c5c90502ae8209">MAX_MEMORY</a> =2048</td></tr>
-<tr class="separator:afcdd4049333d611606c5c90502ae8209"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d1af4e745565430406405775ec86c8c"><td class="memItemLeft" align="right" valign="top">static final int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_memory.html#a5d1af4e745565430406405775ec86c8c">BOOT_MEMORY_START</a> =010</td></tr>
+<tr class="memitem:a5d1af4e745565430406405775ec86c8c"><td class="memItemLeft" align="right" valign="top"><a id="a5d1af4e745565430406405775ec86c8c"></a>
+static final int&#160;</td><td class="memItemRight" valign="bottom"><b>BOOT_MEMORY_START</b> =010</td></tr>
 <tr class="separator:a5d1af4e745565430406405775ec86c8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><dl class="section author"><dt>Author</dt><dd>cozyu This class manages memory of the simulator, see details below. </dd></dl>
+<div class="textblock"><dl class="section author"><dt>Author</dt><dd>cozyu </dd>
+<dd>
+youcao documented by youcao. This class manages memory of the simulator, see details below. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a18ff0d806d11ea959fbb5e6357a1f63e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a18ff0d806d11ea959fbb5e6357a1f63e">&#9670;&nbsp;</a></span>Memory()</h2>
@@ -116,7 +122,7 @@ Static Public Attributes</h2></td></tr>
           <td class="memname">Memory.Memory </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> throws IOException</td>
         </tr>
       </table>
   </td>
@@ -125,7 +131,12 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>A constructor Initializes memory with the max size 2048. The memory is an array of type <a class="el" href="class_w_o_r_d.html">WORD</a>. Set userMemoryStart to 010. </p>
+<p>A constructor Initializes memory with the max size 2048. The memory is an array of type <a class="el" href="class_w_o_r_d.html">WORD</a>. Set userMemoryStart to 010. </p><dl class="exception"><dt>Exceptions</dt><dd>
+  <table class="exception">
+    <tr><td class="paramname">IOException</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -178,6 +189,7 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Get starting location for user program. </p><dl class="section return"><dt>Returns</dt><dd>starting location for user program. </dd></dl>
 
 </div>
 </div>
@@ -237,6 +249,33 @@ Static Public Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The data stored in the memory slot. </dd></dl>
+
+</div>
+</div>
+<a id="a0838e22ad523751246e4e82bda66643c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0838e22ad523751246e4e82bda66643c">&#9670;&nbsp;</a></span>setMemory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">boolean Memory.setMemory </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>size</em></td><td>)</td>
+          <td> throws IOException</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Initializes memory with given size. </p><dl class="section return"><dt>Returns</dt><dd>true </dd></dl>
 
 </div>
 </div>
@@ -323,6 +362,15 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Store the input data to a memory with specific address. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">address</td><td>A integer indicating the memory slot to access. </td></tr>
+    <tr><td class="paramname">input</td><td>A <a class="el" href="class_w_o_r_d.html">WORD</a> argument containing the input data for the memory to store. </td></tr>
+    <tr><td class="paramname">isSystem</td><td>A boolean indicating to access boot address. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Boolean indicating if the execution is success. </dd></dl>
 
 </div>
 </div>
@@ -414,56 +462,12 @@ Static Public Attributes</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a5d1af4e745565430406405775ec86c8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d1af4e745565430406405775ec86c8c">&#9670;&nbsp;</a></span>BOOT_MEMORY_START</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">final int Memory.BOOT_MEMORY_START =010</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="afcdd4049333d611606c5c90502ae8209"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afcdd4049333d611606c5c90502ae8209">&#9670;&nbsp;</a></span>MAX_MEMORY</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">final int Memory.MAX_MEMORY =2048</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
+<p>Get information of each memory slots, including the address and content. </p><dl class="section return"><dt>Returns</dt><dd>The result in String type. </dd></dl>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li><a class="el" href="_memory_8java.html">Memory.java</a></li>
+<li>Memory.java</li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['load_46',['load',['../class_memory.html#a36e78c87eaff8adaa861216b5647dffb',1,'Memory']]],
-  ['loadrom_47',['loadROM',['../class_control_unit.html#abaf1b48fe6e8e82d0f4a4de6238ab4c3',1,'ControlUnit']]]
+  ['main_19',['main',['../class_c_i_s_c_g_u_i.html#a6b8e25e360010e1d4309932380b42ce0',1,'CISCGUI']]],
+  ['memory_20',['Memory',['../class_memory.html',1,'Memory'],['../class_memory.html#a18ff0d806d11ea959fbb5e6357a1f63e',1,'Memory.Memory()']]]
 ];
