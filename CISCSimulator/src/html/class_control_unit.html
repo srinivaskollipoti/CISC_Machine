@@ -64,6 +64,9 @@ $(function() {
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
+<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_control_unit-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">ControlUnit Class Reference</div>  </div>
@@ -126,11 +129,65 @@ String&#160;</td><td class="memItemRight" valign="bottom"><b>getMessage</b> ()</
 <tr class="memitem:aed4845eb76aaf4aef4913d175230369d"><td class="memItemLeft" align="right" valign="top"><a id="aed4845eb76aaf4aef4913d175230369d"></a>
 <a class="el" href="class_memory.html">Memory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>getMemory</b> ()</td></tr>
 <tr class="separator:aed4845eb76aaf4aef4913d175230369d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a3db0eca8d662e588c2e2a98fd7418b4c"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_control_unit.html#a3db0eca8d662e588c2e2a98fd7418b4c">isNextInstruction</a> ()</td></tr>
+<tr class="separator:a3db0eca8d662e588c2e2a98fd7418b4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42008c4c574707bc62520ce54341dba3"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_control_unit.html#a42008c4c574707bc62520ce54341dba3">increasePC</a> ()</td></tr>
+<tr class="separator:a42008c4c574707bc62520ce54341dba3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45d1570db37aa395779e1522c3197cd9"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_control_unit.html#a45d1570db37aa395779e1522c3197cd9">execute</a> ()</td></tr>
+<tr class="separator:a45d1570db37aa395779e1522c3197cd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a6a4cea5235695c6a3448586a406c3662"><td class="memItemLeft" align="right" valign="top"><a id="a6a4cea5235695c6a3448586a406c3662"></a>
+<a class="el" href="class_memory.html">Memory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>memory</b></td></tr>
+<tr class="separator:a6a4cea5235695c6a3448586a406c3662"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad05dd303963a56596dc5e99b197fba72"><td class="memItemLeft" align="right" valign="top"><a id="ad05dd303963a56596dc5e99b197fba72"></a>
+<a class="el" href="class_instruction_handler.html">InstructionHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ih</b> =new <a class="el" href="class_instruction_handler.html">InstructionHandler</a>(this)</td></tr>
+<tr class="separator:ad05dd303963a56596dc5e99b197fba72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68f32698e0cde912d63fd9ee0bba4c86"><td class="memItemLeft" align="right" valign="top"><a id="a68f32698e0cde912d63fd9ee0bba4c86"></a>
+CPUState&#160;</td><td class="memItemRight" valign="bottom"><b>state</b> =CPUState.LOAD_MAR</td></tr>
+<tr class="separator:a68f32698e0cde912d63fd9ee0bba4c86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b25fbd0f954976696a03d4fba39eda7"><td class="memItemLeft" align="right" valign="top"><a id="a1b25fbd0f954976696a03d4fba39eda7"></a>
+<a class="el" href="class_g_bit_set.html">GBitSet</a>&#160;</td><td class="memItemRight" valign="bottom"><b>PC</b> =new <a class="el" href="class_g_bit_set.html">GBitSet</a>(12)</td></tr>
+<tr class="separator:a1b25fbd0f954976696a03d4fba39eda7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abca4b6baee49cdff55cb6b8d5f2df1b7"><td class="memItemLeft" align="right" valign="top"><a id="abca4b6baee49cdff55cb6b8d5f2df1b7"></a>
+<a class="el" href="class_g_bit_set.html">GBitSet</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GPR</b> [] = new <a class="el" href="class_g_bit_set.html">GBitSet</a>[4]</td></tr>
+<tr class="separator:abca4b6baee49cdff55cb6b8d5f2df1b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1e7e8cb984533c12ff8d43a42a4e055"><td class="memItemLeft" align="right" valign="top"><a id="ae1e7e8cb984533c12ff8d43a42a4e055"></a>
+<a class="el" href="class_g_bit_set.html">GBitSet</a>&#160;</td><td class="memItemRight" valign="bottom"><b>IX</b> [] = new <a class="el" href="class_g_bit_set.html">GBitSet</a>[4]</td></tr>
+<tr class="separator:ae1e7e8cb984533c12ff8d43a42a4e055"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a49df530c2ea9015e9f9663e170900e04"><td class="memItemLeft" align="right" valign="top"><a id="a49df530c2ea9015e9f9663e170900e04"></a>
+<a class="el" href="class_g_bit_set.html">GBitSet</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CC</b> =new <a class="el" href="class_g_bit_set.html">GBitSet</a>(4)</td></tr>
+<tr class="separator:a49df530c2ea9015e9f9663e170900e04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d4c2a9cf595a68b452661742e7ee7de"><td class="memItemLeft" align="right" valign="top"><a id="a6d4c2a9cf595a68b452661742e7ee7de"></a>
+<a class="el" href="class_w_o_r_d.html">WORD</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MBR</b> =new <a class="el" href="class_w_o_r_d.html">WORD</a>()</td></tr>
+<tr class="separator:a6d4c2a9cf595a68b452661742e7ee7de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aec87e0bfb2c465d0329c2a70eef6506e"><td class="memItemLeft" align="right" valign="top"><a id="aec87e0bfb2c465d0329c2a70eef6506e"></a>
+<a class="el" href="class_w_o_r_d.html">WORD</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MAR</b> =new <a class="el" href="class_w_o_r_d.html">WORD</a>()</td></tr>
+<tr class="separator:aec87e0bfb2c465d0329c2a70eef6506e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8569af78b403537d1dc6123d553707be"><td class="memItemLeft" align="right" valign="top"><a id="a8569af78b403537d1dc6123d553707be"></a>
+<a class="el" href="class_w_o_r_d.html">WORD</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MFR</b> =new <a class="el" href="class_w_o_r_d.html">WORD</a>()</td></tr>
+<tr class="separator:a8569af78b403537d1dc6123d553707be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a868b133fb5271acb3dd0c7b4187a39"><td class="memItemLeft" align="right" valign="top"><a id="a3a868b133fb5271acb3dd0c7b4187a39"></a>
+<a class="el" href="class_w_o_r_d.html">WORD</a>&#160;</td><td class="memItemRight" valign="bottom"><b>IR</b> =new <a class="el" href="class_w_o_r_d.html">WORD</a>()</td></tr>
+<tr class="separator:a3a868b133fb5271acb3dd0c7b4187a39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcc34f0e8346e8c4e86747d22f59126c"><td class="memItemLeft" align="right" valign="top"><a id="adcc34f0e8346e8c4e86747d22f59126c"></a>
+String&#160;</td><td class="memItemRight" valign="bottom"><b>message</b> =new String()</td></tr>
+<tr class="separator:adcc34f0e8346e8c4e86747d22f59126c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
+Static Private Attributes</h2></td></tr>
+<tr class="memitem:ac331de2916632f6acab9b2a9c2a0d257"><td class="memItemLeft" align="right" valign="top"><a id="ac331de2916632f6acab9b2a9c2a0d257"></a>
+static final Logger&#160;</td><td class="memItemRight" valign="bottom"><b>LOG</b> = Logger.getGlobal()</td></tr>
+<tr class="separator:ac331de2916632f6acab9b2a9c2a0d257"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>cozyu </dd>
 <dd>
-youcao documented by youcao. A class that get data and current states and status of the simulator. </dd></dl>
+youcao documented by youcao. cpu of simulato it execute instruction and has registers for instructions. also it controls memory loading and saving. </dd></dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a5ece1f72ab7698be3c3325dd7d8f1f79"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5ece1f72ab7698be3c3325dd7d8f1f79">&#9670;&nbsp;</a></span>addMessage()</h2>
@@ -186,7 +243,59 @@ youcao documented by youcao. A class that get data and current states and status
   </tr>
 </table>
 </div><div class="memdoc">
-<p>A method that set the simulator to proper state, including load_mar, load_mbr,load_ir and execute. </p>
+<p>perform appropriate operation considering current state at every clock. </p><dl class="section return"><dt>Returns</dt><dd>On case success, true is retured, otherwise false is returned. </dd></dl>
+
+</div>
+</div>
+<a id="a45d1570db37aa395779e1522c3197cd9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a45d1570db37aa395779e1522c3197cd9">&#9670;&nbsp;</a></span>execute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">boolean ControlUnit.execute </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Execute instructions. </p><dl class="section return"><dt>Returns</dt><dd>On case success, true is retured, otherwise false is returned. </dd></dl>
+
+</div>
+</div>
+<a id="a42008c4c574707bc62520ce54341dba3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42008c4c574707bc62520ce54341dba3">&#9670;&nbsp;</a></span>increasePC()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">boolean ControlUnit.increasePC </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Increase program counter </p><dl class="section return"><dt>Returns</dt><dd>On case success, true is retured, otherwise false is returned. </dd></dl>
 
 </div>
 </div>
@@ -212,7 +321,7 @@ youcao documented by youcao. A class that get data and current states and status
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Initialize all register and transfer control to boot program. </p>
+<p>Initialize all register and memory, and then transfer control to boot program. </p>
 
 </div>
 </div>
@@ -238,7 +347,33 @@ youcao documented by youcao. A class that get data and current states and status
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Check if there is current instruction in IR </p><dl class="section return"><dt>Returns</dt><dd>true : there is current instruction false : there is not current instruction </dd></dl>
+<p>Check if there is current instruction in IR </p><dl class="section return"><dt>Returns</dt><dd>On case existing current instruction, true is retured, otherwise false is returned. </dd></dl>
+
+</div>
+</div>
+<a id="a3db0eca8d662e588c2e2a98fd7418b4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3db0eca8d662e588c2e2a98fd7418b4c">&#9670;&nbsp;</a></span>isNextInstruction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">boolean ControlUnit.isNextInstruction </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Check if there is next instruction </p><dl class="section return"><dt>Returns</dt><dd>On case existing next instruction, true is retured, otherwise false is returned. </dd></dl>
 
 </div>
 </div>
@@ -264,7 +399,7 @@ youcao documented by youcao. A class that get data and current states and status
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Load instructions from the rom.txt file. </p><dl class="section return"><dt>Returns</dt><dd>boolean indicating the process is done. </dd></dl>
+<p>Load instructions from the rom.txt file. </p><dl class="section return"><dt>Returns</dt><dd>On case success, true is retured, otherwise false is returned. </dd></dl>
 
 </div>
 </div>
@@ -297,7 +432,7 @@ youcao documented by youcao. A class that get data and current states and status
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>A boolean indicating is done. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>On case success, true is retured, otherwise false is returned. </dd></dl>
 
 </div>
 </div>

@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['getasmcode_49',['getAsmCode',['../class_instruction_handler.html#aa919f638a81ebab3364f116daaa571cf',1,'InstructionHandler']]],
-  ['getbincode_50',['getBinCode',['../class_instruction_handler.html#abbf7e505fea657340ae36d29a87b7208',1,'InstructionHandler']]],
-  ['getmessage_51',['getMessage',['../class_instruction_handler.html#aa259feb621482f7b99485e28dfc4fad0',1,'InstructionHandler']]],
-  ['getstring_52',['getString',['../class_memory.html#a5e399bc0078142345e5122f59f25aaf6',1,'Memory']]],
-  ['getusermemorylocation_53',['getUserMemoryLocation',['../class_memory.html#a545ab73548e9c94d8815d97b47e1211d',1,'Memory']]]
+  ['execute_76',['execute',['../class_control_unit.html#a45d1570db37aa395779e1522c3197cd9',1,'ControlUnit.execute()'],['../class_instruction_handler.html#afc4129c63dc42da3ecbb26ea0f1d227e',1,'InstructionHandler.execute()']]],
+  ['executelda_77',['executeLDA',['../class_instruction_handler.html#ac7c46e199ef7c36dd04ab41cab482a02',1,'InstructionHandler']]],
+  ['executeldr_78',['executeLDR',['../class_instruction_handler.html#ace4c4fe8fa3ee1690395a54b3182dfe9',1,'InstructionHandler']]],
+  ['executeldx_79',['executeLDX',['../class_instruction_handler.html#aa99db448674e2f01dd7908f1604ed61b',1,'InstructionHandler']]],
+  ['executestr_80',['executeSTR',['../class_instruction_handler.html#a33762153a6fb575efdea60c35a0fdfcf',1,'InstructionHandler']]],
+  ['executestx_81',['executeSTX',['../class_instruction_handler.html#aaa72e47fb61fc0148015b99c2e2f316c',1,'InstructionHandler']]]
 ];

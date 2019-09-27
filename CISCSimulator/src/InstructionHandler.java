@@ -40,6 +40,7 @@ class Instruction
 
 /**
  * @author cozyu
+ * @author youcao  documented by youcao.
  * A class that process given instructions.
  */
 public class InstructionHandler {
@@ -142,7 +143,7 @@ public class InstructionHandler {
 
 	/**
 	 * Store Index Register to Memory.
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	private boolean executeSTX() throws IOException {
 		int eAddress=getEAWithoutIX();

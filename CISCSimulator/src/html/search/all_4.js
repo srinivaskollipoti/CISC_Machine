@@ -1,8 +1,13 @@
 var searchData=
 [
-  ['init_12',['init',['../class_control_unit.html#a1eecc4ce00744ce4e03d181e86c580b2',1,'ControlUnit.init()'],['../class_memory.html#af4b36166151e63068919fa9326775e8d',1,'Memory.init()']]],
-  ['initprocessor_13',['initProcessor',['../class_c_i_s_c_simulator.html#a05422388f0bcc1da46d8174376f97745',1,'CISCSimulator']]],
-  ['instructionhandler_14',['InstructionHandler',['../class_instruction_handler.html',1,'InstructionHandler'],['../class_instruction_handler.html#a82434d2a31ac95ff54e66e5817fd0984',1,'InstructionHandler.InstructionHandler()']]],
-  ['iscurrentinstruction_15',['isCurrentInstruction',['../class_control_unit.html#a746aec3989874a3be6c9c2126e86f745',1,'ControlUnit']]],
-  ['ispoweroff_16',['isPowerOff',['../class_c_i_s_c_simulator.html#a82c46633ece7545ca567fd497d8f0a56',1,'CISCSimulator']]]
+  ['gbitset_16',['GBitSet',['../class_g_bit_set.html',1,'GBitSet'],['../class_g_bit_set.html#a72751b827cba685cb218b517bf8d073f',1,'GBitSet.GBitSet()']]],
+  ['getasmcode_17',['getAsmCode',['../class_instruction_handler.html#aa919f638a81ebab3364f116daaa571cf',1,'InstructionHandler']]],
+  ['getbincode_18',['getBinCode',['../class_instruction_handler.html#abbf7e505fea657340ae36d29a87b7208',1,'InstructionHandler']]],
+  ['getea_19',['getEA',['../class_instruction_handler.html#aa4cdcde918b35166efa89c4316b407aa',1,'InstructionHandler']]],
+  ['geteawithoutix_20',['getEAWithoutIX',['../class_instruction_handler.html#ac9ac5630b3fb12f38982e185b4d10646',1,'InstructionHandler']]],
+  ['getint_21',['getInt',['../class_g_bit_set.html#a555cd0db5030b86c9de1857028d6ab1b',1,'GBitSet']]],
+  ['getlong_22',['getLong',['../class_g_bit_set.html#a992e945c2490dbe859394cf364c72729',1,'GBitSet']]],
+  ['getmessage_23',['getMessage',['../class_instruction_handler.html#aa259feb621482f7b99485e28dfc4fad0',1,'InstructionHandler']]],
+  ['getstring_24',['getString',['../class_g_bit_set.html#adf6d9042b7ba5a38402ca6853e5e9fb2',1,'GBitSet.getString()'],['../class_memory.html#a5e399bc0078142345e5122f59f25aaf6',1,'Memory.getString()']]],
+  ['getusermemorylocation_25',['getUserMemoryLocation',['../class_memory.html#a545ab73548e9c94d8815d97b47e1211d',1,'Memory']]]
 ];

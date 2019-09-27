@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['word_152',['WORD',['../class_w_o_r_d.html#ae89b0453d52d3912d41ec03dddce66e4',1,'WORD.WORD()'],['../class_w_o_r_d.html#adafe95a991fe4af6e270c0439bc00e6b',1,'WORD.WORD(String wordString)']]]
+  ['updatedisplay_122',['updateDisplay',['../class_c_i_s_c_g_u_i.html#a4f1af03defa8959e1fc3b07f76be0d92',1,'CISCGUI']]]
 ];

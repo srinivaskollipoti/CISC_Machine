@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['main_61',['main',['../class_c_i_s_c_g_u_i.html#a6b8e25e360010e1d4309932380b42ce0',1,'CISCGUI']]],
-  ['memory_62',['Memory',['../class_memory.html#a18ff0d806d11ea959fbb5e6357a1f63e',1,'Memory']]]
+  ['load_100',['load',['../class_memory.html#a36e78c87eaff8adaa861216b5647dffb',1,'Memory']]],
+  ['loadregister_101',['loadRegister',['../class_c_i_s_c_simulator.html#aebf982df180a2fae5e5193efa7753a73',1,'CISCSimulator']]],
+  ['loaduserinstruction_102',['loadUserInstruction',['../class_c_i_s_c_g_u_i.html#a8365b928e9e5c1ec1d7dec5131899755',1,'CISCGUI']]]
 ];
