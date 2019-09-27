@@ -19,6 +19,14 @@ public class CISCSimulator {
 	private StateType state;				// state of computer
 	private String message=new String();	// state message of computer
 	
+	/**
+	 * Enum type to distinguish the state of simulator.
+	 * POWEROFF = Turned off
+	 * READY = Ready
+	 * RUNNING = Running
+	 * HALT = Halted
+	 * TERMINATE = Terminated
+	 */
 	enum StateType{
 		POWEROFF("Power off"), READY("Ready"), RUNNING("Running"), HALT("Halted"), TERMINATE("Terminated");
 		final private String name; 
@@ -60,7 +68,7 @@ public class CISCSimulator {
 	
 	/**
 	 * Initialize all register and memory and load boot program from ROM and transfers control to the boot program and set state to ready.
-	 * @return A boolean indicating if success. 
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	public boolean initProcessor()
 	{
@@ -97,8 +105,8 @@ public class CISCSimulator {
 	}
 
 	/**
-	 * Execute the whole process for the input instruction and print out memory information when done.
-	 * @return A boolean indicating if the process is success.
+	 * Execute the whole process for the input instruction.
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	public boolean run()
 	{
@@ -120,14 +128,15 @@ public class CISCSimulator {
 
 	/**
 	 * Execute only one more clock from the last step according to the instruction.
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
-	public void singleStep()
+	public boolean singleStep()
 	{
 		message="";
 		if(isPowerOff()==true)
 		{
 			message=("Simulator is not turned on, push the IPL button\n");
-			return;
+			return false;
 		}
 		
 		// if current program is terminated, initialize simulator.
@@ -136,7 +145,7 @@ public class CISCSimulator {
 			if(initProcessor()==false)
 			{
 				LOG.severe("Failed to initialize processor");
-				return;
+				return false;
 			}
 		}
 		
@@ -153,13 +162,14 @@ public class CISCSimulator {
 			state=StateType.READY;
 		}
 		panel.updateDisplay();
-		return;
+		return true;
 	}
 	
 	/**
 	 * Load the register with given data.
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
-	public void loadRegister(long R0, long R1,long R2, long R3, 
+	public boolean loadRegister(long R0, long R1,long R2, long R3, 
 			long IX1, long IX2, long IX3, 
 			long IR, long PC, long CC, 
 			long MAR, long MBR, long MFR) 
@@ -168,15 +178,17 @@ public class CISCSimulator {
 		if(isPowerOff()==true)
 		{
 			message="Simulator is not turned on, push the IPL button";
-			return;
+			return false;
 		}
 		try {
 		if(R0!=controller.getGPR(0).getLong()) message=message+"R0 ="+R0+"\n";
 		controller.getGPR(0).setLong(R0);
 		if(R1!=controller.getGPR(1).getLong()) message=message+"R1 = "+R1+"\n";
 		controller.getGPR(1).setLong(R1);
+		
 		if(R2!=controller.getGPR(2).getLong()) message=message+"R2 = "+R2+"\n";
 		controller.getGPR(2).setLong(R2);
+		
 		if(R3!=controller.getGPR(3).getLong()) message=message+"R3 = "+R3+"\n";
 		controller.getGPR(3).setLong(R3);
 		if(IX1!=controller.getIX(1).getLong()) message=message+"IX1 = "+IX1+"\n";
@@ -201,16 +213,17 @@ public class CISCSimulator {
 		{
 			message="Failed to save user input\n+ "+e.getMessage();
 			panel.updateDisplay();
-			return;
+			return false;
 		}
 		message="Loaded register from user input\n"+message;
 		panel.updateDisplay();
+		return true;
 	}
 
 		
 	/**
 	 * Set the user code to controller.
-	 * @return A boolean indicating if success.C
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	public boolean setUserCode(String[] arrInst)
 	{

@@ -5,7 +5,9 @@ import java.util.logging.Logger;
 /**
  * @author cozyu
  * @author youcao  documented by youcao.
- * A class that get data and current states and status of the simulator.
+ * cpu of simulato
+ * it execute instruction and has registers for instructions.
+ * also it controls memory loading and saving.
  */
 public class ControlUnit {
 	
@@ -25,6 +27,14 @@ public class ControlUnit {
 	private WORD IR=new WORD();
 	private String message=new String();
 
+	/**
+	 * Enum type to distinguish the state of cpu.
+	 * LOAD_MAR = phase to load MAR
+	 * LOAD_MBR = phase to load MBR from memory
+	 * LOAD_IR = phase to IR from MBR
+	 * NO_INST = phase indicating no more instruction
+	 * EXECUTE = phase to execute instruction
+	 */
 	enum CPUState
 	{
 		LOAD_MAR("LOAD MAR"), LOAD_MBR("LOAD MBR"), LOAD_IR("LOAD IR"), 
@@ -80,7 +90,7 @@ public class ControlUnit {
 	}
 	
 	/**
-	 * Initialize all register and transfer control to boot program.
+	 * Initialize all register and memory, and then transfer control to boot program.
 	 */
 	public boolean init()
 	{
@@ -106,9 +116,7 @@ public class ControlUnit {
 	
 	/**
 	 * Check if there is next instruction
-	 * @return 
-	 * true : there is next instruction
-	 * false : there is not next instruction
+	 * @return On case existing next instruction, true is retured, otherwise false is returned.
 	 */
 	private boolean isNextInstruction()
 	{
@@ -125,9 +133,7 @@ public class ControlUnit {
 	
 	/**
 	 * Check if there is current instruction in IR
-	 * @return 
-	 * true : there is current instruction
-	 * false : there is not current instruction
+	 * @return On case existing current instruction, true is retured, otherwise false is returned.
 	 */
 	public boolean isCurrentInstruction()
 	{
@@ -135,7 +141,8 @@ public class ControlUnit {
 	}
 	
 	/**
-	 * A method that set the simulator to proper state, including load_mar, load_mbr,load_ir and execute.
+	 * perform appropriate operation considering current state at every clock.
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	public boolean clock()
 	{
@@ -188,6 +195,7 @@ public class ControlUnit {
 	
 	/**
 	 * Increase program counter
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	private boolean increasePC() {
 		long result=PC.getLong()+1;
@@ -198,6 +206,7 @@ public class ControlUnit {
 
 	/**
 	 * Execute instructions.
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	private boolean execute() {
 		ih.showInstruction();
@@ -213,7 +222,7 @@ public class ControlUnit {
 	
 	/**
 	 * Load instructions from the rom.txt file.
-	 * @return boolean indicating the process is done.
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	public boolean setBootCode()
 	{
@@ -260,7 +269,7 @@ public class ControlUnit {
 	/**
 	 * Convert a list of insturctions to a list of binary codes and print out the memory status.
 	 * @param arrAsmCode a string list storing multiple instructions
-	 * @return A boolean indicating is done.
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	public boolean setUserCode(String[] arrAsmCode) {
 		

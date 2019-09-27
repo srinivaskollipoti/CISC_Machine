@@ -1,5 +1,3 @@
-import java.util.BitSet;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
  * 
@@ -7,7 +5,8 @@ import java.util.logging.Logger;
 
 /**
  * @author cozyu
- *
+ * implement bit operation for the simulator
+ * all registers and memory implemented based on GBitSet
  */
 public class GBitSet extends java.util.BitSet {
          private final static Logger LOG = Logger.getGlobal();
@@ -16,18 +15,32 @@ public class GBitSet extends java.util.BitSet {
 	private int minValue=0;
 	private int maxValue=0;
 	
+	/**
+	 * A constructor that create a bit set given length.
+	 * @param length of bit set.
+	 */
 	public GBitSet(int length)
 	{
 		super(length);
 		this.length=length;
 		maxValue=(int)Math.pow(2,length)-1;
 	}
-	
+
+	/**
+	 * Set minimum value of a bit set.
+	 * @param minimum value.
+	 */
 	public void setMinValue(int minValue)
 	{
 		this.minValue=minValue;
 	}
-	
+
+	/**
+	 * Return a subset of this bit set.
+	 * @param from the beginning index, inclusive.
+	 * @param from the ending index, exclusive.
+	 * @return the specified subset
+	 */
 	public GBitSet subSet(int from,int to)
 	{
 		if(to<=from)
@@ -39,7 +52,12 @@ public class GBitSet extends java.util.BitSet {
 		subSet.or(get(from, to));
 		return subSet;
 	}
-	
+
+	/**
+	 * Sets bit set to specified long value 
+	 * @param number a long value.
+	 * @return On case success, true is retured, otherwise false is returned.
+	 */
 	public boolean setLong(long number){
 		
 		if (maxValue<number || number<minValue)
@@ -52,13 +70,21 @@ public class GBitSet extends java.util.BitSet {
 		return true;
 	}
 	
+	/**
+	 * Get long value from bit set 
+	 * @return A long indicating bit set. 
+	 */
 	public long getLong(){
 		if(this.isEmpty())
 			return 0;
 		long temp[]=this.toLongArray();
 		return temp[0];	
 	}
-	
+
+	/**
+	 * Get int value from bit set 
+	 * @return A int indicating bit set. 
+	 */
 	public int getInt(){
 		long input=getLong();
 		int result=(int)input;
@@ -71,13 +97,20 @@ public class GBitSet extends java.util.BitSet {
 		return result;	
 	}
 
+	/**
+	 * Copy bit set from specified GBitSet 
+	 * @return On case success, true is retured, otherwise false is returned.
+	 */
 	public boolean copy(GBitSet input){
 		this.clear();
 		this.or(input);
 		return true;
 	}
 	
-	
+	/**
+	 * Get binary string from bit set  
+	 * @return A binary string 
+	 */
 	public String getString()
 	{
 		StringBuffer buffer=new StringBuffer();
@@ -89,21 +122,13 @@ public class GBitSet extends java.util.BitSet {
 		}
 		return buffer.toString();	
 	}
-	
-	
+
+	/**
+	 * Get binary string and long value from bit set   
+	 * @return A binary string and long value
+	 */
 	public String toString()
 	{
-		//System.out.println(super.toString());
-		StringBuffer buffer=new StringBuffer();
-		for (int i=length-1; i>=0;i--)
-		{
-			if(get(i)) buffer.append("1");
-			else buffer.append("0");
-			
-			if(i%8==0) buffer.append(" ");
-		}
-		buffer.append("=> "+getInt());
-		return buffer.toString();	
-	}
-	
+		return getString()+"=> "+getLong();	
+	}	
 }

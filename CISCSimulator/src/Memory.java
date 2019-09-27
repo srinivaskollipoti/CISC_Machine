@@ -1,6 +1,5 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Logger;
 
 
 /**
@@ -11,7 +10,6 @@ import java.util.logging.Logger;
  */
 
 public class Memory {
-	private static final Logger LOG = Logger.getGlobal();
 	private WORD memory[];
 	private static final int DEFAULT_MEMORY=2048;
 	private static final int MAX_MEMORY=4096;

@@ -15,6 +15,10 @@ import java.io.IOException;
  */
 public class ROM {
 	
+	/*
+	 * Get assemble code of boot program from rom.txt
+	 * @return assemble code of boot program
+	 */
 	public String[] getCode() {
 		// LDA 1, 0, 31 / 000011 01 00001000
 		// STR 1, 0, 20 / 000010 01 00001101

@@ -18,7 +18,7 @@ public class CISCGUI extends javax.swing.JFrame {
     private CISCSimulator simu; 
     private ControlUnit cpu;
     /**
-     * Creates new form CISCGUI2
+     * Creates new form CISCGUI
      */
     public CISCGUI() {
         initComponents();
@@ -292,6 +292,10 @@ public class CISCGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
+    /**
+	 * Load instruction from user interface.
+	 * @return A boolean indicating if the loading succeed. 
+	 */
     private boolean loadUserInstruction()
     {
     	String instructions=textFieldInstruction.getText();
@@ -312,6 +316,9 @@ public class CISCGUI extends javax.swing.JFrame {
     }
 
 
+    /**
+	 * Perform singlestep process.
+	 */
     private void buttonSingleStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSingleStepActionPerformed
     	printLog("[NOTICE] Simulator perform singlestep");
     	if(simu.isPowerOff()==true) {
@@ -324,6 +331,9 @@ public class CISCGUI extends javax.swing.JFrame {
     	printLog(simu.getMessage());
     }//GEN-LAST:event_buttonSingleStepActionPerformed
     
+    /**
+	 * Perform run process.
+	 */
     private void buttonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRunActionPerformed
     	printLog("[NOTICE] Simulator starts to run");
     	if(simu.isPowerOff()==true) {
@@ -349,6 +359,9 @@ public class CISCGUI extends javax.swing.JFrame {
     		LOG.info(message);
     }
 
+    /**
+	 * Perform IPL process. if the simulator has turned on, the simulator will be turned off, otherwise it will be turned on.
+	 */
     private void buttonIPLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonIPLActionPerformed
     	if(simu.isPowerOff()==true)
     	{
@@ -366,6 +379,9 @@ public class CISCGUI extends javax.swing.JFrame {
     	}
     }//GEN-LAST:event_buttonIPLActionPerformed
 
+    /**
+	 * Load registers' value from the UI and save into the simulator.  
+	 */
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
     	
     	if(simu.isPowerOff()==true) {
@@ -396,6 +412,9 @@ public class CISCGUI extends javax.swing.JFrame {
     	printLog(message+"[NOTICE] "+simu.getMessage());
     }//GEN-LAST:event_buttonSaveActionPerformed
 
+    /**
+	 * Update display of UI  
+	 */
     public void updateDisplay()
     {
     	textFieldR0.setText(Long.toString(cpu.getGPR(0).getLong()));
@@ -414,6 +433,7 @@ public class CISCGUI extends javax.swing.JFrame {
     	textFieldPC.setText(Long.toString(cpu.getPC().getLong()));
     }
     /**
+     * main function
      * @param args the command line arguments
      */
     public static void main(String args[]) {

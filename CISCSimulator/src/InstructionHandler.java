@@ -62,9 +62,10 @@ public class InstructionHandler {
 	private Hashtable< String, Integer> textToCode= new Hashtable< String, Integer>();
 	
 	private String message=new String();
+	
 	/**
-	 * A constructor initializes with given controller.
-	 * @param controller
+	 * A constructor to initializes instruction set.
+	 * @param controller to use this class
 	 */
 	public InstructionHandler(ControlUnit controller)
 	{
@@ -82,9 +83,9 @@ public class InstructionHandler {
 	}
 	
 	/**
-	 * Set up the intruction code by parts from given translated instruction.
+	 * Set up the instruction code by parts from given translated instruction.
 	 * @param ir A WORD containing the translated instruction. Format is explained in user guide.
-	 * @return A boolean indicating if done.
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	private boolean parseIR(WORD ir)
 	{
@@ -99,6 +100,7 @@ public class InstructionHandler {
         
 	/**
 	 * Load register from a given memory address.
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	private boolean executeLDR() throws IOException {
 		int eAddress=getEA();
@@ -108,6 +110,7 @@ public class InstructionHandler {
 
 	/**
 	 * Load register with address
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	private boolean executeLDA() throws IOException {
 		int eAddress=getEA();
@@ -117,6 +120,7 @@ public class InstructionHandler {
 
 	/**
 	 * Store Register To Memory.
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	private boolean executeSTR() throws IOException {
 		int eAddress=getEA();
@@ -128,6 +132,7 @@ public class InstructionHandler {
 
 	/**
 	 * Load Index Register from Memory.
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	private boolean executeLDX() throws IOException {
 		int eAddress=getEAWithoutIX();
@@ -137,6 +142,7 @@ public class InstructionHandler {
 
 	/**
 	 * Store Index Register to Memory.
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	private boolean executeSTX() throws IOException {
 		int eAddress=getEAWithoutIX();
@@ -198,7 +204,7 @@ public class InstructionHandler {
 	
 	/**
 	 * Execute instructions and print out the information in register and memory
-	 * @return a boolean indicating it is done.
+	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	public boolean execute() throws IOException
 	{
@@ -263,8 +269,8 @@ public class InstructionHandler {
 	}
 	
 	/**
-	 * Slice the input instruction by parts
-	 * @return A string of the result.
+	 * get assemble code from current instruction
+	 * @return A assemble code string.
 	 */
 	public String getAsmCode()
 	{
@@ -285,8 +291,8 @@ public class InstructionHandler {
 	}
 	
 	/**
-	 * Convert the input instruction into a binary code.
-	 * @return the binary code in WORD format.
+	 * Convert the input instruction into a machine code.
+	 * @return the machine code in WORD format.
 	 */
 	public WORD getBinCode(String asmCode)
 	{
