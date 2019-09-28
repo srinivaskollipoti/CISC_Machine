@@ -128,6 +128,7 @@ public class CISCSimulator {
 
 	/**
 	 * Execute only one more clock from the last step according to the instruction.
+	 * if there is no more instruction, change the state into TERMINATE
 	 * @return On case success, true is retured, otherwise false is returned.
 	 */
 	public boolean singleStep()
