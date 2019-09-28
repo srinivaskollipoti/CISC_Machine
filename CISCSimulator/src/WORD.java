@@ -11,4 +11,10 @@ public class WORD extends GBitSet {
 	public WORD() {
 		super(WORD.SIZE);
 	}
+	
+	public WORD(java.util.BitSet input)
+	{
+		super(WORD.SIZE);
+		or(input);
+	}
 }

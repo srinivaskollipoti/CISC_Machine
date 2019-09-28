@@ -17,7 +17,7 @@ public class GBitSet extends java.util.BitSet {
 	
 	/**
 	 * A constructor that create a bit set given length.
-	 * @param length of bit set.
+	 * @param length length of bit set.
 	 */
 	public GBitSet(int length)
 	{
@@ -27,8 +27,22 @@ public class GBitSet extends java.util.BitSet {
 	}
 
 	/**
+	 * A constructor that create a bit set given BitSet and length.
+	 * @param input input BitSet
+	 * @param length length of BitSet.
+	 */
+	public GBitSet(java.util.BitSet input,int length)
+	{
+		super(length);
+		this.length=length;
+		maxValue=(int)Math.pow(2,length)-1;
+		or(input);
+	}
+	
+
+	/**
 	 * Set minimum value of a bit set.
-	 * @param minimum value.
+	 * @param minValue minimum value.
 	 */
 	public void setMinValue(int minValue)
 	{
@@ -38,7 +52,7 @@ public class GBitSet extends java.util.BitSet {
 	/**
 	 * Return a subset of this bit set.
 	 * @param from the beginning index, inclusive.
-	 * @param from the ending index, exclusive.
+	 * @param to the ending index, exclusive.
 	 * @return the specified subset
 	 */
 	public GBitSet subSet(int from,int to)

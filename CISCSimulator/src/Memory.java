@@ -86,11 +86,11 @@ public class Memory {
 		int limitMemoryStart=BOOT_MEMORY_START;
 		if(isSystem==false) limitMemoryStart=userMemoryStart;
 		if(address>=memory.length)
-			throw new IOException("Memory violation : access over memory("+address+")");
+			throw new IOException("Memory violation : access over memory("+address+")\n");
 		else if(address<limitMemoryStart)
-			throw new IOException("Memory violation : access system address("+address+")");
+			throw new IOException("Memory violation : access system address("+address+")\n");
 		if (input==null)
-			throw new IOException("Memory violation : insert null data("+address+")");
+			throw new IOException("Memory violation : insert null data("+address+")\n");
 		
 		memory[address]=input;
 		return true;

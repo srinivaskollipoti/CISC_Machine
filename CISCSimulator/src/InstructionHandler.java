@@ -59,8 +59,31 @@ public class InstructionHandler {
 	static final int LDR=1;
 	static final int LDX=33;
 	static final int STX=34;
-	private Hashtable< Integer, Instruction> instSet= new Hashtable< Integer, Instruction>();
-	private Hashtable< String, Integer> textToCode= new Hashtable< String, Integer>();
+	//private Hashtable< Integer, Instruction> instSet= new Hashtable< Integer, Instruction>();
+	//private Hashtable< String, Integer> textToCode= new Hashtable< String, Integer>();
+	
+	private static final Hashtable< Integer, Instruction> instSet;
+	static{
+		instSet =   new Hashtable<Integer, Instruction>() {{
+			put(LDA,new Instruction("LDA",LDA,3,true,true,true,true));
+			put(STR,new Instruction("STR",STR,3,true,true,true,true));
+			put(LDR,new Instruction("LDR",LDR,3,true,true,true,true));
+			put(LDX,new Instruction("LDX",LDX,2,false,true,true,true));
+			put(STX,new Instruction("STX",STX,2,false,true,true,true));
+			}};
+	}
+
+	private static final Hashtable<  String, Integer> textToCode;
+	static{
+		textToCode =   new Hashtable<String, Integer>() {{
+			put("LDA",LDA);
+			put("STR",STR);
+			put("LDR",LDR);
+			put("LDX",LDX);
+			put("STX",STX);
+			}};
+	}
+
 	
 	private String message=new String();
 	
@@ -70,17 +93,7 @@ public class InstructionHandler {
 	 */
 	public InstructionHandler(ControlUnit controller)
 	{
-		this.controller=controller;
-		instSet.put(LDA,new Instruction("LDA",LDA,3,true,true,true,true));
-		instSet.put(STR,new Instruction("STR",STR,3,true,true,true,true));
-		instSet.put(LDR,new Instruction("LDR",LDR,3,true,true,true,true));
-		instSet.put(LDX,new Instruction("LDX",LDX,2,false,true,true,true));
-		instSet.put(STX,new Instruction("STX",STX,2,false,true,true,true));
-		textToCode.put("LDA",LDA);
-		textToCode.put("STR",STR);
-		textToCode.put("LDR",LDR);
-		textToCode.put("LDX",LDX);
-		textToCode.put("STX",STX);
+		this.controller=controller;		
 	}
 	
 	/**
@@ -242,10 +255,23 @@ public class InstructionHandler {
 	public void showInstruction()
 	{
 		System.out.println("### IR STATUS START ###");
-		System.out.println("[IR    ] "+ir);
+		System.out.println("[IR] "+ir);
         System.out.println("[OPCODE] "+opcode+" [GPR] "+reg+" [XR] "+ireg+" [FLAG] "+flag+" [ADDR] "+address);
 		System.out.println("### IR STATUS END ###");		
 	}
+
+	/**
+	 * Get string indicating current instruction.
+	 * @return String indicating current instruction
+	 */
+	public String getString()
+	{
+		StringBuffer buffer=new StringBuffer();
+		buffer.append("[IR] "+ir.getString());
+        buffer.append("\n[OPCODE] "+opcode+" [GPR] "+reg+" [XR] "+ireg+" [FLAG] "+flag+" [ADDR] "+address);
+        return buffer.toString();
+	}
+
 	
 	public int getOPCode()
 	{
@@ -271,7 +297,7 @@ public class InstructionHandler {
 	
 	/**
 	 * get assemble code from current instruction
-	 * @return A assemble code string.
+	 * @return An assemble code string.
 	 */
 	public String getAsmCode()
 	{
@@ -285,11 +311,42 @@ public class InstructionHandler {
 		if(inst.isAddr()==true)
 			buffer.append(getAddress()+",");
 		buffer.setLength(buffer.length()-1);
-		if(inst.isFlag()==true && flag==1)
-			buffer.append("[,I]");
+		if(inst.isFlag()==true && getFlag()==1)
+			buffer.append(",I");
 		
 		return buffer.toString();
 	}
+	
+	/**
+	 * get assemble code from specific instruction
+	 * @return An assemble code string.
+	 */
+	public static String getAsmCode(WORD ir)
+	{
+		
+        int opcode=ir.subSet(10,16).getInt();
+        int reg=ir.subSet(8,10).getInt();
+        int ireg=ir.subSet(6,8).getInt();
+        int flag=ir.subSet(5,6).getInt();
+        int address=ir.subSet(0,5).getInt();
+		
+		StringBuffer buffer=new StringBuffer();
+		Instruction inst=instSet.get(opcode);
+		if (inst==null) return null;
+		buffer.append(inst.getName()+" ");
+		if(inst.isReg()==true)
+			buffer.append(reg+",");
+		if(inst.isIReg()==true)
+			buffer.append(ireg+",");
+		if(inst.isAddr()==true)
+			buffer.append(address+",");
+		buffer.setLength(buffer.length()-1);
+		if(inst.isFlag()==true && flag==1)
+			buffer.append(",I");
+		
+		return buffer.toString();
+	}
+	
 	
 	/**
 	 * Convert the input instruction into a machine code.
@@ -329,9 +386,9 @@ public class InstructionHandler {
 		}
 		
 		String lastParam=arrStr[1];
-		if(lastParam.endsWith("[,I]"))
+		if(lastParam.endsWith(",I"))
 		{
-			arrStr[1]=lastParam.substring(0,lastParam.length()-4);
+			arrStr[1]=lastParam.substring(0,lastParam.length()-2);
 			flag=1;
 		}
 		

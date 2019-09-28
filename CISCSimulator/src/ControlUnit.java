@@ -183,7 +183,7 @@ public class ControlUnit {
 				message="[ERROR] "+message+"Failed to execute code\n";
 				result=false;
 			}
-			message="[EXECUTE] "+ih.getAsmCode()+"\n"+message;
+			message="[EXECUTE] "+ih.getAsmCode()+"\n"+ih.getString()+"\n"+message;
 			state=CPUState.LOAD_MAR;
 			break;
 		default:
@@ -231,7 +231,7 @@ public class ControlUnit {
 		String[] arrAsmCode=rom.getCode();
 		if(arrAsmCode==null)
 		{
-			message="Failed to load boot program\n";
+			message="Failed to load boot program\n"+rom.getMessage()+"\n";
 			LOG.warning(message);
 			return false;
 		}
