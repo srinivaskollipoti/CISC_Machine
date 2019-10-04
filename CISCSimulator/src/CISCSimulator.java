@@ -11,7 +11,7 @@ import java.util.logging.SimpleFormatter;
  * @author youcao  documented by youcao.
  * Operates the simulator(basic machine) according to the user input. See below for detailed descriptions. 
  */
-public class CISCSimulator {
+public class CISCSimulator implements Runnable{
 	final static Logger LOG = Logger.getGlobal();
 	private ControlUnit controller;			// cpu of computer
 	private Memory memory;					// memory of comuter
@@ -108,22 +108,27 @@ public class CISCSimulator {
 	 * Execute the whole process for the input instruction.
 	 * @return On case success, true is retured, otherwise false is returned.
 	 */
-	public boolean run()
+	public void run() 
 	{
 		StringBuffer buffer=new StringBuffer();
 
 		if(isPowerOff()==true)
 		{
 			message=("Simulator is not turned on, push the IPL button");
-			return false;
+			return;
 		}
-		
 		do{
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			singleStep();
 			buffer.append(message+"\n");
 		}while(state==StateType.READY);
 		message=buffer.toString();
-		return true;
+		return;
 	}
 
 	/**

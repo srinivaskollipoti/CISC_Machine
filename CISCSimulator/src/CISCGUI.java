@@ -14,7 +14,8 @@ import java.util.logging.Logger;
 public class CISCGUI extends javax.swing.JFrame {
 
 	private final static Logger LOG = Logger.getGlobal();
-	
+	private Thread runThread;
+	private boolean isRun=false;
     private CISCSimulator simu; 
     private ControlUnit cpu;
     /**
@@ -328,7 +329,7 @@ public class CISCGUI extends javax.swing.JFrame {
     	if(loadUserInstruction()==false)
     		return;
     	simu.singleStep();
-    	printLog(simu.getMessage());
+    	//printLog(simu.getMessage());
     }//GEN-LAST:event_buttonSingleStepActionPerformed
     
     /**
@@ -342,8 +343,10 @@ public class CISCGUI extends javax.swing.JFrame {
     	}
     	if(loadUserInstruction()==false)
     		return;
-    	simu.run();
-    	printLog(simu.getMessage());
+    	runThread= new Thread(simu,"Run");
+    	runThread.start();
+    	//simu.run();
+    	//printLog(simu.getMessage());
     }//GEN-LAST:event_buttonRunActionPerformed
 
     public void printLog(String log)
@@ -355,6 +358,8 @@ public class CISCGUI extends javax.swing.JFrame {
     {
     	String message=log+"\n";
     	textArea.append(message);
+        textArea.setCaretPosition(textArea.getDocument().getLength() - 1);
+
     	if(isOnlyDisplay==false)
     		LOG.info(message);
     }
@@ -371,7 +376,7 @@ public class CISCGUI extends javax.swing.JFrame {
 	            printLog(simu.getMessage());
 	            return;
 	        }
-	    	printLog(simu.getMessage());
+	    	//printLog(simu.getMessage());
     	}else {
     		simu.powerOff();
     		printLog("[NOTICE] Simulator is turned off");
@@ -431,6 +436,7 @@ public class CISCGUI extends javax.swing.JFrame {
     	textFieldMFR.setText(Long.toString(cpu.getMFR().getLong()));
     	textFieldIR.setText(Long.toString(cpu.getIR().getLong()));
     	textFieldPC.setText(Long.toString(cpu.getPC().getLong()));
+    	printLog(simu.getMessage());
     }
     /**
      * main function
