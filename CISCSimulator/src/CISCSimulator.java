@@ -18,7 +18,7 @@ public class CISCSimulator implements Runnable{
 	private CISCGUI panel;					// panel of computer
 	private StateType state;				// state of computer
 	private String message=new String();	// state message of computer
-	
+	private boolean isRun=false;
 	/**
 	 * Enum type to distinguish the state of simulator.
 	 * POWEROFF = Turned off
@@ -92,8 +92,9 @@ public class CISCSimulator implements Runnable{
 		
 		state=StateType.READY;
 		message=controller.getMessage();
-		message=message+"Simulator Initialized\n";
+		message=message+"Simulator has been initialized\n";
 		panel.updateDisplay();
+		message="";
 		return true;
 	}
 
@@ -103,7 +104,16 @@ public class CISCSimulator implements Runnable{
 	public void powerOff() {
 		state=StateType.POWEROFF;
 	}
-
+	
+	public void setStop()
+	{
+		isRun=false;
+	}
+	
+	
+	
+	
+	
 	/**
 	 * Execute the whole process for the input instruction.
 	 * @return On case success, true is retured, otherwise false is returned.
@@ -117,17 +127,23 @@ public class CISCSimulator implements Runnable{
 			message=("Simulator is not turned on, push the IPL button");
 			return;
 		}
+		isRun=true;
 		do{
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			singleStep();
-			buffer.append(message+"\n");
+			//buffer.append(message+"\n");
+			if(isRun==false)
+			{
+				break;
+			}
 		}while(state==StateType.READY);
 		message=buffer.toString();
+		isRun=false;
 		return;
 	}
 
@@ -144,7 +160,7 @@ public class CISCSimulator implements Runnable{
 			message=("Simulator is not turned on, push the IPL button\n");
 			return false;
 		}
-		
+				
 		// if current program is terminated, initialize simulator.
 		if(state==StateType.TERMINATE)
 		{
@@ -270,5 +286,9 @@ public class CISCSimulator implements Runnable{
 
 	public String getMessage() {
 		return message;
+	}
+
+	public boolean isRun() {
+		return isRun;
 	}
 }

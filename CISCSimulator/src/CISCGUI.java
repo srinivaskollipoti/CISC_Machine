@@ -15,8 +15,7 @@ public class CISCGUI extends javax.swing.JFrame {
 
 	private final static Logger LOG = Logger.getGlobal();
 	private Thread runThread;
-	private boolean isRun=false;
-    private CISCSimulator simu; 
+	private CISCSimulator simu; 
     private ControlUnit cpu;
     /**
      * Creates new form CISCGUI
@@ -331,22 +330,43 @@ public class CISCGUI extends javax.swing.JFrame {
     	simu.singleStep();
     	//printLog(simu.getMessage());
     }//GEN-LAST:event_buttonSingleStepActionPerformed
-    
+
+    /**
+	 * Perform halt process.
+	 */
+    private void haltProcess()
+    {
+		simu.setStop();
+		try {
+			runThread.join();
+			printLog("[NOTICE] Simulator halted");
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return;
+    }
     /**
 	 * Perform run process.
 	 */
     private void buttonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRunActionPerformed
-    	printLog("[NOTICE] Simulator starts to run");
     	if(simu.isPowerOff()==true) {
     		printLog("[NOTICE] Simulator is not turned on, push the IPL button");
     		return;
     	}
+    	if(simu.isRun()==true)
+    	{
+    		haltProcess();
+    		return;
+    	}
+    	printLog("[NOTICE] Simulator starts to run");
+    	
     	if(loadUserInstruction()==false)
     		return;
+    	
     	runThread= new Thread(simu,"Run");
     	runThread.start();
     	//simu.run();
-    	//printLog(simu.getMessage());
     }//GEN-LAST:event_buttonRunActionPerformed
 
     public void printLog(String log)
@@ -371,12 +391,8 @@ public class CISCGUI extends javax.swing.JFrame {
     	if(simu.isPowerOff()==true)
     	{
     		printLog("[NOTICE] Simulator is turned on");
-	    	boolean resultInit=simu.initProcessor();
-	    	if(!resultInit) {
-	            printLog(simu.getMessage());
-	            return;
-	        }
-	    	//printLog(simu.getMessage());
+	    	simu.initProcessor();
+	    	printLog(simu.getMessage());
     	}else {
     		simu.powerOff();
     		printLog("[NOTICE] Simulator is turned off");

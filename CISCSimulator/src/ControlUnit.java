@@ -26,6 +26,8 @@ public class ControlUnit {
 	private WORD MFR=new WORD();
 	private WORD IR=new WORD();
 	private String message=new String();
+	
+	
 
 	/**
 	 * Enum type to distinguish the state of cpu.
