@@ -13,9 +13,11 @@ import java.util.logging.SimpleFormatter;
  */
 public class CISCSimulator implements Runnable{
 	final static Logger LOG = Logger.getGlobal();
-	private ControlUnit controller;			// cpu of computer
-	private Memory memory;					// memory of comuter
-	private CISCGUI panel;					// panel of computer
+	private CPU controller;					/// cpu of computer
+	private Memory memory;					/// memory of computer
+	private CISCGUI panel;					/// panel of computer
+	private IOC ioc;						/// io controller of computer
+	
 	private StateType state;				// state of computer
 	private String message=new String();	// state message of computer
 	private boolean isRun=false;
@@ -49,7 +51,7 @@ public class CISCSimulator implements Runnable{
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		controller=new ControlUnit(this);
+		controller=new CPU(this);
 		this.panel=panel;
 		state = StateType.POWEROFF;
 		try {
@@ -68,7 +70,7 @@ public class CISCSimulator implements Runnable{
 	
 	/**
 	 * Initialize all register and memory and load boot program from ROM and transfers control to the boot program and set state to ready.
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean initProcessor()
 	{
@@ -116,7 +118,7 @@ public class CISCSimulator implements Runnable{
 	
 	/**
 	 * Execute the whole process for the input instruction.
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public void run() 
 	{
@@ -150,7 +152,7 @@ public class CISCSimulator implements Runnable{
 	/**
 	 * Execute only one more clock from the last step according to the instruction.
 	 * if there is no more instruction, change the state into TERMINATE
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean singleStep()
 	{
@@ -189,7 +191,7 @@ public class CISCSimulator implements Runnable{
 	
 	/**
 	 * Load the register with given data.
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean loadRegister(long R0, long R1,long R2, long R3, 
 			long IX1, long IX2, long IX3, 
@@ -245,7 +247,7 @@ public class CISCSimulator implements Runnable{
 		
 	/**
 	 * Set the user code to controller.
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean setUserCode(String[] arrInst)
 	{
@@ -270,7 +272,7 @@ public class CISCSimulator implements Runnable{
 		return state==StateType.POWEROFF;
 	}
 	
-	public ControlUnit getCPU()
+	public CPU getCPU()
 	{	
 		return controller;
 	}

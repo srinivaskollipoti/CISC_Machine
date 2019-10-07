@@ -5,42 +5,50 @@ import java.util.logging.Logger;
 /**
  * @author cozyu
  * @author youcao  documented by youcao.
- * cpu of simulato
- * it execute instruction and has registers for instructions.
+ * cpu of simulator
+ * it executes instruction and has registers for instructions.
  * also it controls memory loading and saving.
  */
-public class ControlUnit {
+public class CPU {
 	
 	private final static Logger LOG = Logger.getGlobal();
 	private Memory memory;
-	private InstructionHandler ih=new InstructionHandler(this);
+	private Cache cache;
 	
-	private CPUState state=CPUState.LOAD_MAR;
-	private GBitSet PC=new GBitSet(12);
-	private GBitSet GPR[] = new GBitSet[4];
-	private GBitSet IX[] = new GBitSet[4];
-	private GBitSet CC=new GBitSet(4);
+	private CPUState state=CPUState.LOAD_MAR; 	
+	// Need to consider Instruction Cycle Code for pipeline  
+	// IF-ID-EX-MEM-WB
 	
-	private WORD MBR=new WORD();
-	private WORD MAR=new WORD();
-	private WORD MFR=new WORD();
-	private WORD IR=new WORD();
-	private String message=new String();
+	private InstructionHandler ih;
 	
+	private GBitSet PC=new GBitSet(12);		/// Program Counter
+	private WORD MAR=new WORD();			/// Memory Address Register
+	private WORD MBR=new WORD();			/// Memory Buffer Register
+	private WORD MFR=new WORD();			/// Machine Fault Register
 	
-
+	private GBitSet GPR[] = new GBitSet[4];	/// General Purpose Register
+	private GBitSet IX[] = new GBitSet[4];	/// Index Register
+	
+	private GBitSet CC=new GBitSet(4);		/// Condition Code
+	private WORD IR=new WORD();				/// Instruction Register
+	
+	private ALU alu;	/// Arithmetic Logical Unit
+	
+	private String message=new String(); // A text indicating current state
+	
 	/**
 	 * Enum type to distinguish the state of cpu.
 	 * LOAD_MAR = phase to load MAR
 	 * LOAD_MBR = phase to load MBR from memory
 	 * LOAD_IR = phase to IR from MBR
-	 * NO_INST = phase indicating no more instruction
 	 * EXECUTE = phase to execute instruction
+	 * INTERRUPT = phase indicating interruption
+	 * NO_INST = phase indicating no more instruction
 	 */
 	enum CPUState
 	{
 		LOAD_MAR("LOAD MAR"), LOAD_MBR("LOAD MBR"), LOAD_IR("LOAD IR"), 
-		NO_INST("NO INSTRUCTION"), EXECUTE("EXECUTE");
+		EXECUTE("EXECUTE"), INTERRUPT("Interrupt"), NO_INST("NO INSTRUCTION");
 		final private String name; 
 		private CPUState(String name) 
 		{
@@ -52,9 +60,12 @@ public class ControlUnit {
 	}
 	
 	
-	public ControlUnit(CISCSimulator simulator)
+	public CPU(CISCSimulator simulator)
 	{
 		this.memory=simulator.getMemory();
+		cache=new Cache();
+		ih=new InstructionHandler(this);
+		ih.init();
 	}
 	
 	/**
@@ -118,13 +129,13 @@ public class ControlUnit {
 	
 	/**
 	 * Check if there is next instruction
-	 * @return On case existing next instruction, true is retured, otherwise false is returned.
+	 * @return On case existing next instruction, true is returned, otherwise false is returned.
 	 */
 	private boolean isNextInstruction()
 	{
 		WORD inst=new WORD();
 		try {
-			inst = memory.load(PC.getLong());
+			inst = loadMemory(PC.getLong());
 		} catch (IOException e){
 			LOG.severe(e.getMessage());
 			LOG.severe("Failed to load Next Instruction");			
@@ -135,7 +146,7 @@ public class ControlUnit {
 	
 	/**
 	 * Check if there is current instruction in IR
-	 * @return On case existing current instruction, true is retured, otherwise false is returned.
+	 * @return On case existing current instruction, true is returned, otherwise false is returned.
 	 */
 	public boolean isCurrentInstruction()
 	{
@@ -144,7 +155,7 @@ public class ControlUnit {
 	
 	/**
 	 * perform appropriate operation considering current state at every clock.
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean clock()
 	{
@@ -164,17 +175,17 @@ public class ControlUnit {
 			break;
 		case LOAD_MBR:
 			try {
-				MBR.copy(memory.load(MAR.getInt()));
+				MBR.copy(loadMemory(MAR.getInt()));
 			} catch (IOException e) {
 				LOG.severe("Failed to process LOAD MBR\n");
 				return false;
 			}
 			state=CPUState.LOAD_IR;
+			increasePC();		// increase the program counter
 			message="[FETCH] MBR <- MEM[MAR]\n";
 			break;
 		case LOAD_IR:
 			IR.copy(MBR);
-			increasePC();
 			message="[FETCH] IR <- MBR\n";
 			state=CPUState.EXECUTE;
 			break;
@@ -197,7 +208,7 @@ public class ControlUnit {
 	
 	/**
 	 * Increase program counter
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	private boolean increasePC() {
 		long result=PC.getLong()+1;
@@ -208,7 +219,7 @@ public class ControlUnit {
 
 	/**
 	 * Execute instructions.
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	private boolean execute() {
 		ih.showInstruction();
@@ -224,7 +235,7 @@ public class ControlUnit {
 	
 	/**
 	 * Load instructions from the rom.txt file.
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean setBootCode()
 	{
@@ -269,9 +280,9 @@ public class ControlUnit {
 	}
 	
 	/**
-	 * Convert a list of insturctions to a list of binary codes and print out the memory status.
+	 * Convert a list of instructions to a list of binary codes and print out the memory status.
 	 * @param arrAsmCode a string list storing multiple instructions
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean setUserCode(String[] arrAsmCode) {
 		
@@ -299,7 +310,47 @@ public class ControlUnit {
 	    state=CPUState.LOAD_MAR;
 		return true;
 	}
+	
 
+	/**
+	 * Srinivas implements L1, L2 cache 
+	 * 
+	 * Load data from memory or cache given address.
+	 * @param address an integer of the memory address the machine wants to access.
+	 * @return The data stored in the memory or cache slot.
+	 * @throws IOException
+	 */
+	public WORD loadMemory(long address) throws IOException
+	{
+		WORD result=null;
+		
+		// need to implement to load cache
+		//result = cache.load(address);
+		//if(result!=null)
+		//	return result;
+		
+		result = memory.load(address,this);
+		return result;
+	}
+	
+	/**
+	 * Srinivas implements L1, L2 cache 
+	 * 
+	 * Store the input data to memory or cache with specific address.
+	 * @param address A integer indicating the memory slot to access.
+	 * @param input A WORD argument containing the input data for the memory to store.
+	 * @return On case success, true is returned, otherwise false is returned.
+	 * @throws IOException
+	 */
+	public boolean storeMemory(long address, WORD input) throws IOException
+	{
+		// need to implement to store cache and synchronize between cache and memory
+		// cache.store()
+		boolean result=true;
+		result= memory.store(address, input,this);
+		return result;
+	}
+	
 	/**
 	 * Append new message to the original one.
 	 * @param message a string message wanted to be appended.

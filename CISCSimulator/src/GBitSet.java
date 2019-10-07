@@ -70,7 +70,7 @@ public class GBitSet extends java.util.BitSet {
 	/**
 	 * Sets bit set to specified long value 
 	 * @param number a long value.
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean setLong(long number){
 		
@@ -113,7 +113,7 @@ public class GBitSet extends java.util.BitSet {
 
 	/**
 	 * Copy bit set from specified GBitSet 
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean copy(GBitSet input){
 		this.clear();

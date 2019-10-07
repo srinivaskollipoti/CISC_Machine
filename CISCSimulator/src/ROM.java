@@ -30,8 +30,9 @@ public class ROM {
 		StringBuffer buffer=new StringBuffer();
 		byte[] allBytes;
 		
+		InputStream inputStream=null;
 		try {
-			InputStream inputStream = new FileInputStream(inputFile);
+			inputStream = new FileInputStream(inputFile);
 			long fileSize = new File(inputFile).length();
 	        allBytes = new byte[(int) fileSize];
 	        inputStream.read(allBytes);
@@ -43,6 +44,14 @@ public class ROM {
 	      e.printStackTrace();
 	      message="Failed to open rom file("+inputFile+")";
 	      return null;
+	    } finally {
+	    	if(inputStream!=null)
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					message="Failed to close rom file("+inputFile+")";
+				}
 	    }
 		
 		for(int i=0;i<allBytes.length/2;i=i+1)

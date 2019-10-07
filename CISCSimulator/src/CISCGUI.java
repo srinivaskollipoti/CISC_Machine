@@ -16,7 +16,7 @@ public class CISCGUI extends javax.swing.JFrame {
 	private final static Logger LOG = Logger.getGlobal();
 	private Thread runThread;
 	private CISCSimulator simu; 
-    private ControlUnit cpu;
+    private CPU cpu;
     /**
      * Creates new form CISCGUI
      */

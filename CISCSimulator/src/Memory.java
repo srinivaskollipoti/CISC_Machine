@@ -68,7 +68,7 @@ public class Memory {
 	 * @return Boolean indicating if the execution is success.
 	 * 
 	 */
-	public boolean store(int address, WORD input) throws IOException
+	private boolean store(int address, WORD input) throws IOException
 	{
 		return store(address,input,false);
 	}
@@ -81,7 +81,7 @@ public class Memory {
 	 * @return Boolean indicating if the execution is success.
 	 * 
 	 */
-	public boolean store(int address, WORD input, boolean isSystem) throws IOException
+	private boolean store(int address, WORD input, boolean isSystem) throws IOException
 	{
 		int limitMemoryStart=BOOT_MEMORY_START;
 		if(isSystem==false) limitMemoryStart=userMemoryStart;
@@ -92,10 +92,49 @@ public class Memory {
 		if (input==null)
 			throw new IOException("Memory violation : insert null data("+address+")\n");
 		
-		memory[address]=input;
+		memory[address].copy(input);
 		return true;
 	}
 
+	
+	/**
+	 * Load data from a memory given address.
+	 * @param address an integer of the memory address the machine wants to access.
+	 * @return The data stored in the memory slot.
+	 */
+	private WORD load(int address) throws IOException
+	{
+		if(address>=memory.length || address<BOOT_MEMORY_START)
+			throw new IOException("Memory access violation : ["+address+"]\n");
+		return memory[address];
+	}
+	
+	/**
+	 * Load data from a memory given address.
+	 * Don't use this function and use loadMemory() of CPU class
+	 * @param address an integer of the memory address the machine wants to access.
+	 * @return The data stored in the memory slot.
+	 */	
+	public WORD load(long address,CPU cpu) throws IOException
+	{
+		if(cpu.getMemory()!=this)
+			return null;
+		return load((int)address);
+	}
+	
+	/**
+	 * Store the input data to a memory with specific address.
+	 * Don't use this function and use storeMemory() of CPU class
+	 * @param address A integer indicating the memory slot to access.
+	 * @param input A WORD argument containing the input data for the memory to store.
+	 * @return Boolean indicating if the execution is success.
+	 * 
+	 */
+	public boolean store(long address, WORD input,CPU cpu) throws IOException
+	{
+		return store((int)address,input,false);
+	}
+	
 	/**
 	 * Store a list of user code starting from a specified memory address defined by the user
 	 * @param arrCode A WORD array list containing the input code.
@@ -135,23 +174,6 @@ public class Memory {
 	}
 	
 	/**
-	 * Load data from a memory given address.
-	 * @param address an integer of the memory address the machine wants to access.
-	 * @return The data stored in the memory slot.
-	 */
-	public WORD load(int address) throws IOException
-	{
-		if(address>=memory.length || address<BOOT_MEMORY_START)
-			throw new IOException("Memory access violation : ["+address+"]\n");
-		return memory[address];
-	}
-	
-	public WORD load(long address) throws IOException
-	{
-		return load((int)address);
-	}
-	
-	/**
 	 * Get information of each memory slots, including the address and content.
 	 * @return The result in String type.
 	 */
@@ -162,7 +184,7 @@ public class Memory {
 		{
 			if(!memory[i].isEmpty())
 			{
-				String message=String.format("Memory [%03d]  %s (%d)\n", i,memory[i].getString(),memory[i].getLong());
+				String message=String.format("Memory [%04d]  %s (%d)\n", i,memory[i].getString(),memory[i].getLong());
 				buffer.append(message);
 			}
 		}

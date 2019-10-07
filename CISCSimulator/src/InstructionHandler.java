@@ -1,107 +1,49 @@
 import java.io.IOException;
-import java.util.Hashtable;
 import java.util.logging.Logger;
-
-/**
- * @author cozyu
- * @author youcao  documented by youcao.
- * A class that define given instructions.
- */
-
-class Instruction
-{
-	private String name; 
-	private int code; 
-	private int paramLength; 
-	private boolean isReg; 
-	private boolean isIReg; 
-	private boolean isAddr; 
-	private boolean isFlag;		
-	
-	public Instruction(String name,int code,int paramLength,boolean isReg,boolean isIReg, boolean isAddr, boolean isFlag)
-	{
-		this.name=name;
-		this.code=code;
-		this.paramLength=paramLength;
-		this.isReg=isReg;
-		this.isIReg=isIReg;
-		this.isAddr=isAddr;
-		this.isFlag=isFlag;
-	}
-
-	public String getName() { return this.name; }
-	public int getCode() { return this.code; }
-	public int getParamLength() { return this.paramLength; }
-	public boolean isReg() { return this.isReg; }
-	public boolean isIReg() { return this.isIReg; }
-	public boolean isAddr() { return this.isAddr; }
-	public boolean isFlag() { return this.isFlag; }	
-}
 
 /**
  * @author cozyu
  * @author youcao  documented by youcao.
  * A class that process given instructions.
  */
-public class InstructionHandler {
-	private final static Logger LOG = Logger.getGlobal();	
-	private WORD ir=new WORD();
-	private ControlUnit controller;
+public class InstructionHandler{
+	protected final static Logger LOG = Logger.getGlobal();	
+	protected WORD ir;
+	protected CPU cpu;
 	
-	private int opcode=0;
-	private int reg=0;
-	private int ireg=0;
-	private int flag=0;
-	private int address=0;
+	private InstructionHandler curInst;
+	private LSInstHandler lsInst;
 	
-	static final int LDA=3;
-	static final int STR=2;
-	static final int LDR=1;
-	static final int LDX=33;
-	static final int STX=34;
-	//private Hashtable< Integer, Instruction> instSet= new Hashtable< Integer, Instruction>();
-	//private Hashtable< String, Integer> textToCode= new Hashtable< String, Integer>();
+	protected int opcode=0;
+	protected int reg=0;
+	protected int ireg=0;
+	protected int flag=0;
+	protected int address=0;
 	
-	private static final Hashtable< Integer, Instruction> instSet;
-	static{
-		instSet =   new Hashtable<Integer, Instruction>() {{
-			put(LDA,new Instruction("LDA",LDA,3,true,true,true,true));
-			put(STR,new Instruction("STR",STR,3,true,true,true,true));
-			put(LDR,new Instruction("LDR",LDR,3,true,true,true,true));
-			put(LDX,new Instruction("LDX",LDX,2,false,true,true,true));
-			put(STX,new Instruction("STX",STX,2,false,true,true,true));
-			}};
-	}
-
-	private static final Hashtable<  String, Integer> textToCode;
-	static{
-		textToCode =   new Hashtable<String, Integer>() {{
-			put("LDA",LDA);
-			put("STR",STR);
-			put("LDR",LDR);
-			put("LDX",LDX);
-			put("STX",STX);
-			}};
-	}
-
-	
-	private String message=new String();
+	protected String message=new String();
 	
 	/**
 	 * A constructor to initializes instruction set.
-	 * @param controller to use this class
+	 * @param cpu to use this class
 	 */
-	public InstructionHandler(ControlUnit controller)
+	public InstructionHandler(CPU cpu)
 	{
-		this.controller=controller;		
+		this.cpu=cpu;		
+		ir=new WORD();
+		curInst=this;
+	}
+	
+	public void init()
+	{
+		lsInst=new LSInstHandler(cpu);
 	}
 	
 	/**
 	 * Set up the instruction code by parts from given translated instruction.
 	 * @param ir A WORD containing the translated instruction. Format is explained in user guide.
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
-	private boolean parseIR(WORD ir)
+	protected boolean parseIR(WORD ir)
 	{
 		this.ir.copy(ir);
         opcode=ir.subSet(10,16).getInt();
@@ -111,66 +53,13 @@ public class InstructionHandler {
 		address=ir.subSet(0,5).getInt();
 		return true;
 	}
-        
-	/**
-	 * Load register from a given memory address.
-	 * @return On case success, true is retured, otherwise false is returned.
-	 */
-	private boolean executeLDR() throws IOException {
-		int eAddress=getEA();
-		controller.getGPR(reg).copy(controller.getMemory().load(eAddress));
-		return true;
-	}
-
-	/**
-	 * Load register with address
-	 * @return On case success, true is retured, otherwise false is returned.
-	 */
-	private boolean executeLDA() throws IOException {
-		int eAddress=getEA();
-		controller.getGPR(reg).setLong(eAddress);
-	    return true;
-	}
-
-	/**
-	 * Store Register To Memory.
-	 * @return On case success, true is retured, otherwise false is returned.
-	 */
-	private boolean executeSTR() throws IOException {
-		int eAddress=getEA();
-		WORD param=new WORD();
-        param.copy(controller.getGPR(reg));
-		controller.getMemory().store(eAddress,param);
-		return true;
-	}
-
-	/**
-	 * Load Index Register from Memory.
-	 * @return On case success, true is retured, otherwise false is returned.
-	 */
-	private boolean executeLDX() throws IOException {
-		int eAddress=getEAWithoutIX();
-		controller.getIX(ireg).copy(controller.getMemory().load(eAddress));
-		return true;
-	}
-
-	/**
-	 * Store Index Register to Memory.
-	 * @return On case success, true is returned, otherwise false is returned.
-	 */
-	private boolean executeSTX() throws IOException {
-		int eAddress=getEAWithoutIX();
-		WORD param=new WORD();
-        param.copy(controller.getIX(ireg));
-		controller.getMemory().store(eAddress,param);
-		return true;
-	}
+	
 	
 	/**
 	 * Get the effective address without given register
 	 * @return an integer for the effective address.
 	 */
-	private int getEAWithoutIX() throws IOException
+	protected int getEAWithoutIX() throws IOException
 	{
 		int eAddress=address;
 		if(flag==0)
@@ -179,7 +68,7 @@ public class InstructionHandler {
 		}
 		else if(flag==1)
 		{
-			eAddress=controller.getMemory().load(address).getInt();
+			eAddress=cpu.loadMemory(address).getInt();
 		}
 		else throw new IOException("Wrong indirect flag");
 		return eAddress;
@@ -190,7 +79,7 @@ public class InstructionHandler {
 	 * Get the effective address with given register.
 	 * @return An integer of the effective address.
 	 */
-	private int getEA() throws IOException
+	protected int getEA() throws IOException
 	{
 		int eAddress=address;
 		if(flag==0)
@@ -199,16 +88,16 @@ public class InstructionHandler {
 				eAddress=address;
 			}
 			else{
-				eAddress=controller.getIX(ireg).getInt()+address;
+				eAddress=cpu.getIX(ireg).getInt()+address;
 			};			
 		}
 		else if(flag==1)
 		{
 			if(ireg==0) {
-				eAddress=controller.getMemory().load(address).getInt();
+				eAddress=cpu.loadMemory(address).getInt();
 			}else {
-				int iAddress=controller.getIX(ireg).getInt()+address;
-				eAddress=controller.getMemory().load(iAddress).getInt();
+				int iAddress=cpu.getIX(ireg).getInt()+address;
+				eAddress=cpu.loadMemory(iAddress).getInt();
 			}
 		}
 		else throw new IOException("Wrong indirect flag");
@@ -218,34 +107,37 @@ public class InstructionHandler {
 	
 	/**
 	 * Execute instructions and print out the information in register and memory
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean execute() throws IOException
 	{
-		parseIR(controller.getIR());
-		switch(getOPCode())
-		{
-			case InstructionHandler.LDA:
-				executeLDA();
-                break;
-			case InstructionHandler.LDR:
-				executeLDR();
-				break;
-			case InstructionHandler.LDX:
-				executeLDX();
-				break;
-			case InstructionHandler.STR:
-				executeSTR();
-				break;
-			case InstructionHandler.STX:
-				executeSTX();
-				break;
-			default:
-				LOG.warning("Unknown Instruction(OPCODE): "+ir);
-				break;
+		parseIR(cpu.getIR());
+		int opcode=this.opcode;
+		InstructionHandler handler=null;
+		Instruction inst=InstructionSet.getInstruction(opcode);
+		if(inst==null) {
+			message="Unknown Instruction(OPCODE): "+opcode;
+			LOG.warning(message);
+			return false;
 		}
-		//controller.showRegister();
-		//controller.showMemory();		
+		switch(inst.getType())
+		{
+		case LS_INST:
+			handler=lsInst;
+			break;
+		case TRANS_INST:		
+		case AL_INST:		
+		default:
+			break;
+		}
+		if(handler==null)
+		{
+			message="Failed to process instruction(OPCODE): "+opcode;
+			LOG.warning(message);
+			return false;
+		}
+		handler.execute();
+		message=handler.getMessage();
 		return true;
 	}
 
@@ -272,6 +164,10 @@ public class InstructionHandler {
         return buffer.toString();
 	}
 
+	public int getOPCode(WORD ir)
+	{
+		return ir.subSet(10,16).getInt();
+	}
 	
 	public int getOPCode()
 	{
@@ -294,28 +190,18 @@ public class InstructionHandler {
 	{
 		return flag;
 	}
+		
 	
+
 	/**
 	 * get assemble code from current instruction
 	 * @return An assemble code string.
 	 */
 	public String getAsmCode()
-	{
-		StringBuffer buffer=new StringBuffer();
-		Instruction inst=instSet.get(opcode);
-		buffer.append(inst.getName()+" ");
-		if(inst.isReg()==true)
-			buffer.append(getReg()+",");
-		if(inst.isIReg()==true)
-			buffer.append(getIReg()+",");
-		if(inst.isAddr()==true)
-			buffer.append(getAddress()+",");
-		buffer.setLength(buffer.length()-1);
-		if(inst.isFlag()==true && getFlag()==1)
-			buffer.append(",I");
-		
-		return buffer.toString();
+	{	
+		return getAsmCode(this.ir);
 	}
+	
 	
 	/**
 	 * get assemble code from specific instruction
@@ -323,15 +209,14 @@ public class InstructionHandler {
 	 */
 	public static String getAsmCode(WORD ir)
 	{
-		
-        int opcode=ir.subSet(10,16).getInt();
+		int opcode=ir.subSet(10,16).getInt();
         int reg=ir.subSet(8,10).getInt();
         int ireg=ir.subSet(6,8).getInt();
         int flag=ir.subSet(5,6).getInt();
         int address=ir.subSet(0,5).getInt();
-		
+        
 		StringBuffer buffer=new StringBuffer();
-		Instruction inst=instSet.get(opcode);
+		Instruction inst=InstructionSet.getInstruction(opcode);
 		if (inst==null) return null;
 		buffer.append(inst.getName()+" ");
 		if(inst.isReg()==true)
@@ -355,7 +240,9 @@ public class InstructionHandler {
 	public WORD getBinCode(String asmCode)
 	{
 		message="";
+		
 		WORD result=new WORD();
+		
 		int opcode=0;
 		int reg=0;
 		int ireg=0;
@@ -364,19 +251,13 @@ public class InstructionHandler {
 		
 		asmCode=asmCode.trim().toUpperCase();
 		String[] arrStr=asmCode.split(" ",2);
-		Integer code=textToCode.get(arrStr[0]);
-		if(code==null) {
-			message="Unsupported opcode: "+arrStr[0]+"\n";
-			LOG.warning(message);
-			return null;
-		}
-		opcode=code;
-		Instruction inst=instSet.get(opcode);
+		Instruction inst=InstructionSet.getInstruction(arrStr[0]);
 		if(inst==null) {
-			message="Unsupported opcode : "+arrStr[0]+"("+code+")\n";
+			message="Unsupported opcode : "+arrStr[0]+")\n";
 			LOG.warning(message);
 			return null;
 		}
+		opcode=inst.getCode();
 		
 		if(arrStr.length<2)
 		{
@@ -421,7 +302,7 @@ public class InstructionHandler {
 			return null;
 		}
 		// IX range limitation for LDX, STX
-		if(opcode==33 || opcode==34) 
+		if(opcode==InstructionSet.LDX || opcode==InstructionSet.STX) 
 		{
 			if(ireg<1 || ireg>3)
 			{
