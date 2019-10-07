@@ -11,8 +11,10 @@ public class InstructionHandler{
 	protected WORD ir;
 	protected CPU cpu;
 	
-	private InstructionHandler curInst;
 	private LSInstHandler lsInst;
+	private ALInstHandler alInst;
+	private IOInstHandler ioInst;
+	private TransInstHandler trInst;
 	
 	protected int opcode=0;
 	protected int reg=0;
@@ -30,12 +32,14 @@ public class InstructionHandler{
 	{
 		this.cpu=cpu;		
 		ir=new WORD();
-		curInst=this;
 	}
 	
 	public void init()
 	{
 		lsInst=new LSInstHandler(cpu);
+		alInst=new ALInstHandler(cpu);
+		ioInst=new IOInstHandler(cpu);
+		trInst=new TransInstHandler(cpu);
 	}
 	
 	/**
@@ -126,7 +130,14 @@ public class InstructionHandler{
 			handler=lsInst;
 			break;
 		case TRANS_INST:		
-		case AL_INST:		
+			handler=trInst;
+			break;
+		case AL_INST:	
+			handler=alInst;
+			break;
+		case IO_INST:	
+			handler=ioInst;
+			break;
 		default:
 			break;
 		}
