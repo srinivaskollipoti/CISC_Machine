@@ -9,7 +9,12 @@ import java.util.logging.Logger;
  * all registers and memory implemented based on GBitSet
  */
 public class GBitSet extends java.util.BitSet {
-         private final static Logger LOG = Logger.getGlobal();
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	private final static Logger LOG = Logger.getGlobal();
 	
 	public final int length;
 	private int minValue=0;

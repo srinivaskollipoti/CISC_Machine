@@ -135,7 +135,7 @@ public class InstructionHandler{
 		case AL_INST:	
 			handler=alInst;
 			break;
-		case IO_INST:	
+		case IO_MISC_INST:	
 			handler=ioInst;
 			break;
 		default:
