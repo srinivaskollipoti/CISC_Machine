@@ -356,6 +356,7 @@ public class CPU {
 		}
 		// tag not exist
 		WORD value = loadMemory(address);
+		System.out.println(value);
 		cache.add(address, value);
 		return value;
 	}
