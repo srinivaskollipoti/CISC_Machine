@@ -1,4 +1,7 @@
 import java.io.IOException;
+import java.util.ArrayList;
+
+import CPU.CPUState;
 
 /**
  *  perform IO instruction and Miscellaneous Instruction
@@ -6,22 +9,52 @@ import java.io.IOException;
 
 /**
  * @author cozyu
- *
+ * @author youcao
  */
 public class IOInstHandler extends InstructionHandler {
 
 	/**
 	 * @param cpu
 	 */
+	WORD content;
 	public IOInstHandler(CPU cpu) {
 		super(cpu);
 		// TODO Auto-generated constructor stub
+	}
+	
+	public boolean setInputCode(String[] arrAsmCode) {
+		InstructionHandler ih;
+		message="";
+		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
+		for(int i=0; i<arrAsmCode.length;i++) {
+			arrAsmCode[i]=arrAsmCode[i].toUpperCase();
+			WORD binCode=ih.getBinCode(arrAsmCode[i]);
+			if(binCode==null) {
+				message=ih.getMessage()+"Failed to parse user program : "+arrAsmCode[i];
+				LOG.warning(message);
+				return false;
+			}
+			content = binCode;
+		}
+		
+		return true;
 	}
 	
 	public boolean execute() throws IOException{
 		parseIR(cpu.getIR());
 		switch(getOPCode())
 		{
+			case InstructionSet.IN:
+				executeIN();
+				break;
+				
+			case InstructionSet.OUT:
+				executeOUT();
+				break;
+				
+			case InstructionSet.HLT:
+				executeHLT();
+				break;
 			
 			default:
 				message="Unknown Instruction(OPCODE): "+ir;
@@ -37,6 +70,22 @@ public class IOInstHandler extends InstructionHandler {
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	private boolean executeIN() {	
+		long devId = address;
+		// get contents from this device
+		cpu.getGPR(reg).setLong(content);
+		return true;
+	}
+	
+	private boolean executeOUT() {	
+		WORD param=new WORD();
+		param.copy(cpu.getGPR(reg));
+		content.setLong(param.getLong());
+		//assign this content to device
+		
+		return true;
+	}
+	
+	private boolean executeHLT() {	
 		return true;
 	}
 	// @annie - implement function HLT, IN, OUT
