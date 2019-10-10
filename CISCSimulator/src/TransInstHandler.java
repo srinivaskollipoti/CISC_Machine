@@ -6,6 +6,7 @@ import java.io.IOException;
 
 /**
  * @author cozyu
+ * @author youcao
  *
  */
 public class TransInstHandler extends InstructionHandler {
@@ -64,7 +65,7 @@ public class TransInstHandler extends InstructionHandler {
 
 
 	/**
-	 * 
+	 * Jump to address if c(r) = 0
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	private boolean executeJZ() throws IOException{	
@@ -78,7 +79,7 @@ public class TransInstHandler extends InstructionHandler {
 	// @annie - implement function JNE, JCC, JMA, JSR, RFS, SOB, JGE
 	
 	/**
-	 * 
+	 * Jump to address if c(r) != 0
 	 * @return true
 	 * @throws IOException
 	 */
@@ -91,6 +92,12 @@ public class TransInstHandler extends InstructionHandler {
 		return true;
 	}
 	
+	/**
+	 * Jump to address if c(r) is no less than 0
+	 * @return true
+	 * @throws IOException
+	 */
+	
 	private boolean executeJGE() throws IOException {
 		int eAddress = getEA();
 		WORD param=new WORD();
@@ -100,17 +107,28 @@ public class TransInstHandler extends InstructionHandler {
 		return true;
 	}
 	
+	/**
+	 * Jump to address anyways
+	 * @return
+	 * @throws IOException
+	 */
 	private boolean executeJMA() throws IOException {
 		int eAddress = getEAWithoutIX();
 		cpu.setPC(eAddress);
 		return true;
 	}
 	
+	/**
+	 * Subtract one from the c(r) and jump to address if c(r) > 0
+	 * @return
+	 * @throws IOException
+	 */
 	private boolean executeSOB() throws IOException {
 		int eAddress = getEA();
 		WORD param=new WORD();
 		param.copy(cpu.getGPR(reg));
 		cpu.getGPR(reg).setLong(param.getLong() - 1);
+		param.copy(cpu.getGPR(reg));
 		if(param.getLong() > 0) cpu.setPC(eAddress);
 	    else cpu.increasePC();
 		return true;
@@ -124,6 +142,11 @@ public class TransInstHandler extends InstructionHandler {
 		return true;
 	}
 	
+	/**
+	 * jump to address if cc = 1
+	 * @return
+	 * @throws IOException
+	 */
 	private boolean executeJCC() throws IOException {
 		int eAddress = getEAWithoutIX();
 		if(cpu.getCC().getLong() == 1) cpu.setPC(eAddress);
@@ -131,6 +154,11 @@ public class TransInstHandler extends InstructionHandler {
 		return true;
 	}
 	
+	/**
+	 * return from subroutine
+	 * @return
+	 * @throws IOException
+	 */
 	private boolean executeRFS() throws IOException {
 		cpu.getGPR(0).setLong(address);
 		cpu.setPC(cpu.getGPR(3).getLong());
