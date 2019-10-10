@@ -177,7 +177,7 @@ class InstructionSet
 			put("HLT",HLT);
 			put("TRAP",TRAP);
 			put("JZ",JZ);
-			put("JNE",JZE);
+			put("JNE",JNE);
 			put("JCC",JCC);
 			put("JMA",JMA);
 			put("JSR",JSR);
