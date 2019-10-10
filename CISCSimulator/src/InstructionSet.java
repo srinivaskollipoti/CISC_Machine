@@ -130,7 +130,7 @@ class InstructionSet
 			put(TRAP,new Instruction("TRAP",TRAP,3,true,true,true,true,Instruction.InstType.IO_MISC_INST));
 			
 			put(JZ,new Instruction("JZ",JZ,3,true,true,true,true,Instruction.InstType.TRANS_INST)); 	
-			put(JZE,new Instruction("JZE",JZE,3,true,true,true,true,Instruction.InstType.TRANS_INST)); 	
+			put(JNE,new Instruction("JNE",JNE,3,true,true,true,true,Instruction.InstType.TRANS_INST)); 	
 			put(JCC,new Instruction("JCC",JCC,3,true,true,true,true,Instruction.InstType.TRANS_INST)); 	
 			put(JMA,new Instruction("JMA",JMA,3,true,true,true,true,Instruction.InstType.TRANS_INST)); 	
 			put(JSR,new Instruction("JSR",JSR,3,true,true,true,true,Instruction.InstType.TRANS_INST)); 	
@@ -177,7 +177,7 @@ class InstructionSet
 			put("HLT",HLT);
 			put("TRAP",TRAP);
 			put("JZ",JZ);
-			put("JZE",JZE);
+			put("JNE",JZE);
 			put("JCC",JCC);
 			put("JMA",JMA);
 			put("JSR",JSR);
