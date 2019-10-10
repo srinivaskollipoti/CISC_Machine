@@ -83,7 +83,7 @@ class InstructionSet
 
 	// Transfer Instructions
 	static final int JZ = 010;
-	static final int JZE = 011;
+	static final int JNE = 011;
 	static final int JCC = 012;
 	static final int JMA = 013;
 	static final int JSR = 014;
