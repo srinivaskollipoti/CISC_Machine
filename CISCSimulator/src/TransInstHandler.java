@@ -19,6 +19,8 @@ public class TransInstHandler extends InstructionHandler {
 	}
 
 	public boolean execute() throws IOException{
+		LOG.info("Execute TRANS Instruction\n");
+
 		parseIR(cpu.getIR());
 		switch(getOPCode())
 		{
