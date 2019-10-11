@@ -22,19 +22,14 @@ public class IOInstHandler extends InstructionHandler {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public boolean setInputCode(String[] arrAsmCode) {
-		InstructionHandler ih = new InstructionHandler(cpu);
-		message="";
-		for(int i=0; i<arrAsmCode.length;i++) {
-			arrAsmCode[i]=arrAsmCode[i].toUpperCase();
-			WORD binCode=ih.getBinCode(arrAsmCode[i]);
-			if(binCode==null) {
-				message=ih.getMessage()+"Failed to parse user program : "+arrAsmCode[i];
-				LOG.warning(message);
-				return false;
-			}
-			content = binCode.getLong();
-		}
+	/**
+	 * Convert the string into Long type for storage
+	 * @param text The input got from the input textarea in GUI
+	 * @return
+	 */
+	public boolean setInputCode(String text) {
+		String input = text;
+		content = (int) input.charAt(0);
 		
 		return true;
 	}
