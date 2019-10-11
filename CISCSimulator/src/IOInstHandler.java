@@ -16,16 +16,15 @@ public class IOInstHandler extends InstructionHandler {
 	/**
 	 * @param cpu
 	 */
-	WORD content;
+	long content;
 	public IOInstHandler(CPU cpu) {
 		super(cpu);
 		// TODO Auto-generated constructor stub
 	}
 	
 	public boolean setInputCode(String[] arrAsmCode) {
-		InstructionHandler ih;
+		InstructionHandler ih = new InstructionHandler(cpu);
 		message="";
-		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
 		for(int i=0; i<arrAsmCode.length;i++) {
 			arrAsmCode[i]=arrAsmCode[i].toUpperCase();
 			WORD binCode=ih.getBinCode(arrAsmCode[i]);
@@ -34,7 +33,7 @@ public class IOInstHandler extends InstructionHandler {
 				LOG.warning(message);
 				return false;
 			}
-			content = binCode;
+			content = binCode.getLong();
 		}
 		
 		return true;
@@ -71,7 +70,6 @@ public class IOInstHandler extends InstructionHandler {
 	 */
 	private boolean executeIN() {	
 		long devId = address;
-		// get contents from this device
 		cpu.getGPR(reg).setLong(content);
 		return true;
 	}
@@ -79,9 +77,7 @@ public class IOInstHandler extends InstructionHandler {
 	private boolean executeOUT() {	
 		WORD param=new WORD();
 		param.copy(cpu.getGPR(reg));
-		content.setLong(param.getLong());
-		//assign this content to device
-		
+		content = param.getLong();
 		return true;
 	}
 	
