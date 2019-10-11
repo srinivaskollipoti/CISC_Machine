@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
+
+
 /**
  * @author cozyu
  * @author youcao  documented by youcao.
@@ -330,24 +332,74 @@ public class CPU {
 		//	return result;
 		
 		result = memory.load(address,this);
+		//cache.store(result);
 		return result;
 	}
 	
+	/**
+	 * 
+	 * fetch a word from cache. If the word is not in cache, fetch it from
+	 * memory, then store it into cache.
+	 * 
+	 * @param address
+	 * @return
+	 */
+	
+	public WORD fetchFromCache(long address) throws IOException {
+		for (Cache.CacheLoad lines : cache.getCacheLines()) { // check every block
+														// whether the tag is
+														// already exist
+			if (address == lines.getMemAddress()) {
+				return lines.getData(); // tag exist, return the data of the
+										// block
+			}
+		}
+		// tag not exist
+		WORD value = loadMemory(address);
+		System.out.println(value);
+		cache.add(address, value);
+		return value;
+	}
+
+	/**
+	 * 
+	 * store into cache with replacement. Also store into memory simultaneously.
+	 * 
+	 * @param address
+	 * @param value
+	 */
+	public void storeIntoCache(long address, WORD value) {
+		try {
+			storeMemory(address, value);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		for (Cache.CacheLoad lines : cache.getCacheLines()) { // check every block the
+														// tag is already exist
+			if (address == lines.getMemAddress()) {
+				lines.setData(value); // replace the block
+				return;
+			}
+		}
+		// tag not exist
+		cache.add(address, value);
+	}
 	/**
 	 * Srinivas implements L1, L2 cache 
 	 * 
 	 * Store the input data to memory or cache with specific address.
 	 * @param address A integer indicating the memory slot to access.
-	 * @param input A WORD argument containing the input data for the memory to store.
+	 * @param value A WORD argument containing the input data for the memory to store.
 	 * @return On case success, true is returned, otherwise false is returned.
 	 * @throws IOException
 	 */
-	public boolean storeMemory(long address, WORD input) throws IOException
+	public boolean storeMemory(long address, WORD value) throws IOException
 	{
 		// need to implement to store cache and synchronize between cache and memory
-		// cache.store()
+	    cache.store(address,value);
 		boolean result=true;
-		result= memory.store(address, input,this);
+		result= memory.store(address, value,this);
 		return result;
 	}
 	
