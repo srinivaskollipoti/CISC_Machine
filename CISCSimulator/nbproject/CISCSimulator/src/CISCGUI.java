@@ -9,22 +9,22 @@ import java.util.logging.Logger;
 /**
  *
  * @author cozyu
- * @author youcao  documented by youcao.
  */
 public class CISCGUI extends javax.swing.JFrame {
 
 	private final static Logger LOG = Logger.getGlobal();
-	private Thread runThread;
-	private CISCSimulator simu; 
-    private CPU cpu;
+	
+    CISCSimulator simu; 
+    ControlUnit cpu;
+    Memory memory;
     /**
-     * Creates new form CISCGUI
+     * Creates new form CISCGUI2
      */
     public CISCGUI() {
         initComponents();
         simu=new CISCSimulator(this);
         cpu=simu.getCPU();
-        this.setTitle("CISC Simulator");
+        memory=simu.getMemory();
     }
 
     /**
@@ -73,9 +73,6 @@ public class CISCGUI extends javax.swing.JFrame {
         textFieldMBR = new javax.swing.JTextField();
         jScrollPane2 = new javax.swing.JScrollPane();
         textFieldInstruction = new javax.swing.JTextPane();
-        buttonHalt = new javax.swing.JButton();
-        buttonLoadProgram1 = new javax.swing.JButton();
-        buttonLoadProgram2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -96,11 +93,6 @@ public class CISCGUI extends javax.swing.JFrame {
         });
 
         buttonSingleStep.setText("SingleStep");
-        buttonSingleStep.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonSingleStepActionPerformed(evt);
-            }
-        });
 
         labelLogger.setText("Logger");
 
@@ -117,7 +109,13 @@ public class CISCGUI extends javax.swing.JFrame {
 
         labelR3.setText("R3");
 
-        buttonSave.setText("Load");
+        textFieldR0.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldR0ActionPerformed(evt);
+            }
+        });
+
+        buttonSave.setText("Save");
         buttonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonSaveActionPerformed(evt);
@@ -130,9 +128,21 @@ public class CISCGUI extends javax.swing.JFrame {
 
         labelIX3.setText("IX3");
 
+        textFieldIX1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldIX1ActionPerformed(evt);
+            }
+        });
+
         labelIR.setText("IR");
 
         labelPC.setText("PC");
+
+        textFieldPC.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textFieldPCActionPerformed(evt);
+            }
+        });
 
         labelMAR.setText("MAR");
 
@@ -143,23 +153,6 @@ public class CISCGUI extends javax.swing.JFrame {
         labelMFR.setText("MFR");
 
         jScrollPane2.setViewportView(textFieldInstruction);
-        
-        buttonHalt.setText("Halt");
-        buttonHalt.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonHaltActionPerformed(evt);
-            }
-        });
-
-        buttonLoadProgram1.setText("LoadProgram1");
-
-        buttonLoadProgram2.setText("LoadProgram2");
-        buttonLoadProgram2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                buttonLoadProgram2ActionPerformed(evt);
-            }
-        });
-
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -172,18 +165,12 @@ public class CISCGUI extends javax.swing.JFrame {
                         .addComponent(labelInstruction)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 236, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(buttonRun, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE)
-                            .addComponent(buttonSingleStep, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(62, 62, 62)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(buttonLoadProgram1, javax.swing.GroupLayout.DEFAULT_SIZE, 147, Short.MAX_VALUE)
-                            .addComponent(buttonLoadProgram2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buttonIPL, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonHalt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(82, 82, 82)
+                        .addComponent(buttonRun, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(67, 67, 67)
+                        .addComponent(buttonSingleStep, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(45, 45, 45)
+                        .addComponent(buttonIPL, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGap(75, 75, 75)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -246,36 +233,25 @@ public class CISCGUI extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(labelLogger, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(114, 114, 114)))))
-                .addContainerGap(48, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(labelInstruction, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(64, 64, 64)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buttonRun)
+                            .addComponent(buttonSingleStep)
+                            .addComponent(buttonIPL)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(31, 31, 31)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(buttonIPL, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(buttonHalt, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(31, 31, 31)
-                                .addComponent(buttonRun, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(buttonLoadProgram1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(buttonSingleStep, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(buttonLoadProgram2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(12, 12, 12)
+                        .addGap(48, 48, 48)
+                        .addComponent(labelInstruction, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -329,12 +305,12 @@ public class CISCGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
 
-    /**
-	 * Load instruction from user interface.
-	 * @return A boolean indicating if the loading succeed. 
-	 */
-    private boolean loadUserInstruction()
-    {
+    private void buttonSingleStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSingleStepActionPerformed
+    	LOG.info("Simulator perform singlestep");
+    	if(simu.isPowerOff()==true) {
+    		textArea.append("[GUI] Simulator is not turned on, push the IPL button\n");
+    		return;
+    	}
     	String instructions=textFieldInstruction.getText();
     	instructions=instructions.trim();
     	if(instructions.length()>0)
@@ -342,114 +318,80 @@ public class CISCGUI extends javax.swing.JFrame {
 	    	String [] arrInst=instructions.split("\n");
 	    	if(simu.setUserCode(arrInst)==false)
 	    	{
-	    		printLog("[WARNING] Input instruction is not valid");
-	    		printLog(simu.getMessage());
-	    		return false;
+	    		textArea.append("Input instruction is not valid\n");
+	    		return;
 	    	}	
-	    	printLog(simu.getMessage());
 	    	textFieldInstruction.setText("");
     	}
-    	return true;
-    }
-
-
-    /**
-	 * Perform singlestep process.
-	 */
-    private void buttonSingleStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSingleStepActionPerformed
-    	printLog("[NOTICE] Simulator perform singlestep");
-    	if(simu.isPowerOff()==true) {
-    		printLog("[NOTICE] Simulator is not turned on, push the IPL button");
-    		return;
-    	}
-    	if(loadUserInstruction()==false)
-    		return;
     	simu.singleStep();
-    	//printLog(simu.getMessage());
+    	textArea.append(simu.getMessage()+"\n");
     }//GEN-LAST:event_buttonSingleStepActionPerformed
 
-    /**
-	 * Perform halt process.
-	 */
-    private void haltProcess()
-    {
-		simu.setStop();
-		try {
-			runThread.join();
-			printLog("[NOTICE] Simulator halted");
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return;
-    }
-    /**
-	 * Perform run process.
-	 */
+    
     private void buttonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRunActionPerformed
+    	LOG.info("Simulator starts to run");
     	if(simu.isPowerOff()==true) {
-    		printLog("[NOTICE] Simulator is not turned on, push the IPL button");
+    		textArea.append("[GUI] Simulator is not turned on, push the IPL button\n");
     		return;
     	}
-    	if(simu.isRun()==true)
+    	String instructions=textFieldInstruction.getText();
+    	instructions=instructions.trim();
+    	if(instructions.length()>0)
     	{
-    		haltProcess();
-    		return;
+	    	String [] arrInst=instructions.split("\n");
+
+	    	if(simu.setUserCode(arrInst)==false)
+	    	{
+	    		textArea.append("Input instruction is not valid\n");
+	    		return;
+	    	}else {
+	    		textArea.append("Store user instruction into Memory["+memory.getUserMemoryLocation()+"]\n");
+	    		textArea.append(instructions+"\n");
+	    	}
+	    	textFieldInstruction.setText("");
     	}
-    	printLog("[NOTICE] Simulator starts to run");
-    	
-    	if(loadUserInstruction()==false)
-    		return;
-    	
-    	runThread= new Thread(simu,"Run");
-    	runThread.start();
-    	//simu.run();
+    	simu.run();
+    	textArea.append(simu.getMessage()+"\n");
     }//GEN-LAST:event_buttonRunActionPerformed
 
-    public void printLog(String log)
-    {
-    	printLog(log,false);    	
-    }
-    
-    public void printLog(String log,boolean isOnlyDisplay)
-    {
-    	String message=log+"\n";
-    	textArea.append(message);
-        textArea.setCaretPosition(textArea.getDocument().getLength() - 1);
-
-    	if(isOnlyDisplay==false)
-    		LOG.info(message);
-    }
-
-    /**
-	 * Perform IPL process. if the simulator has turned on, the simulator will be turned off, otherwise it will be turned on.
-	 */
     private void buttonIPLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonIPLActionPerformed
-    	if(simu.isPowerOff()==true)
+    	if(simu.getState()==CISCSimulator.StateType.POWEROFF)
     	{
-    		printLog("[NOTICE] Simulator is turned on");
-	    	simu.initProcessor();
-	    	printLog(simu.getMessage());
+    		LOG.info("Simulator is turned on");
+	    	boolean resultInit=simu.initProcessor();
+	        if(!resultInit) {
+	            LOG.severe("Failed to init processor");
+	            return;
+	        }
     	}else {
     		simu.powerOff();
-    		printLog("[NOTICE] Simulator is turned off");
+    		LOG.info("Simulator is turned off");
             
     	}
     }//GEN-LAST:event_buttonIPLActionPerformed
 
-    /**
-	 * Load registers' value from the UI and save into the simulator.  
-	 */
+    private void textFieldR0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldR0ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textFieldR0ActionPerformed
+
+    private void textFieldIX1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldIX1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textFieldIX1ActionPerformed
+
+    private void textFieldPCActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldPCActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_textFieldPCActionPerformed
+
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
     	
     	if(simu.isPowerOff()==true) {
-    		printLog("[NOTICE] Simulator is not turned on, push the IPL button");
+    		textArea.append("[GUI] Simulator is not turned on, push the IPL button\n");
     		return;
     	}
     	
     	String message="";
     	try {
-    	simu.loadRegister(
+    	simu.saveRegister(
     			Long.valueOf(textFieldR0.getText()),
     			Long.valueOf(textFieldR1.getText()),
     			Long.valueOf(textFieldR2.getText()),
@@ -465,41 +407,30 @@ public class CISCGUI extends javax.swing.JFrame {
     			Long.valueOf(textFieldMFR.getText()));
     	}catch(NumberFormatException e)
     	{
-    		message="[NOTICE] Input number is not valid\n";
+    		message="[GUI] Input number is not valid\n";
     	}
-    	printLog(message+"[NOTICE] "+simu.getMessage());
+    	textArea.append(message+simu.getMessage()+"\n");
     }//GEN-LAST:event_buttonSaveActionPerformed
 
-    private void buttonHaltActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        haltProcess();
-    }                                          
-
-    private void buttonLoadProgram2ActionPerformed(java.awt.event.ActionEvent evt) {                                                   
-        // TODO add your handling code here:
-    }  
-    /**
-	 * Update display of UI  
-	 */
     public void updateDisplay()
     {
-    	textFieldR0.setText(Long.toString(cpu.getGPR(0).getLong()));
-    	textFieldR1.setText(Long.toString(cpu.getGPR(1).getLong()));
-    	textFieldR2.setText(Long.toString(cpu.getGPR(2).getLong()));
-    	textFieldR3.setText(Long.toString(cpu.getGPR(3).getLong()));
-    	textFieldIX1.setText(Long.toString(cpu.getIX(1).getLong()));
-    	textFieldIX2.setText(Long.toString(cpu.getIX(2).getLong()));
-    	textFieldIX3.setText(Long.toString(cpu.getIX(3).getLong()));
-    	textFieldPC.setText(Long.toString(cpu.getPC().getLong()));
-    	textFieldCC.setText(Long.toString(cpu.getCC().getLong()));
-    	textFieldMAR.setText(Long.toString(cpu.getMAR().getLong()));
-    	textFieldMBR.setText(Long.toString(cpu.getMBR().getLong()));
-    	textFieldMFR.setText(Long.toString(cpu.getMFR().getLong()));
-    	textFieldIR.setText(Long.toString(cpu.getIR().getLong()));
-    	textFieldPC.setText(Long.toString(cpu.getPC().getLong()));
-    	printLog(simu.getMessage());
+    	textFieldR0.setText(Long.toString(cpu.GPR[0].getLong()));
+    	textFieldR1.setText(Long.toString(cpu.GPR[1].getLong()));
+    	textFieldR2.setText(Long.toString(cpu.GPR[2].getLong()));
+    	textFieldR3.setText(Long.toString(cpu.GPR[3].getLong()));
+    	textFieldIX1.setText(Long.toString(cpu.IX[1].getLong()));
+    	textFieldIX2.setText(Long.toString(cpu.IX[2].getLong()));
+    	textFieldIX3.setText(Long.toString(cpu.IX[3].getLong()));
+    	textFieldPC.setText(Long.toString(cpu.PC.getLong()));
+    	textFieldCC.setText(Long.toString(cpu.CC.getLong()));
+    	textFieldMAR.setText(Long.toString(cpu.MAR.getLong()));
+    	textFieldMBR.setText(Long.toString(cpu.MBR.getLong()));
+    	textFieldMFR.setText(Long.toString(cpu.MFR.getLong()));
+    	textFieldIR.setText(Long.toString(cpu.IR.getLong()));
+    	textFieldPC.setText(Long.toString(cpu.PC.getLong()));
+    	
     }
     /**
-     * main function
      * @param args the command line arguments
      */
     public static void main(String args[]) {
@@ -539,9 +470,6 @@ public class CISCGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton buttonHalt;
-    private javax.swing.JButton buttonLoadProgram1;
-    private javax.swing.JButton buttonLoadProgram2;
     private javax.swing.JButton buttonIPL;
     private javax.swing.JButton buttonRun;
     private javax.swing.JButton buttonSave;

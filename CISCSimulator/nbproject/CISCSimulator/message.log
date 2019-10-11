@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="x-windows-949" standalone="no"?>
+<!DOCTYPE log SYSTEM "logger.dtd">
+<log>
+<record>
+  <date>2019-09-20T05:19:42.615567400Z</date>
+  <millis>1568956782615</millis>
+  <nanos>567400</nanos>
+  <sequence>0</sequence>
+  <logger>global</logger>
+  <level>INFO</level>
+  <class>CISCSimulator</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>12345678</message>
+</record>
+<record>
+  <date>2019-09-20T05:19:42.630527900Z</date>
+  <millis>1568956782630</millis>
+  <nanos>527900</nanos>
+  <sequence>1</sequence>
+  <logger>global</logger>
+  <level>INFO</level>
+  <class>CISCSimulator</class>
+  <method>main</method>
+  <thread>1</thread>
+  <message>Simulator Ready</message>
+</record>
+</log>

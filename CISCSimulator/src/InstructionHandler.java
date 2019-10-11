@@ -17,10 +17,17 @@ public class InstructionHandler{
 	private TransInstHandler trInst;
 	
 	protected int opcode=0;
-	protected int reg=0;
-	protected int ireg=0;
+	protected int reg=0;		// register
+	protected int ireg=0;		// inded register
 	protected int flag=0;
 	protected int address=0;
+	
+	protected int al=0;			// 0 is arithmetic, 0 is logical
+	protected int lr=0;			// 0 is right, 1 is left 
+	protected int rx=0;			// rx
+	protected int ry=0;			// ry
+	protected int count=0;		// count
+	protected int trapcode=0;	// trapcode
 	
 	protected String message=new String();
 	
@@ -51,10 +58,15 @@ public class InstructionHandler{
 	{
 		this.ir.copy(ir);
         opcode=ir.subSet(10,16).getInt();
-		reg=ir.subSet(8,10).getInt();
-		ireg=ir.subSet(6,8).getInt();
+		rx=reg=ir.subSet(8,10).getInt();
+		ry=ireg=ir.subSet(6,8).getInt();
 		flag=ir.subSet(5,6).getInt();
 		address=ir.subSet(0,5).getInt();
+		
+		al=ir.subSet(7,8).getInt();
+		lr=ir.subSet(6,7).getInt();
+		trapcode=count=ir.subSet(12,15).getInt();
+		
 		return true;
 	}
 	
@@ -116,11 +128,12 @@ public class InstructionHandler{
 	public boolean execute() throws IOException
 	{
 		parseIR(cpu.getIR());
+		showInstruction();
 		int opcode=this.opcode;
 		InstructionHandler handler=null;
 		Instruction inst=InstructionSet.getInstruction(opcode);
 		if(inst==null) {
-			message="Unknown Instruction(OPCODE): "+opcode;
+			message="Unknown Instruction(OPCODE:"+opcode+")\n";
 			LOG.warning(message);
 			return false;
 		}
@@ -143,7 +156,7 @@ public class InstructionHandler{
 		}
 		if(handler==null)
 		{
-			message="Failed to process instruction(OPCODE): "+opcode;
+			message="Failed to process instruction(OPCODE:"+opcode+")\n";
 			LOG.warning(message);
 			return false;
 		}
@@ -159,7 +172,7 @@ public class InstructionHandler{
 	{
 		System.out.println("### IR STATUS START ###");
 		System.out.println("[IR] "+ir);
-        System.out.println("[OPCODE] "+opcode+" [GPR] "+reg+" [XR] "+ireg+" [FLAG] "+flag+" [ADDR] "+address);
+        System.out.println("[OPCODE] "+opcode+" [GPR] "+reg+" [XR] "+ireg+" [ADDR] "+address+" [FLAG] "+flag+" [AL] "+al+" [LR]"+lr);
 		System.out.println("### IR STATUS END ###");		
 	}
 
@@ -174,209 +187,17 @@ public class InstructionHandler{
         buffer.append("\n[OPCODE] "+opcode+" [GPR] "+reg+" [XR] "+ireg+" [FLAG] "+flag+" [ADDR] "+address);
         return buffer.toString();
 	}
-
-	public int getOPCode(WORD ir)
-	{
-		return ir.subSet(10,16).getInt();
-	}
 	
-	public int getOPCode()
-	{
-		return opcode;
-	}
-	public int getReg()
-	{
-		return reg;
-		
-	}
-	public int getIReg()
-	{
-		return ireg;
-	}
-	public int getAddress()
-	{
-		return address;
-	}
-	public int getFlag()
-	{
-		return flag;
-	}
-		
-	
-
-	/**
-	 * get assemble code from current instruction
-	 * @return An assemble code string.
-	 */
-	public String getAsmCode()
-	{	
-		return getAsmCode(this.ir);
-	}
-	
-	
-	/**
-	 * get assemble code from specific instruction
-	 * @return An assemble code string.
-	 */
-	public static String getAsmCode(WORD ir)
-	{
-		int opcode=ir.subSet(10,16).getInt();
-        int reg=ir.subSet(8,10).getInt();
-        int ireg=ir.subSet(6,8).getInt();
-        int flag=ir.subSet(5,6).getInt();
-        int address=ir.subSet(0,5).getInt();
-        
-		StringBuffer buffer=new StringBuffer();
-		Instruction inst=InstructionSet.getInstruction(opcode);
-		if (inst==null) return null;
-		buffer.append(inst.getName()+" ");
-		if(inst.isReg()==true)
-			buffer.append(reg+",");
-		if(inst.isIReg()==true)
-			buffer.append(ireg+",");
-		if(inst.isAddr()==true)
-			buffer.append(address+",");
-		buffer.setLength(buffer.length()-1);
-		if(inst.isFlag()==true && flag==1)
-			buffer.append(",I");
-		
-		return buffer.toString();
-	}
-	
-	
-	/**
-	 * Convert the input instruction into a machine code.
-	 * @return the machine code in WORD format.
-	 */
-	public WORD getBinCode(String asmCode)
-	{
-		message="";
-		
-		WORD result=new WORD();
-		
-		int opcode=0;
-		int reg=0;
-		int ireg=0;
-		int flag=0;
-		int address=0;
-		
-		asmCode=asmCode.trim().toUpperCase();
-		String[] arrStr=asmCode.split(" ",2);
-		Instruction inst=InstructionSet.getInstruction(arrStr[0]);
-		if(inst==null) {
-			message="Unsupported opcode : "+arrStr[0]+")\n";
-			LOG.warning(message);
-			return null;
-		}
-		opcode=inst.getCode();
-		
-		if(arrStr.length<2)
-		{
-			message=arrStr[0]+" accepts "+inst.getParamLength()+" parameters.\nInput parameters are not matched - "+asmCode+"\n";
-			LOG.warning(message);
-			return null;
-		}
-		
-		String lastParam=arrStr[1];
-		if(lastParam.endsWith(",I"))
-		{
-			arrStr[1]=lastParam.substring(0,lastParam.length()-2);
-			flag=1;
-		}
-		
-		String[] arrParam=arrStr[1].split(",",3);
-		int paramLength=arrParam.length;
-		if(paramLength!=inst.getParamLength())
-		{
-			message=arrStr[0]+" accepts "+inst.getParamLength()+" parameters.\nInput parameters are not matched - "+asmCode+"\n";
-			LOG.warning(message);			
-			return null;
-		}
-		for(int i=0;i<paramLength;i++)
-			arrParam[i]=arrParam[i].trim();
-		
-		try {
-		if(inst.isReg()==false)
-		{
-			
-			ireg=Integer.valueOf(arrParam[0]);
-			address=Integer.valueOf(arrParam[1]);
-		}else {
-			reg=Integer.valueOf(arrParam[0]);
-			ireg=Integer.valueOf(arrParam[1]);
-			address=Integer.valueOf(arrParam[2]);
-		}
-		}catch(java.lang.NumberFormatException e)
-		{
-			message="Parameter must be number : "+asmCode+"\n";
-			LOG.warning(message);			
-			return null;
-		}
-		// IX range limitation for LDX, STX
-		if(opcode==InstructionSet.LDX || opcode==InstructionSet.STX) 
-		{
-			if(ireg<1 || ireg>3)
-			{
-				message="Index Register must be between 1-3 : "+asmCode+"\n";
-				LOG.warning(message);			
-				return null;
-			}
-		}
-			
-		GBitSet bitOP=new GBitSet(6);
-		GBitSet bitReg=new GBitSet(2);
-		GBitSet bitIReg=new GBitSet(2);
-		GBitSet bitAddress=new GBitSet(5);
-		try {
-			bitOP.setLong(opcode);	
-			bitReg.setLong(reg);
-			bitIReg.setLong(ireg);
-			bitAddress.setLong(address);
-		}catch(IllegalArgumentException e)
-		{
-			message=e.getMessage()+" : "+asmCode+"\n";
-			LOG.warning(message);			
-			return null;
-		}
-
-		result.setLong(address);	
-		
-		int index=15;
-		for(int i=bitOP.length-1;i>=0;i--)
-		{
-			if (bitOP.get(i)==true) 
-				result.set(index);
-			index--;
-		}
-		for(int i=bitReg.length-1;i>=0;i--)
-		{
-			if (bitReg.get(i)==true) 
-				result.set(index);
-			index--;
-		}
-		
-		for(int i=bitIReg.length-1;i>=0;i--)
-		{
-			if (bitIReg.get(i)==true) 
-				result.set(index);
-			index--;
-		}
-
-		if(flag==1)
-		{
-			result.set(index);	
-		}
-		index--;
-			
-		return result;
-	}
+	public static int getOPCode(WORD ir){return ir.subSet(10,16).getInt();}
+	public int getOPCode(){ return opcode;}
+	public int getReg(){ return reg;}
+	public int getIReg(){ return ireg;}
+	public int getAddress(){ return address;}
+	public int getFlag(){ return flag;}
 	
 	/**
 	 * Return result string of operation.
 	 * @return result string of operation.
 	 */
-	public String getMessage()
-	{
-		return message;
-	}
+	public String getMessage(){ return message;}
 }

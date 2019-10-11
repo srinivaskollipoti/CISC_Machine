@@ -60,7 +60,7 @@ public class ROM {
 			readBytes[0]=allBytes[i*2];
 			readBytes[1]=allBytes[i*2+1];
 			WORD ir=new WORD(WORD.valueOf(readBytes));
-			String asmCode=InstructionHandler.getAsmCode(ir);
+			String asmCode=Translator.getAsmCode(ir);
 			if (asmCode==null)
 			{
 				message="Failed to parse rom file\n[+] Unknown instruction ["+ir.getString()+"]";

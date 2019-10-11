@@ -28,8 +28,8 @@ public class CPU {
 	private WORD MBR=new WORD();			/// Memory Buffer Register
 	private WORD MFR=new WORD();			/// Machine Fault Register
 	
-	private GBitSet GPR[] = new GBitSet[4];	/// General Purpose Register
-	private GBitSet IX[] = new GBitSet[4];	/// Index Register
+	private WORD GPR[] = new WORD[4];	/// General Purpose Register
+	private WORD IX[] = new WORD[4];	/// Index Register
 	
 	private GBitSet CC=new GBitSet(4);		/// Condition Code
 	private WORD IR=new WORD();				/// Instruction Register
@@ -118,10 +118,10 @@ public class CPU {
 		IR.clear();
 		
 		for (int i =0; i<4;i++)
-			GPR[i]=new GBitSet(16);
+			GPR[i]=new WORD();
 		for(GBitSet register:GPR) register.clear();
 		for (int i =0; i<4;i++)
-			IX[i]=new GBitSet(16);
+			IX[i]=new WORD();
 		for(GBitSet register:IX) register.clear();
 		
 		PC.setLong(Memory.BOOT_MEMORY_START);
@@ -198,7 +198,7 @@ public class CPU {
 				message="[ERROR] "+message+"Failed to execute code\n";
 				result=false;
 			}
-			message="[EXECUTE] "+ih.getAsmCode()+"\n"+ih.getString()+"\n"+message;
+			message="[EXECUTE] "+Translator.getAsmCode(IR)+"\n"+message;
 			state=CPUState.LOAD_MAR;
 			break;
 		default:
@@ -224,7 +224,6 @@ public class CPU {
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	private boolean execute() {
-		ih.showInstruction();
 		try {
 			ih.execute();
 		} catch (IOException e) {
@@ -253,7 +252,8 @@ public class CPU {
 		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
 		for(String asmCode:arrAsmCode)
 		{
-			WORD binCode=ih.getBinCode(asmCode);
+			WORD binCode=Translator.getBinCode(asmCode);
+			message=Translator.getMessage();
 			if(binCode==null) {
 				message="Failed to parse boot program\n"+asmCode;
 				LOG.warning(message);
@@ -292,9 +292,9 @@ public class CPU {
 		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
 		for(int i=0; i<arrAsmCode.length;i++) {
 			arrAsmCode[i]=arrAsmCode[i].toUpperCase();
-			WORD binCode=ih.getBinCode(arrAsmCode[i]);
+			WORD binCode=Translator.getBinCode(arrAsmCode[i]);
 			if(binCode==null) {
-				message=ih.getMessage()+"Failed to parse user program : "+arrAsmCode[i];
+				message=Translator.getMessage()+"Failed to parse user instruction : "+arrAsmCode[i]+"\n";
 				LOG.warning(message);
 				return false;
 			}
@@ -414,8 +414,8 @@ public class CPU {
 
 	public String getMessage(){ return message;}
 
-	public GBitSet getGPR(int i) { return GPR[i]; }
-	public GBitSet getIX(int i) { return IX[i]; }
+	public WORD getGPR(int i) { return GPR[i]; }
+	public WORD getIX(int i) { return IX[i]; }
 	public GBitSet getPC() { return PC; }
 	public boolean setPC(long value) {PC.setLong(value); return true;}
 	public GBitSet getCC() { return CC; }
@@ -425,4 +425,6 @@ public class CPU {
 	public WORD getIR() { return IR; }
 	
 	public Memory getMemory() {	return this.memory; }
+
+	public ALU getALU() { return alu;}
 }

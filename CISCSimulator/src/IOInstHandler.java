@@ -35,6 +35,8 @@ public class IOInstHandler extends InstructionHandler {
 	}
 	
 	public boolean execute() throws IOException{
+		LOG.info("Execute Io Instruction\n");
+
 		parseIR(cpu.getIR());
 		switch(getOPCode())
 		{
