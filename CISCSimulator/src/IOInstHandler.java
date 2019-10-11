@@ -77,7 +77,7 @@ public class IOInstHandler extends InstructionHandler {
 	private boolean executeOUT() {	
 		WORD param=new WORD();
 		param.copy(cpu.getGPR(reg));
-		content = param.getLong();
+		content = param.getLong(); //use content.toString() to convert the content into string to show on device
 		return true;
 	}
 	
