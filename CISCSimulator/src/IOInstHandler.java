@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
-import CPU.CPUState;
+//import CPU.CPUState;
 
 /**
  *  perform IO instruction and Miscellaneous Instruction
@@ -75,6 +75,7 @@ public class IOInstHandler extends InstructionHandler {
 	}
 	
 	private boolean executeOUT() {	
+		long devId = address;
 		WORD param=new WORD();
 		param.copy(cpu.getGPR(reg));
 		content = param.getLong(); //use content.toString() to convert the content into string to show on device
@@ -82,6 +83,7 @@ public class IOInstHandler extends InstructionHandler {
 	}
 	
 	private boolean executeHLT() {	
+		
 		return true;
 	}
 	// @annie - implement function HLT, IN, OUT
