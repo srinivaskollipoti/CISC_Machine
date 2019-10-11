@@ -338,8 +338,8 @@ class InstructionSet
 			put(JZ,new Instruction("JZ",JZ,3,true,true,true,false,false,false,true,Instruction.InstType.TRANS_INST)); 
 			put(JNE,new Instruction("JNE",JNE,3,true,true,true,false,false,false,true,Instruction.InstType.TRANS_INST)); 
 			put(JCC,new Instruction("JCC",JCC,3,true,true,true,false,false,false,true,Instruction.InstType.TRANS_INST)); 
-			put(JMA,new Instruction("JMA",JMA,3,true,true,true,false,false,false,true,Instruction.InstType.TRANS_INST)); 
-			put(JSR,new Instruction("JSR",JSR,3,true,true,true,false,false,false,true,Instruction.InstType.TRANS_INST)); 
+			put(JMA,new Instruction("JMA",JMA,2,false,true,true,false,false,false,true,Instruction.InstType.TRANS_INST)); 
+			put(JSR,new Instruction("JSR",JSR,2,false,true,true,false,false,false,true,Instruction.InstType.TRANS_INST)); 
 			put(RFS,new Instruction("RFS",RFS,1,false,false,true,false,false,false,false,Instruction.InstType.TRANS_INST)); 
 			put(SOB,new Instruction("SOB",SOB,3,true,true,true,false,false,false,true,Instruction.InstType.TRANS_INST)); 
 			put(JGE,new Instruction("JGE",JGE,3,true,true,true,false,false,false,true,Instruction.InstType.TRANS_INST)); 
