@@ -53,6 +53,15 @@ public class GBitSet extends java.util.BitSet {
 	{
 		this.minValue=minValue;
 	}
+	
+	/**
+	 * Set maximum value of a bit set.
+	 * @param minValue minimum value.
+	 */
+	public void setMaxValue(int maxValue)
+	{
+		this.maxValue=maxValue;
+	}
 
 	/**
 	 * Return a subset of this bit set.

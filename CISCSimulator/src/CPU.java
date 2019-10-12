@@ -15,8 +15,9 @@ public class CPU {
 	
 	private final static Logger LOG = Logger.getGlobal();
 	private Memory memory;
-	private Cache cache;
+	private IOC ioc;
 	
+	private Cache cache;
 	private CPUState state=CPUState.LOAD_MAR; 	
 	// Need to consider Instruction Cycle Code for pipeline  
 	// IF-ID-EX-MEM-WB
@@ -36,6 +37,7 @@ public class CPU {
 	
 	private ALU alu;	/// Arithmetic Logical Unit
 	
+	private int intID;	// interrupt id
 	private String message=new String(); // A text indicating current state
 	
 	/**
@@ -47,7 +49,7 @@ public class CPU {
 	 * INTERRUPT = phase indicating interruption
 	 * NO_INST = phase indicating no more instruction
 	 */
-	enum CPUState
+	public enum CPUState
 	{
 		LOAD_MAR("LOAD MAR"), LOAD_MBR("LOAD MBR"), LOAD_IR("LOAD IR"), 
 		EXECUTE("EXECUTE"), INTERRUPT("Interrupt"), NO_INST("NO INSTRUCTION");
@@ -65,9 +67,12 @@ public class CPU {
 	public CPU(CISCSimulator simulator)
 	{
 		this.memory=simulator.getMemory();
+		this.ioc=simulator.getIOC();
+		
 		cache=new Cache();
 		ih=new InstructionHandler(this);
 		ih.init();
+		alu=new ALU(this);
 	}
 	
 	/**
@@ -198,8 +203,11 @@ public class CPU {
 				message="[ERROR] "+message+"Failed to execute code\n";
 				result=false;
 			}
-			message="[EXECUTE] "+Translator.getAsmCode(IR)+"\n"+message;
-			state=CPUState.LOAD_MAR;
+			if(isInterrupt()==false) {
+				message="[EXECUTE] "+Translator.getAsmCode(IR)+"\n"+message;
+				state=CPUState.LOAD_MAR;				
+			}
+			// in case of interrupt, current instruction is executed again
 			break;
 		default:
 			state=CPUState.LOAD_MAR;
@@ -231,9 +239,15 @@ public class CPU {
 			LOG.severe(message);
 			return false;
 		}
+		message=ih.getMessage();
 		return true;
 	}
 	
+
+	public void setInterrupt() { this.state=CPUState.INTERRUPT; }
+	public boolean isInterrupt() { return this.state==CPUState.INTERRUPT; }
+	public void setResume() { this.state=CPUState.EXECUTE; }
+
 	/**
 	 * Load instructions from the rom.txt file.
 	 * @return On case success, true is returned, otherwise false is returned.
@@ -369,6 +383,9 @@ public class CPU {
 	 * @param value
 	 */
 	public void storeIntoCache(long address, WORD value) {
+	
+		LOG.info(" "+address+" "+value);
+		
 		try {
 			storeMemory(address, value);
 		} catch (IOException e) {
@@ -397,9 +414,29 @@ public class CPU {
 	public boolean storeMemory(long address, WORD value) throws IOException
 	{
 		// need to implement to store cache and synchronize between cache and memory
-	    cache.store(address,value);
+	    //cache.store(address,value);
+	    //storeIntoCache(address,value);
+		LOG.info(value+" "+address+"\n");
 		boolean result=true;
 		result= memory.store(address, value,this);
+		return result;
+	}
+
+	/**
+	 * @param reg
+	 * @return
+	 */
+	public boolean setOutputChar(int devID,char out) {
+		ioc.appendIOBuffer(devID, out);
+		return false;
+	}
+	
+	public char getInputChar(int devID)
+	{
+		char result=0;
+		if(devID==IOC.KEYBOARD && ioc.isIOBuffer(devID)==false)
+			setInterrupt();
+		result=ioc.getIOBuffer(devID);
 		return result;
 	}
 	
@@ -422,8 +459,10 @@ public class CPU {
 	public WORD getMBR() { return MBR; }
 	public WORD getMFR() { return MFR; }	
 	public WORD getIR() { return IR; }
-	
+	public CPUState getState() { return state; }
+
 	public Memory getMemory() {	return this.memory; }
 
 	public ALU getALU() { return alu;}
+
 }

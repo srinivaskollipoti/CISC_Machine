@@ -1,3 +1,5 @@
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.logging.Logger;
 
 /*
@@ -171,6 +173,32 @@ public class CISCGUI extends javax.swing.JFrame {
         textAreaSystemIN.setColumns(20);
         textAreaSystemIN.setRows(5);
         jScrollPane3.setViewportView(textAreaSystemIN);
+        textAreaSystemIN.addKeyListener(new KeyListener(){
+            
+			@Override
+			public void keyTyped(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				String text = textAreaSystemIN.getText();
+	            if(text.endsWith("\n")==true)
+	            {
+	            	printLog("[INFO] User inputs a text : "+text);
+	            	simu.inputUserText(text.substring(0,text.length()-1));
+	            	textAreaSystemIN.setText("");
+	            }
+			}
+            });
+    	
 
         labelSystemIN.setText("SystemIN");
 
@@ -440,6 +468,7 @@ public class CISCGUI extends javax.swing.JFrame {
     		haltProcess();
     		return;
     	}
+    	
     	printLog("[NOTICE] Simulator starts to run");
     	
     	if(loadUserInstruction()==false)
@@ -542,6 +571,11 @@ public class CISCGUI extends javax.swing.JFrame {
     	textFieldPC.setText(Long.toString(cpu.getPC().getLong()));
     	printLog(simu.getMessage());
     }
+    
+    public void printScreen(String text)
+    {
+    	textareaSystemOUT.append(text);
+    }
     /**
      * main function
      * @param args the command line arguments
@@ -630,4 +664,14 @@ public class CISCGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     // End of variables declaration//GEN-END:variables
+	/**
+	 * 
+	 */
+	public void getUserInput() {
+		// all object are disabled except user input area
+		// focus on user input area
+		// if user input enter key, all object are enabled
+		
+		
+	}
 }

@@ -51,8 +51,11 @@ public class CISCSimulator implements Runnable{
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		controller=new CPU(this);
+		ioc=new IOC(this);
 		this.panel=panel;
+		
+		// cpu must be initialized late
+		controller=new CPU(this);
 		state = StateType.POWEROFF;
 		try {
 			System.setProperty("java.util.logging.SimpleFormatter.format",
@@ -75,6 +78,7 @@ public class CISCSimulator implements Runnable{
 	public boolean initProcessor()
 	{
 		message="";
+		ioc.init();
 		if(!controller.init())
 		{
 			message=controller.getMessage();
@@ -113,7 +117,11 @@ public class CISCSimulator implements Runnable{
 	}
 	
 	
-	
+	public void inputUserText(String text)
+	{
+		ioc.appendIOBuffer(0, text);
+		controller.setResume();
+	}
 	
 	
 	/**
@@ -131,17 +139,34 @@ public class CISCSimulator implements Runnable{
 		}
 		isRun=true;
 		do{
-			try {
-				Thread.sleep(200);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			singleStep();
-			//buffer.append(message+"\n");
 			if(isRun==false)
-			{
 				break;
+			
+			long sleep=200;
+			if(controller.isInterrupt()==true)
+			{
+				panel.printLog("Waiting user input for IN instruction..");
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				continue;
+			}
+			
+			singleStep();
+
+			// one clock is 200ms
+			try {
+				Thread.sleep(sleep);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}			
+			// checking io buffer for printer 
+			while(ioc.isIOBuffer(IOC.PRINTER)==true)
+			{
+				String output=Character.toString(ioc.getIOBuffer(IOC.PRINTER));
+				panel.printScreen(output);
 			}
 		}while(state==StateType.READY);
 		message=buffer.toString();
@@ -176,7 +201,7 @@ public class CISCSimulator implements Runnable{
 		state=StateType.RUNNING;
 		boolean result=controller.clock();
 		message=message+controller.getMessage();
-		if(result==true)
+		if(result==true && controller.isInterrupt()==false)
 			message=message+memory.getString();
 		if(controller.isCurrentInstruction()==false)
 		{
@@ -267,30 +292,13 @@ public class CISCSimulator implements Runnable{
 	 * check if the simulator is turned off
 	 * @return A boolean indicating if the simulator is turned off.
 	 */
-	public boolean isPowerOff()
-	{
-		return state==StateType.POWEROFF;
-	}
+	public boolean isPowerOff(){ return state==StateType.POWEROFF; }
+	public boolean isRun() { return isRun; }
 	
-	public CPU getCPU()
-	{	
-		return controller;
-	}
-	
-	public Memory getMemory()
-	{
-		return memory;
-	}
-	
-	public StateType getState() {
-		return state;
-	}
+	public CPU getCPU(){ return controller; }
+	public Memory getMemory(){ return memory;}
+	public IOC getIOC(){ return ioc;}
+	public StateType getState() { return state; }
+	public String getMessage() { return message; }
 
-	public String getMessage() {
-		return message;
-	}
-
-	public boolean isRun() {
-		return isRun;
-	}
 }
