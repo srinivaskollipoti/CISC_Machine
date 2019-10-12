@@ -220,7 +220,7 @@ public class CPU {
 	 * Increase program counter
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
-	private boolean increasePC() {
+	public boolean increasePC() {
 		long result=PC.getLong()+1;
 		PC.setLong(result);
 		return true;
@@ -454,6 +454,7 @@ public class CPU {
 	public WORD getGPR(int i) { return GPR[i]; }
 	public WORD getIX(int i) { return IX[i]; }
 	public GBitSet getPC() { return PC; }
+	public boolean setPC(long value) {PC.setLong(value); return true;}
 	public GBitSet getCC() { return CC; }
 	public WORD getMAR() { return MAR; }
 	public WORD getMBR() { return MBR; }
