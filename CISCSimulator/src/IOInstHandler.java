@@ -20,6 +20,8 @@ public class IOInstHandler extends InstructionHandler {
 	 * @param cpu
 	 */
 	long content;
+	int counter = 0;
+	int d = 'Z';
 	public IOInstHandler(CPU cpu) {
 		super(cpu);
 		// TODO Auto-generated constructor stub
@@ -68,20 +70,27 @@ public class IOInstHandler extends InstructionHandler {
 	 * 
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
-	private boolean executeIN() throws FileNotFoundException, NumberFormatException{	
+	private boolean executeIN() throws FileNotFoundException{	
 		long devId = address;
 		if(devId == 0) {
 			cpu.getGPR(reg).setLong(content);
 		}else if(devId == 1) {
-			return false;
+			System.out.println("Printer cannot input.");
 		}else if(devId == 2) {
 			//read from reader.txt
 			File file = new File("reader.txt");
 			Scanner sc = new Scanner(file);
-			sc.useDelimiter("\\Z");
-		    String in = sc.nextLine();
-		    content = Long.parseLong(in);
-		    cpu.getGPR(reg).setLong(content);
+			
+			try {
+				 char in = sc.next().charAt(counter);
+				 counter++;
+				 content = (int) in;
+				 cpu.getGPR(reg).setLong(content);
+			} catch (IndexOutOfBoundsException e) {
+				counter = 0;
+				System.out.println("reached the end.");
+				
+			}
 		}else {
 			//content load from register
 			cpu.getGPR(reg).setLong(content);
@@ -93,22 +102,17 @@ public class IOInstHandler extends InstructionHandler {
 	private boolean executeOUT() {	
 		long devId = address;
 		if(devId == 0 || devId == 2) {
-			return false; //keyboard and card reader cannot use out
+			System.out.println("This device cannot output");; //keyboard and card reader cannot use out
+		}else {
+			WORD param=new WORD();
+			param.copy(cpu.getGPR(reg));
+			content = param.getLong(); 
+			//Assign the content to device.
+			//System.out.println(Long.toString(content));
 		}
 		
-		WORD param=new WORD();
-		param.copy(cpu.getGPR(reg));
-		//use content.toString() to convert the content into string to show on device
-		content = param.getLong(); 
-		//System.out.println(Long.toString(content));
 		return true;
 	}
 	
-	private boolean executeHLT() {	
-		// HLT: stops running and resume running if other instructions are made
-		return true;
-	}
-	// @annie - implement function HLT, IN, OUT
-
 
 }
