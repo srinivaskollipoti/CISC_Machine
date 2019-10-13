@@ -49,9 +49,10 @@ public class ALU {
 	// temp register
 	
 	/**
+	 * @param cpu 
 	 * 
 	 */
-	public ALU() {
+	public ALU(CPU cpu) {
 		// TODO Auto-generated constructor stub
 	}
 
