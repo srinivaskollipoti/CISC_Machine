@@ -70,6 +70,7 @@ public class Memory {
 	 */
 	private boolean store(int address, WORD input) throws IOException
 	{
+		
 		return store(address,input,false);
 	}
 

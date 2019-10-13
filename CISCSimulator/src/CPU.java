@@ -4,6 +4,8 @@ import java.util.logging.Logger;
 
 
 
+
+
 /**
  * @author cozyu
  * @author youcao  documented by youcao.
@@ -326,13 +328,20 @@ public class CPU {
 	{
 		WORD result=null;
 		
+		LOG.info("" +address);
 		// need to implement to load cache
 		//result = cache.load(address);
+		//result = cache.fetch(address);
+		
+		//LOG.info("adredd" +result);
+		//fetchFromCache(address);
 		//if(result!=null)
 		//	return result;
 		
 		result = memory.load(address,this);
 		//cache.store(result);
+		//storeIntoCache( result,address);
+		LOG.info("" +result);
 		return result;
 	}
 	
@@ -345,21 +354,8 @@ public class CPU {
 	 * @return
 	 */
 	
-	public WORD fetchFromCache(long address) throws IOException {
-		for (Cache.CacheLoad lines : cache.getCacheLines()) { // check every block
-														// whether the tag is
-														// already exist
-			if (address == lines.getMemAddress()) {
-				return lines.getData(); // tag exist, return the data of the
-										// block
-			}
-		}
-		// tag not exist
-		WORD value = loadMemory(address);
-		System.out.println(value);
-		cache.add(address, value);
-		return value;
-	}
+	
+
 
 	/**
 	 * 
@@ -368,21 +364,7 @@ public class CPU {
 	 * @param address
 	 * @param value
 	 */
-	public void storeIntoCache(long address, WORD value) {
-		try {
-			storeMemory(address, value);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		for (Cache.CacheLoad lines : cache.getCacheLines()) { // check every block the
-														// tag is already exist
-			if (address == lines.getMemAddress()) {
-				lines.setData(value); // replace the block
-				return;
-			}
-		}
-		// tag not exist
+	public void storeIntoCache(WORD value,long address) {
 		cache.add(address, value);
 	}
 	/**
