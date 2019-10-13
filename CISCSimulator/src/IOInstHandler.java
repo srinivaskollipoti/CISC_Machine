@@ -19,24 +19,10 @@ public class IOInstHandler extends InstructionHandler {
 	/**
 	 * @param cpu
 	 */
-	long content;
 	int counter = 0;
-	int d = 'Z';
 	public IOInstHandler(CPU cpu) {
 		super(cpu);
 		// TODO Auto-generated constructor stub
-	}
-	
-	/**
-	 * Convert the string into Long type for storage
-	 * @param text The input got from the input textarea in GUI
-	 * @return
-	 */
-	public boolean setInputCode(String text) {
-		String input = text;
-		content = (int) input.charAt(0);
-		
-		return true;
 	}
 	
 	public boolean execute() throws IOException{
@@ -64,35 +50,10 @@ public class IOInstHandler extends InstructionHandler {
 		return true;
 	}
 
-
-	/**
-	 * Example for annie, please remove this function 
-	 * @return On case success, true is returned, otherwise false is returned.
-	 */
-	private boolean executeINExample() {	
-		char input=cpu.getInputChar(address);
-		if(input!=IOC.NONE_INPUT)
-		{
-			message="[+] Input character is "+input+"\n";
-		}
-		return true;
-	}
-
-	/**
-	 * Example for annie, please remove this function 
-	 * @return On case success, true is returned, otherwise false is returned.
-	 */
-	private boolean executeOUTExample() {	
-		char output='1';
-		cpu.setOutputChar(address,output);
-		return true;
-	}
 	
 	private boolean executeIN() throws FileNotFoundException{	
-		long devId = address;
-		if(devId == 0) {
-			cpu.getGPR(reg).setLong(content);
-		}else if(devId == 1) {
+		int devId = address;
+		if(devId == 1) {
 			System.out.println("Printer cannot input.");
 		}else if(devId == 2) {
 			//read from reader.txt
@@ -102,16 +63,19 @@ public class IOInstHandler extends InstructionHandler {
 			try {
 				 char in = sc.next().charAt(counter);
 				 counter++;
-				 content = (int) in;
-				 cpu.getGPR(reg).setLong(content);
+				 cpu.getGPR(reg).setLong((int) in);
 			} catch (IndexOutOfBoundsException e) {
 				counter = 0;
 				System.out.println("reached the end.");
 				
 			}
 		}else {
-			//content load from register
-			cpu.getGPR(reg).setLong(content);
+			char in = cpu.getInputChar(address);
+			cpu.getGPR(reg).setLong(in);
+			if(in!=IOC.NONE_INPUT)
+				{
+					message="[+] Input character is "+in+"\n";
+				}
 		}
 		
 		return true;
@@ -124,9 +88,8 @@ public class IOInstHandler extends InstructionHandler {
 		}else {
 			WORD param=new WORD();
 			param.copy(cpu.getGPR(reg));
-			content = param.getLong(); 
-			//Assign the content to device.
-			//System.out.println(Long.toString(content));
+			char output = (char) param.getLong(); 
+			cpu.setOutputChar(address,output);
 		}
 		
 		return true;
