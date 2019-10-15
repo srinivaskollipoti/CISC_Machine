@@ -151,8 +151,8 @@ public class TransInstHandler extends InstructionHandler {
 	 */
 	private boolean executeJCC() throws IOException {
 		int eAddress = getEAWithoutIX();
-		//if(cpu.getCC().getLong() == 1) cpu.setPC(eAddress);
-		if(reg == 1) cpu.setPC(eAddress);
+		if(cpu.getCC().getLong() == 1) cpu.setPC(eAddress);
+		//if(reg == 1) cpu.setPC(eAddress);
 		else cpu.increasePC();
 		return true;
 	}
