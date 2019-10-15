@@ -82,14 +82,14 @@ public class CISCSimulator implements Runnable{
 		if(!controller.init())
 		{
 			message=controller.getMessage();
-			message="[WARNING] Failed to initialize processor\n+"+message;
+			message="[WARNING] Failed to initialize processor\n[+] "+message+"\n";
 			state=StateType.POWEROFF;
 			return false;
 		}
 		if(!controller.setBootCode())
 		{
 			message=controller.getMessage();
-			message="[WARNING] Failed to load boot program\n+"+message;
+			message="[WARNING] Failed to load boot program\n[+] "+message+"\n";
 			//state=StateType.POWEROFF;
 			//return false;
 		}
@@ -98,7 +98,7 @@ public class CISCSimulator implements Runnable{
 		
 		state=StateType.READY;
 		message=controller.getMessage();
-		message=message+"Simulator has been initialized\n";
+		message=message+"[NOTICE] Simulator has been initialized\n";
 		panel.updateDisplay();
 		message="";
 		return true;
@@ -234,10 +234,8 @@ public class CISCSimulator implements Runnable{
 		controller.getGPR(0).setLong(R0);
 		if(R1!=controller.getGPR(1).getLong()) message=message+"R1 = "+R1+"\n";
 		controller.getGPR(1).setLong(R1);
-		
 		if(R2!=controller.getGPR(2).getLong()) message=message+"R2 = "+R2+"\n";
 		controller.getGPR(2).setLong(R2);
-		
 		if(R3!=controller.getGPR(3).getLong()) message=message+"R3 = "+R3+"\n";
 		controller.getGPR(3).setLong(R3);
 		if(IX1!=controller.getIX(1).getLong()) message=message+"IX1 = "+IX1+"\n";
@@ -260,12 +258,10 @@ public class CISCSimulator implements Runnable{
 		controller.getCC().setLong(CC);
 		}catch(IllegalArgumentException e)
 		{
-			message="Failed to save user input\n+ "+e.getMessage();
-			panel.updateDisplay();
+			message="Failed to load user input\n[+] "+e.getMessage();
 			return false;
 		}
 		message="Loaded register from user input\n"+message;
-		panel.updateDisplay();
 		return true;
 	}
 
@@ -300,5 +296,4 @@ public class CISCSimulator implements Runnable{
 	public IOC getIOC(){ return ioc;}
 	public StateType getState() { return state; }
 	public String getMessage() { return message; }
-
 }

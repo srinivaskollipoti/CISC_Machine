@@ -29,15 +29,14 @@ public class CPU {
 	private WORD MBR=new WORD();			/// Memory Buffer Register
 	private WORD MFR=new WORD();			/// Machine Fault Register
 	
-	private WORD GPR[] = new WORD[4];	/// General Purpose Register
-	private WORD IX[] = new WORD[4];	/// Index Register
+	private SignedWORD GPR[] = new SignedWORD[4];	/// General Purpose Register
+	private SignedWORD IX[] = new SignedWORD[4];	/// Index Register
 	
 	private GBitSet CC=new GBitSet(4);		/// Condition Code
 	private WORD IR=new WORD();				/// Instruction Register
 	
 	private ALU alu;	/// Arithmetic Logical Unit
 	
-	private int intID;	// interrupt id
 	private String message=new String(); // A text indicating current state
 	
 	/**
@@ -68,11 +67,13 @@ public class CPU {
 	{
 		this.memory=simulator.getMemory();
 		this.ioc=simulator.getIOC();
-		
+		alu=new ALU(this);
 		cache=new Cache();
+		
+		// InstructionHandler is initialized at last because InstructionHandler use ALU
 		ih=new InstructionHandler(this);
 		ih.init();
-		alu=new ALU(this);
+		
 	}
 	
 	/**
@@ -123,10 +124,10 @@ public class CPU {
 		IR.clear();
 		
 		for (int i =0; i<4;i++)
-			GPR[i]=new WORD();
+			GPR[i]=new SignedWORD();
 		for(GBitSet register:GPR) register.clear();
 		for (int i =0; i<4;i++)
-			IX[i]=new WORD();
+			IX[i]=new SignedWORD();
 		for(GBitSet register:IX) register.clear();
 		
 		PC.setLong(Memory.BOOT_MEMORY_START);
@@ -182,7 +183,7 @@ public class CPU {
 			break;
 		case LOAD_MBR:
 			try {
-				MBR.copy(loadMemory(MAR.getInt()));
+				MBR.copy(loadMemory(MAR.getLong()));
 			} catch (IOException e) {
 				LOG.severe("Failed to process LOAD MBR\n");
 				return false;
@@ -200,7 +201,7 @@ public class CPU {
 			message="";
 			if(execute()==false)
 			{
-				message="[ERROR] "+message+"Failed to execute code\n";
+				message="[ERROR] Failed to execute code - "+message;
 				result=false;
 			}
 			if(isInterrupt()==false) {
@@ -259,7 +260,7 @@ public class CPU {
 		String[] arrAsmCode=rom.getCode();
 		if(arrAsmCode==null)
 		{
-			message="Failed to load boot program\n"+rom.getMessage()+"\n";
+			message="[WARNING] Failed to load boot program\n"+rom.getMessage()+"\n";
 			LOG.warning(message);
 			return false;
 		}
@@ -269,7 +270,7 @@ public class CPU {
 			WORD binCode=Translator.getBinCode(asmCode);
 			message=Translator.getMessage();
 			if(binCode==null) {
-				message="Failed to parse boot program\n"+asmCode;
+				message="[WARNING] Failed to parse boot program\n"+asmCode+"\n"+message;
 				LOG.warning(message);
 				return false;
 			}
@@ -279,12 +280,12 @@ public class CPU {
 	    try {
 			if(memory.storeBootCode(arrBinCode)==false)
 			{
-				message="Failed to store boot program\n"+String.join("\n", arrAsmCode);
+				message="[WARNING] Failed to store boot program\n"+String.join("\n", arrAsmCode)+"\n";
 				LOG.warning(message);
 				return false;
 			}
 		} catch (IOException e) {
-			message="Failed to store boot program\n"+String.join("\n", arrAsmCode)+"\n"+e.getMessage();
+			message="[WARNING] Failed to store boot program\n"+String.join("\n", arrAsmCode)+"\n"+e.getMessage();
 			LOG.warning(message);
 			return false;
 		}
@@ -451,8 +452,8 @@ public class CPU {
 
 	public String getMessage(){ return message;}
 
-	public WORD getGPR(int i) { return GPR[i]; }
-	public WORD getIX(int i) { return IX[i]; }
+	public SignedWORD getGPR(int i) { return GPR[i]; }
+	public SignedWORD getIX(int i) { return IX[i]; }
 	public GBitSet getPC() { return PC; }
 	public boolean setPC(long value) {PC.setLong(value); return true;}
 	public GBitSet getCC() { return CC; }

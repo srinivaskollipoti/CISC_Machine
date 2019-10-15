@@ -65,7 +65,7 @@ public class InstructionHandler{
 		
 		al=ir.subSet(7,8).getInt();
 		lr=ir.subSet(6,7).getInt();
-		trapcode=count=ir.subSet(12,15).getInt();
+		trapcode=count=ir.subSet(0,4).getInt();
 		
 		return true;
 	}
@@ -160,7 +160,14 @@ public class InstructionHandler{
 			LOG.warning(message);
 			return false;
 		}
-		handler.execute();
+		try {
+			handler.execute();
+		}catch(IllegalArgumentException e)
+		{
+			message="[ERROR] "+e.getMessage();
+			LOG.warning(message);
+			return false;
+		}
 		message=handler.getMessage();
 		return true;
 	}
@@ -184,7 +191,7 @@ public class InstructionHandler{
 	{
 		StringBuffer buffer=new StringBuffer();
 		buffer.append("[IR] "+ir.getString());
-        buffer.append("\n[OPCODE] "+opcode+" [GPR] "+reg+" [XR] "+ireg+" [FLAG] "+flag+" [ADDR] "+address);
+        buffer.append("\n[OPCODE] "+opcode+" [GPR] "+reg+" [XR] "+ireg+" [FLAG] "+flag+" [ADDR] "+address+"\n");
         return buffer.toString();
 	}
 	
