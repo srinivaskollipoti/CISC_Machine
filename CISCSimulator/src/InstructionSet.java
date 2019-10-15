@@ -21,7 +21,7 @@ class Translator
         int address=ir.subSet(0,5).getInt();
         int al=ir.subSet(7,8).getInt();
 		int lr=ir.subSet(6,7).getInt();
-		int count=ir.subSet(12,15).getInt();
+		int count=ir.subSet(0,4).getInt();
 		
 		StringBuffer buffer=new StringBuffer();
 		Instruction inst = InstructionSet.getInstruction(opcode);
@@ -89,17 +89,15 @@ class Translator
 				LOG.warning(message);
 				return null;
 			}
-			String lastParam=arrStr[1];
-			if(lastParam.endsWith(",I"))
-			{
-				if(inst.isFlag()==false)
-				{
-					message = arrStr[0] + " doesn't support I flag.\nInput parameters are not matched - " + asmCode + "\n";
+			String lastParam = arrStr[1];
+			if (lastParam.endsWith(",I")) {
+				if (inst.isFlag() == false) {
+					message = arrStr[0] + " doesn't support I flag.\nInput parameters are not matched - " + asmCode+ "\n";
 					LOG.warning(message);
 					return null;
 				}
-				arrStr[1]=lastParam.substring(0,lastParam.length()-2);
-				flag=1;
+				arrStr[1] = lastParam.substring(0, lastParam.length() - 2);
+				flag = 1;
 			}
 			
 			String[] arrParam=arrStr[1].split(",");
@@ -146,11 +144,14 @@ class Translator
 		GBitSet bitReg=new GBitSet(2);
 		GBitSet bitIReg=new GBitSet(2);
 		GBitSet bitAddress=new GBitSet(5);
+		GBitSet bitCount=new GBitSet(4);
+
 		try {
 			bitOP.setLong(opcode);	
 			bitReg.setLong(reg);
 			bitIReg.setLong(ireg);
 			bitAddress.setLong(address);
+			bitCount.setLong(count);
 		}catch(IllegalArgumentException e)
 		{
 			message=e.getMessage()+" : "+asmCode+"\n";
@@ -158,11 +159,11 @@ class Translator
 			return null;
 		}
 		
-		if(inst.isCount()==true) bitAddress.setLong(count);
-		if(inst.isLR()==true) bitIReg.set(0,lr);
-		if(inst.isAL()==true) bitIReg.set(1,al);
+		if(inst.isCount()==true) bitAddress.copy(bitCount);
+		if(inst.isLR()==true) bitIReg.set(0,lr==1);
+		if(inst.isAL()==true) bitIReg.set(1,al==1);
 		
-		result.setLong(address);
+		//result.setLong(address);
 		int index=15;
 		for(int i=bitOP.length-1;i>=0;i--)
 		{
@@ -183,12 +184,18 @@ class Translator
 				result.set(index);
 			index--;
 		}
-
+		
 		if(flag==1)
-		{
 			result.set(index);	
-		}
 		index--;
+		
+		
+		for(int i=bitAddress.length-1;i>=0;i--)
+		{
+			if (bitAddress.get(i)==true) 
+				result.set(index);
+			index--;
+		}
 			
 		return result;
 	}

@@ -520,27 +520,32 @@ public class CISCGUI extends javax.swing.JFrame {
     		return;
     	}
     	
+    	printLog("[NOTICE] Request to load user input");
     	String message="";
+    	boolean result=true;
     	try {
-    	simu.loadRegister(
-    			Long.valueOf(textFieldR0.getText()),
-    			Long.valueOf(textFieldR1.getText()),
-    			Long.valueOf(textFieldR2.getText()),
-    			Long.valueOf(textFieldR3.getText()),
-    			Long.valueOf(textFieldIX1.getText()),
-    			Long.valueOf(textFieldIX2.getText()),
-    			Long.valueOf(textFieldIX3.getText()),
-    			Long.valueOf(textFieldIR.getText()),
-    			Long.valueOf(textFieldPC.getText()),
-    			Long.valueOf(textFieldCC.getText()),
-    			Long.valueOf(textFieldMAR.getText()),
-    			Long.valueOf(textFieldMBR.getText()),
-    			Long.valueOf(textFieldMFR.getText()));
+    		result=simu.loadRegister(
+    			Long.valueOf(textFieldR0.getText().trim()),
+    			Long.valueOf(textFieldR1.getText().trim()),
+    			Long.valueOf(textFieldR2.getText().trim()),
+    			Long.valueOf(textFieldR3.getText().trim()),
+    			Long.valueOf(textFieldIX1.getText().trim()),
+    			Long.valueOf(textFieldIX2.getText().trim()),
+    			Long.valueOf(textFieldIX3.getText().trim()),
+    			Long.valueOf(textFieldIR.getText().trim()),
+    			Long.valueOf(textFieldPC.getText().trim()),
+    			Long.valueOf(textFieldCC.getText().trim()),
+    			Long.valueOf(textFieldMAR.getText().trim()),
+    			Long.valueOf(textFieldMBR.getText().trim()),
+    			Long.valueOf(textFieldMFR.getText().trim()));
     	}catch(NumberFormatException e)
     	{
-    		message="[NOTICE] Input number is not valid\n";
+    		message="[WARNING] Input text is not number";
+    		printLog(message);
+    		updateDisplay(false);
+    		return;
     	}
-    	printLog(message+"[NOTICE] "+simu.getMessage());
+    	updateDisplay();
     }//GEN-LAST:event_buttonSaveActionPerformed
 
     private void buttonHaltActionPerformed(java.awt.event.ActionEvent evt) {                                           
@@ -554,6 +559,11 @@ public class CISCGUI extends javax.swing.JFrame {
 	 * Update display of UI  
 	 */
     public void updateDisplay()
+    {
+    	updateDisplay(true);
+    }
+    
+    public void updateDisplay(boolean isMessage)
     {
     	textFieldR0.setText(Long.toString(cpu.getGPR(0).getLong()));
     	textFieldR1.setText(Long.toString(cpu.getGPR(1).getLong()));
@@ -569,7 +579,8 @@ public class CISCGUI extends javax.swing.JFrame {
     	textFieldMFR.setText(Long.toString(cpu.getMFR().getLong()));
     	textFieldIR.setText(Long.toString(cpu.getIR().getLong()));
     	textFieldPC.setText(Long.toString(cpu.getPC().getLong()));
-    	printLog(simu.getMessage());
+    	if(isMessage==true)
+    		printLog(simu.getMessage());
     }
     
     public void printScreen(String text)
@@ -664,14 +675,4 @@ public class CISCGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     // End of variables declaration//GEN-END:variables
-	/**
-	 * 
-	 */
-	public void getUserInput() {
-		// all object are disabled except user input area
-		// focus on user input area
-		// if user input enter key, all object are enabled
-		
-		
-	}
 }

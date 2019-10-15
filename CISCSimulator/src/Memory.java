@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 
 public class Memory {
-	private WORD memory[];
+	private SignedWORD memory[];
 	private static final int DEFAULT_MEMORY=2048;
 	private static final int MAX_MEMORY=4096;
 	private static final int MIN_MEMORY=512;
@@ -36,14 +36,14 @@ public class Memory {
 
 	public boolean setMemory(int size) throws IOException
 	{
-		memory= new WORD[size];
+		memory= new SignedWORD[size];
 		if(size<MIN_MEMORY || size>MAX_MEMORY)
 		{
 			throw new IOException("Invalid memory size");
 		}
 
 		for (int i=0; i<size;i++) {
-			memory[i]=new WORD();
+			memory[i]=new SignedWORD();
 		}
 		userMemoryStart=BOOT_MEMORY_START;	
 		return true;
@@ -86,11 +86,13 @@ public class Memory {
 		int limitMemoryStart=BOOT_MEMORY_START;
 		if(isSystem==false) limitMemoryStart=userMemoryStart;
 		if(address>=memory.length)
-			throw new IOException("Memory violation : access over memory("+address+")\n");
+			throw new IOException("Memory violation\n[+] Access over memory("+address+")\n");
+		else if(address<0)
+			throw new IOException("Memory violation\n[+] Access invalid address("+address+")\n");	
 		else if(address<limitMemoryStart)
-			throw new IOException("Memory violation : access system address("+address+")\n");
+			throw new IOException("Memory violation\n[+] Access system address("+address+")\n");
 		if (input==null)
-			throw new IOException("Memory violation : insert null data("+address+")\n");
+			throw new IOException("Memory violation\n[+] Insert empty data("+address+")\n");
 		
 		memory[address].copy(input);
 		return true;

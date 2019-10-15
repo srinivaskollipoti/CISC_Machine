@@ -9,16 +9,12 @@ import java.util.logging.Logger;
  * all registers and memory implemented based on GBitSet
  */
 public class GBitSet extends java.util.BitSet {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 
-	private final static Logger LOG = Logger.getGlobal();
+	protected final static Logger LOG = Logger.getGlobal();
 	
 	public final int length;
-	private int minValue=0;
-	private int maxValue=0;
+	protected int minValue=0;
+	protected int maxValue=0;
 	
 	/**
 	 * A constructor that create a bit set given length.
@@ -40,7 +36,7 @@ public class GBitSet extends java.util.BitSet {
 	{
 		super(length);
 		this.length=length;
-		maxValue=(int)Math.pow(2,length)-1;
+		maxValue=(int)Math.pow(2,length-1)-1;
 		or(input);
 	}
 	
@@ -115,14 +111,7 @@ public class GBitSet extends java.util.BitSet {
 	 */
 	public int getInt(){
 		long input=getLong();
-		int result=(int)input;
-		double checkOverflow=result*input;
-		if(checkOverflow<0)
-		{
-			LOG.severe("Buffer overflow");
-			result=-1;
-		}
-		return result;	
+		return (int)input;	
 	}
 
 	/**
@@ -133,6 +122,80 @@ public class GBitSet extends java.util.BitSet {
 		this.clear();
 		this.or(input);
 		return true;
+	}
+
+	public void rotate(boolean isLeft,int count, boolean isArith )
+	{
+		GBitSet copy;
+		count=count%length;
+		if(count<0)
+			count=length+count;
+
+		if(isLeft)
+		{
+			int from=length-count;
+			int end=length;
+			if(isArith==true) {
+				from--;
+				end--;
+			}	
+			copy=subSet(from, end);
+			shift(isLeft,count,isArith);
+			for(int i=count-1;i>=0;i--)
+			{
+				set(i,copy.get(i));
+			}
+		}else {
+			copy=subSet(0, count);
+			shift(isLeft,count,isArith);
+			
+			int from=length-1-count;
+			int end=length-1;
+			if(isArith==true)
+			{
+				from--;
+				end--;
+			}
+			count--;
+			for(int i=end;i>from;i--)
+			{
+				set(i,copy.get(count--));
+			}			
+		}
+	}
+	
+	
+	public void shift(boolean isLeft,int count, boolean isArith )
+	{
+		if(count>length || count<0)
+			throw new IllegalArgumentException("Count must be in range of length : count("+count+")");
+
+		boolean MSB=get(length-1);
+		if(isLeft) {
+			int end=length-1;
+			if(isArith) {
+				end--;
+			}
+			for(int i=end;i>=count;i--)
+			{
+				set(i,get(i-count));
+			}
+			for(int i=count-1;i>=0;i--)
+			{
+				set(i,false);
+			}
+		}else {
+			for(int i=count;i<length;i++)
+			{
+				set(i-count,get(i));
+			}
+			boolean fill=false;
+			if(isArith) fill=MSB;
+			for(int i=length-1;i>length-1-count;i--)
+			{		
+				set(i,fill);
+			}
+		}
 	}
 	
 	/**
