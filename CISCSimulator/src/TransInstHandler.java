@@ -65,7 +65,6 @@ public class TransInstHandler extends InstructionHandler {
 		return true;
 	}
 
-
 	/**
 	 * Jump to address if c(r) = 0
 	 * @return On case success, true is returned, otherwise false is returned.
