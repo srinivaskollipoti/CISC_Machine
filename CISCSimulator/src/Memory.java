@@ -13,15 +13,15 @@ public class Memory {
 	private SignedWORD memory[];
 	private static final int DEFAULT_MEMORY=2048;
 	private static final int MAX_MEMORY=4096;
-	private static final int MIN_MEMORY=512;
-	private int userMemoryStart;
+	private static final int MIN_MEMORY=2048;
+	private static final int USER_CODE_START=1000;
 	
 	public static final int BOOT_MEMORY_START=010;
+	public static final int USER_MEMORY_START=400;
 	
 	/**
 	 * A constructor
 	 * Initializes memory with the max size 2048. The memory is an array of type WORD.
-	 * Set userMemoryStart to 010.
 	 * @throws IOException 
 	 */
 	public Memory() throws IOException
@@ -45,7 +45,7 @@ public class Memory {
 		for (int i=0; i<size;i++) {
 			memory[i]=new SignedWORD();
 		}
-		userMemoryStart=BOOT_MEMORY_START;	
+		//userMemoryStart=BOOT_MEMORY_START;	
 		return true;
 	}
 	
@@ -84,15 +84,15 @@ public class Memory {
 	private boolean store(int address, WORD input, boolean isSystem) throws IOException
 	{
 		int limitMemoryStart=BOOT_MEMORY_START;
-		if(isSystem==false) limitMemoryStart=userMemoryStart;
+		if(isSystem==false) limitMemoryStart=USER_MEMORY_START;
 		if(address>=memory.length)
-			throw new IOException("Memory violation\n[+] Access over memory("+address+")\n");
+			throw new IOException("Memory violation\n==> Access over memory("+address+")\n");
 		else if(address<0)
-			throw new IOException("Memory violation\n[+] Access invalid address("+address+")\n");	
+			throw new IOException("Memory violation\n==> Access invalid address("+address+")\n");	
 		else if(address<limitMemoryStart)
-			throw new IOException("Memory violation\n[+] Access system address("+address+")\n");
+			throw new IOException("Memory violation\n==> Access into system address("+address+")\n");
 		if (input==null)
-			throw new IOException("Memory violation\n[+] Insert empty data("+address+")\n");
+			throw new IOException("Memory violation\n==> Insert empty data("+address+")\n");
 		
 		memory[address].copy(input);
 		return true;
@@ -106,8 +106,11 @@ public class Memory {
 	 */
 	private WORD load(int address) throws IOException
 	{
-		if(address>=memory.length || address<BOOT_MEMORY_START)
-			throw new IOException("Memory access violation : ["+address+"]\n");
+		if(address<BOOT_MEMORY_START)
+			throw new IOException("Memory violation\n==> System address : "+address+"\n");
+		if(address>=memory.length)
+			throw new IOException("Memory violation\n==> Out of memory range : "+address+"\n");
+
 		return memory[address];
 	}
 	
@@ -144,7 +147,7 @@ public class Memory {
 	 */
 	public boolean storeUserCode(ArrayList<WORD> arrCode)
 	{
-		int address=userMemoryStart;
+		int address=USER_CODE_START;
 		for(WORD code : arrCode) {
 			try {
 			if(!store(address,code)) return false;
@@ -154,7 +157,7 @@ public class Memory {
 			}
 			address++;
 		}
-		memory[address++].clear();
+		memory[address].setLong(CPU.END_OF_CODE);
 		return true;
 	}
 	
@@ -170,8 +173,8 @@ public class Memory {
 			if(!store(address,word,true)) return false;
 			address++;
 		}
-		memory[address].clear();
-		userMemoryStart=address;
+		memory[address].setLong(CPU.END_OF_CODE);
+		//userMemoryStart=address;
 		return true;
 	}
 	
@@ -186,7 +189,8 @@ public class Memory {
 		{
 			if(!memory[i].isEmpty())
 			{
-				String message=String.format("Memory [%04d]  %s (%d)\n", i,memory[i].getString(),memory[i].getLong());
+				String message = String.format("Memory [%04d]  %s (%02X%02X)\n", i, memory[i].getString(),
+						 memory[i].getLong()&0x00FF,(memory[i].getLong()&0xFF00)>>>8);
 				buffer.append(message);
 			}
 		}
@@ -214,8 +218,8 @@ public class Memory {
 	 * Get starting location for user program.
 	 * @return starting location for user program.
 	 */
-	public int getUserMemoryLocation() {
-		return userMemoryStart;
+	public int getUserCodeLocation() {
+		return USER_CODE_START;
 	}
 
 }

@@ -53,9 +53,9 @@ public class IOInstHandler extends InstructionHandler {
 	
 	private boolean executeIN() throws FileNotFoundException{	
 		int devId = address;
-		if(devId == 1) {
-			System.out.println("Printer cannot input.");
-		}else if(devId == 2) {
+		if(devId == IOC.PRINTER) {
+			message= "Printer is not input device.\n";
+		}else if(devId == IOC.CARD_READER) {
 			//read from reader.txt
 			File file = new File("reader.txt");
 			Scanner sc = new Scanner(file);
@@ -66,16 +66,16 @@ public class IOInstHandler extends InstructionHandler {
 				 cpu.getGPR(reg).setLong((int) in);
 			} catch (IndexOutOfBoundsException e) {
 				counter = 0;
-				System.out.println("reached the end.");
+				LOG.warning("reached the end.");
 				
 			}
 		}else {
 			char in = cpu.getInputChar(address);
-			cpu.getGPR(reg).setLong(in);
-			if(in!=IOC.NONE_INPUT)
-				{
-					message="[+] Input character is "+in+"\n";
-				}
+			if(in!=IOC.NONE_INPUT) 
+			{
+				cpu.getGPR(reg).setLong(in);
+				message="==> Input character is "+in+"\n";
+			}
 		}
 		
 		return true;
@@ -83,8 +83,8 @@ public class IOInstHandler extends InstructionHandler {
 	
 	private boolean executeOUT() {	
 		long devId = address;
-		if(devId == 0 || devId == 2) {
-			System.out.println("This device cannot output");; //keyboard and card reader cannot use out
+		if(devId == IOC.KEYBOARD || devId == IOC.CARD_READER) {
+			message=String.format("Device %d is not output device\n",devId); //keyboard and card reader cannot use out
 		}else {
 			WORD param=new WORD();
 			param.copy(cpu.getGPR(reg));
@@ -96,6 +96,8 @@ public class IOInstHandler extends InstructionHandler {
 	}
 	
 	private boolean executeHLT() {
+		cpu.getSimulator().setStop();
+		message="[NOTICE] System halted\n";
 		return true;
 	}
 	

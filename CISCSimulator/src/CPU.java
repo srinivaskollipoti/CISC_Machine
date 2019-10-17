@@ -13,9 +13,11 @@ import java.util.logging.Logger;
  */
 public class CPU {
 	
+	public final static int END_OF_CODE=-1;
 	private final static Logger LOG = Logger.getGlobal();
 	private Memory memory;
 	private IOC ioc;
+	private CISCSimulator simu;
 	
 	private Cache cache;
 	private CPUState state=CPUState.LOAD_MAR; 	
@@ -65,6 +67,7 @@ public class CPU {
 	
 	public CPU(CISCSimulator simulator)
 	{
+		this.simu=simulator;
 		this.memory=simulator.getMemory();
 		this.ioc=simulator.getIOC();
 		alu=new ALU(this);
@@ -148,7 +151,8 @@ public class CPU {
 			LOG.severe(e.getMessage());
 			LOG.severe("Failed to load Next Instruction");			
 		}
-		boolean result=inst.isEmpty();	// check if next instruction is none
+		boolean result= (inst.getLong()==END_OF_CODE); // check if next instruction is none
+		//boolean result=inst.isEmpty();	
 		return !result;
 	}
 	
@@ -205,7 +209,8 @@ public class CPU {
 				result=false;
 			}
 			if(isInterrupt()==false) {
-				message="[EXECUTE] "+Translator.getAsmCode(IR)+"\n"+message;
+				message = String.format("[EXECUTE @%03d] %s\n%s" , getPC().getLong()-1,
+						Translator.getAsmCode(IR), message.toString());
 				state=CPUState.LOAD_MAR;				
 			}
 			// in case of interrupt, current instruction is executed again
@@ -257,41 +262,31 @@ public class CPU {
 	{
 		message="[LOAD] Boot Program\n";
 		ROM rom= new ROM();
-		String[] arrAsmCode=rom.getCode();
-		if(arrAsmCode==null)
+		ArrayList<WORD> arrBinCode=rom.getBinCode();
+		if(arrBinCode==null)
 		{
-			message="[WARNING] Failed to load boot program\n"+rom.getMessage()+"\n";
+			message="[WARNING] Failed to load boot program\n"+rom.getMessage();
 			LOG.warning(message);
 			return false;
-		}
-		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
-		for(String asmCode:arrAsmCode)
-		{
-			WORD binCode=Translator.getBinCode(asmCode);
-			message=Translator.getMessage();
-			if(binCode==null) {
-				message="[WARNING] Failed to parse boot program\n"+asmCode+"\n"+message;
-				LOG.warning(message);
-				return false;
-			}
-			arrBinCode.add(binCode);
 		}
 		
 	    try {
 			if(memory.storeBootCode(arrBinCode)==false)
 			{
-				message="[WARNING] Failed to store boot program\n"+String.join("\n", arrAsmCode)+"\n";
+				message="[WARNING] Failed to store boot program\n";
 				LOG.warning(message);
 				return false;
 			}
 		} catch (IOException e) {
-			message="[WARNING] Failed to store boot program\n"+String.join("\n", arrAsmCode)+"\n"+e.getMessage();
+			message="[WARNING] Failed to store boot program\n"+e.getMessage()+"\n";
 			LOG.warning(message);
 			return false;
 		}
-	    message=message+String.join("\n",arrAsmCode)+"\n";		
+	    message=message+getMemory().getString();
+	    //message=message+"==> Loading Complete\n";
+	    //message=message+String.join("\n",arrAsmCode)+"\n";		
 	    PC.setLong(Memory.BOOT_MEMORY_START);
-	    message=message+"PC = "+Memory.BOOT_MEMORY_START+"\n";
+	    //message=message+"PC = "+Memory.BOOT_MEMORY_START+"\n";
 	    state=CPUState.LOAD_MAR;
 		return true;
 	}
@@ -322,8 +317,8 @@ public class CPU {
 	    	LOG.warning(message);
 			return false;
 		}
-	    PC.setLong(memory.getUserMemoryLocation());
-	    message=("[LOAD] User program\n"+String.join("\n",arrAsmCode)+"\nPC = "+memory.getUserMemoryLocation()+"\n");
+	    PC.setLong(memory.getUserCodeLocation());
+	    message=("[LOAD] User program\n"+String.join("\n",arrAsmCode)+"\nPC = "+memory.getUserCodeLocation()+"\n"+memory.getString()+"\n");
 	    state=CPUState.LOAD_MAR;
 		return true;
 	}
@@ -462,9 +457,10 @@ public class CPU {
 	public WORD getMFR() { return MFR; }	
 	public WORD getIR() { return IR; }
 	public CPUState getState() { return state; }
-
+	public boolean isExecute() { return state==CPUState.LOAD_MAR || state==CPUState.NO_INST; }
+	
 	public Memory getMemory() {	return this.memory; }
-
 	public ALU getALU() { return alu;}
+	public CISCSimulator getSimulator() {return this.simu;}
 
 }

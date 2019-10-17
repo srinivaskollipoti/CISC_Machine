@@ -85,7 +85,7 @@ public class GBitSet extends java.util.BitSet {
 	public boolean setLong(long number){
 		
 		if (maxValue<number || number<minValue)
-			throw new IllegalArgumentException("Input number("+number+") is out of data range");
+			throw new IllegalArgumentException("Input number("+number+") is out of data range\n");
 		this.clear();
 		long[] temp = new long[1];
 		temp[0]=number;
@@ -168,7 +168,7 @@ public class GBitSet extends java.util.BitSet {
 	public void shift(boolean isLeft,int count, boolean isArith )
 	{
 		if(count>length || count<0)
-			throw new IllegalArgumentException("Count must be in range of length : count("+count+")");
+			throw new IllegalArgumentException("Count must be in range of length : count("+count+")\n");
 
 		boolean MSB=get(length-1);
 		if(isLeft) {

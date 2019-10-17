@@ -193,7 +193,7 @@ public class CISCGUI extends javax.swing.JFrame {
 	            if(text.endsWith("\n")==true)
 	            {
 	            	printLog("[INFO] User inputs a text : "+text);
-	            	simu.inputUserText(text.substring(0,text.length()-1));
+	            	simu.inputUserText(text.substring(0,text.length()-1)+'\0');
 	            	textAreaSystemIN.setText("");
 	            }
 			}
@@ -414,7 +414,7 @@ public class CISCGUI extends javax.swing.JFrame {
 	    	String [] arrInst=instructions.split("\n");
 	    	if(simu.setUserCode(arrInst)==false)
 	    	{
-	    		printLog("[WARNING] Input instruction is not valid");
+	    		printLog("[WARNING] Input instruction is not valid\n");
 	    		printLog(simu.getMessage());
 	    		return false;
 	    	}	
@@ -429,15 +429,14 @@ public class CISCGUI extends javax.swing.JFrame {
 	 * Perform singlestep process.
 	 */
     private void buttonSingleStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSingleStepActionPerformed
-    	printLog("[NOTICE] Simulator perform singlestep");
+    	printLog("[NOTICE] Simulator perform singlestep\n");
     	if(simu.isPowerOff()==true) {
-    		printLog("[NOTICE] Simulator is not turned on, push the IPL button");
+    		printLog("[NOTICE] Simulator is not turned on, push the IPL button\n");
     		return;
     	}
     	if(loadUserInstruction()==false)
     		return;
     	simu.singleStep();
-    	//printLog(simu.getMessage());
     }//GEN-LAST:event_buttonSingleStepActionPerformed
 
     /**
@@ -448,7 +447,7 @@ public class CISCGUI extends javax.swing.JFrame {
 		simu.setStop();
 		try {
 			runThread.join();
-			printLog("[NOTICE] Simulator halted");
+			printLog("[NOTICE] Simulator halted\n");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -460,7 +459,7 @@ public class CISCGUI extends javax.swing.JFrame {
 	 */
     private void buttonRunActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonRunActionPerformed
     	if(simu.isPowerOff()==true) {
-    		printLog("[NOTICE] Simulator is not turned on, push the IPL button");
+    		printLog("[NOTICE] Simulator is not turned on, push the IPL button\n");
     		return;
     	}
     	if(simu.isRun()==true)
@@ -469,7 +468,7 @@ public class CISCGUI extends javax.swing.JFrame {
     		return;
     	}
     	
-    	printLog("[NOTICE] Simulator starts to run");
+    	printLog("[NOTICE] Simulator starts to run\n");
     	
     	if(loadUserInstruction()==false)
     		return;
@@ -486,7 +485,7 @@ public class CISCGUI extends javax.swing.JFrame {
     
     public void printLog(String log,boolean isOnlyDisplay)
     {
-    	String message=log+"\n";
+    	String message=log;
     	textArea.append(message);
         textArea.setCaretPosition(textArea.getDocument().getLength() - 1);
 
@@ -500,12 +499,15 @@ public class CISCGUI extends javax.swing.JFrame {
     private void buttonIPLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonIPLActionPerformed
     	if(simu.isPowerOff()==true)
     	{
-    		printLog("[NOTICE] Simulator is turned on");
+    		printLog("[NOTICE] Simulator is turned on\n");
 	    	simu.initProcessor();
 	    	printLog(simu.getMessage());
     	}else {
     		simu.powerOff();
-    		printLog("[NOTICE] Simulator is turned off");
+    		textareaSystemOUT.setText("");
+    		textAreaSystemIN.setText("");
+    		textArea.setText("");
+    		printLog("[NOTICE] Simulator is turned off\n");
             
     	}
     }//GEN-LAST:event_buttonIPLActionPerformed
@@ -516,11 +518,11 @@ public class CISCGUI extends javax.swing.JFrame {
     private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
     	
     	if(simu.isPowerOff()==true) {
-    		printLog("[NOTICE] Simulator is not turned on, push the IPL button");
+    		printLog("[NOTICE] Simulator is not turned on, push the IPL button\n");
     		return;
     	}
     	
-    	printLog("[NOTICE] Request to load user input");
+    	printLog("[NOTICE] Request to load user input\n");
     	String message="";
     	boolean result=true;
     	try {
@@ -540,7 +542,7 @@ public class CISCGUI extends javax.swing.JFrame {
     			Long.valueOf(textFieldMFR.getText().trim()));
     	}catch(NumberFormatException e)
     	{
-    		message="[WARNING] Input text is not number";
+    		message="[WARNING] Input text is not number\n";
     		printLog(message);
     		updateDisplay(false);
     		return;

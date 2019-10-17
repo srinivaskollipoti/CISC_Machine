@@ -82,14 +82,14 @@ public class CISCSimulator implements Runnable{
 		if(!controller.init())
 		{
 			message=controller.getMessage();
-			message="[WARNING] Failed to initialize processor\n[+] "+message+"\n";
+			message="[WARNING] Failed to initialize processor\n==> "+message+"\n";
 			state=StateType.POWEROFF;
 			return false;
 		}
 		if(!controller.setBootCode())
 		{
 			message=controller.getMessage();
-			message="[WARNING] Failed to load boot program\n[+] "+message+"\n";
+			message="[WARNING] Failed to load boot program\n==> "+message+"\n";
 			//state=StateType.POWEROFF;
 			//return false;
 		}
@@ -145,7 +145,7 @@ public class CISCSimulator implements Runnable{
 			long sleep=200;
 			if(controller.isInterrupt()==true)
 			{
-				panel.printLog("Waiting user input for IN instruction..");
+				panel.printLog("Waiting user input for IN instruction..\n");
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
@@ -201,12 +201,11 @@ public class CISCSimulator implements Runnable{
 		state=StateType.RUNNING;
 		boolean result=controller.clock();
 		message=message+controller.getMessage();
-		if(result==true && controller.isInterrupt()==false)
-			message=message+memory.getString();
 		if(controller.isCurrentInstruction()==false)
 		{
 			state=StateType.TERMINATE;
 			LOG.warning("No more instruction");	
+			message=message+memory.getString();
 		}else {
 			state=StateType.READY;
 		}
@@ -258,7 +257,7 @@ public class CISCSimulator implements Runnable{
 		controller.getCC().setLong(CC);
 		}catch(IllegalArgumentException e)
 		{
-			message="Failed to load user input\n[+] "+e.getMessage();
+			message="Failed to load user input\n==> "+e.getMessage()+"\n";
 			return false;
 		}
 		message="Loaded register from user input\n"+message;
@@ -274,7 +273,7 @@ public class CISCSimulator implements Runnable{
 	{
 		if(isPowerOff()==true)
 		{
-			message=("Simulator is not turned on, push the IPL button");
+			message=("Simulator is not turned on, push the IPL button\n");
 			return false;
 		}
 		boolean result=controller.setUserCode(arrInst);

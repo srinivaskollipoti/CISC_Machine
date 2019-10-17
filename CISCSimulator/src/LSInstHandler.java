@@ -84,6 +84,9 @@ public class LSInstHandler extends InstructionHandler {
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	private boolean executeLDX() throws IOException {
+		if(ireg<1 || ireg>3)
+			throw new IllegalArgumentException("Index Register must be between 1 and 3\n");
+		
 		int eAddress=getEAWithoutIX();
 		cpu.getIX(ireg).copy(cpu.loadMemory(eAddress));
 		return true;
@@ -94,6 +97,9 @@ public class LSInstHandler extends InstructionHandler {
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	private boolean executeSTX() throws IOException {
+		if(ireg<1 || ireg>3)
+			throw new IllegalArgumentException("Index Register must be between 1 and 3\n");
+		
 		int eAddress=getEAWithoutIX();
 		WORD param=new WORD();
 	    param.copy(cpu.getIX(ireg));

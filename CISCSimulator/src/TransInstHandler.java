@@ -21,7 +21,7 @@ public class TransInstHandler extends InstructionHandler {
 
 	public boolean execute() throws IOException{
 		LOG.info("Execute TRANS Instruction\n");
-
+		message="";
 		parseIR(cpu.getIR());
 		switch(getOPCode())
 		{
@@ -72,13 +72,12 @@ public class TransInstHandler extends InstructionHandler {
 	 */
 	private boolean executeJZ() throws IOException{	
 		int eAddress = getEA();
-		WORD param=new WORD();
-	    param.copy(cpu.getGPR(reg));
-	    if(param.getLong() == 0) cpu.setPC(eAddress);
-	    else cpu.increasePC();
-		return true;
+	    if(cpu.getGPR(reg).getLong() == 0) {
+	    	cpu.setPC(eAddress);
+	    	message= String.format("==> PC is changed to %d\n", eAddress);
+	    }
+	    return true;
 	}
-	// @annie - implement function JNE, JCC, JMA, JSR, RFS, SOB, JGE
 	
 	/**
 	 * Jump to address if c(r) != 0
@@ -87,11 +86,11 @@ public class TransInstHandler extends InstructionHandler {
 	 */
 	private boolean executeJNE() throws IOException {
 		int eAddress = getEA();
-		WORD param=new WORD();
-	    param.copy(cpu.getGPR(reg));
-	    if(param.getLong() != 0) cpu.setPC(eAddress);
-	    else cpu.increasePC();
-		return true;
+		if(cpu.getGPR(reg).getLong() != 0){
+	    	cpu.setPC(eAddress);
+	    	message= String.format("==> PC is changed to %d\n", eAddress);
+	    }
+	    return true;
 	}
 	
 	/**
@@ -102,11 +101,11 @@ public class TransInstHandler extends InstructionHandler {
 	
 	private boolean executeJGE() throws IOException {
 		int eAddress = getEA();
-		WORD param=new WORD();
-	    param.copy(cpu.getGPR(reg));
-	    if(param.getLong() >= 0) cpu.setPC(eAddress);
-	    else cpu.increasePC();
-		return true;
+	    if(cpu.getGPR(reg).getLong() >= 0){
+	    	cpu.setPC(eAddress);
+	    	message= String.format("==> PC is changed to %d\n", eAddress);
+	    }
+	    return true;
 	}
 	
 	/**
@@ -115,8 +114,9 @@ public class TransInstHandler extends InstructionHandler {
 	 * @throws IOException
 	 */
 	private boolean executeJMA() throws IOException {
-		int eAddress = getEAWithoutIX();
+		int eAddress = getEA();
 		cpu.setPC(eAddress);
+		message = String.format("==> PC is changed to %d\n", eAddress);
 		return true;
 	}
 	
@@ -127,33 +127,33 @@ public class TransInstHandler extends InstructionHandler {
 	 */
 	private boolean executeSOB() throws IOException {
 		int eAddress = getEA();
-		WORD param=new WORD();
-		param.copy(cpu.getGPR(reg));
-		cpu.getGPR(reg).setLong(param.getLong() - 1);
-		param.copy(cpu.getGPR(reg));
-		if(param.getLong() > 0) cpu.setPC(eAddress);
-	    else cpu.increasePC();
-		return true;
+		cpu.getGPR(reg).setLong(cpu.getGPR(reg).getLong() - 1);
+		if(cpu.getGPR(reg).getLong() > 0){
+	    	cpu.setPC(eAddress);
+	    	message= String.format("==> PC is changed to %d\n", eAddress);
+	    }
+	    return true;
 	}
 	
 	private boolean executeJSR() throws IOException {
 		int eAddress = getEA();
-		cpu.getGPR(3).setLong(cpu.getPC().getLong()+1); //set R3 to PC+1
-		//cpu.getGPR(0).setLong(arg[0]);
+		cpu.getGPR(3).setLong(cpu.getPC().getLong()); // set R3 to PC+1
 		cpu.setPC(eAddress);
+		message = String.format("==> PC is changed to %d\n", eAddress);
 		return true;
 	}
 	
 	/**
-	 * jump to address if cc = 1
+	 * jump to address if cc[reg] = 1
 	 * @return
 	 * @throws IOException
 	 */
 	private boolean executeJCC() throws IOException {
-		int eAddress = getEAWithoutIX();
-		if(cpu.getCC().getLong() == 1) cpu.setPC(eAddress);
-		//if(reg == 1) cpu.setPC(eAddress);
-		else cpu.increasePC();
+		int eAddress = getEA();
+		if(cpu.getCC().get(reg)){
+	    	cpu.setPC(eAddress);
+	    	message= String.format("==> PC is changed to %d\n", eAddress);
+	    }
 		return true;
 	}
 	
@@ -165,6 +165,8 @@ public class TransInstHandler extends InstructionHandler {
 	private boolean executeRFS() throws IOException {
 		cpu.getGPR(0).setLong(address);
 		cpu.setPC(cpu.getGPR(3).getLong());
+		message = String.format("==> PC is changed to %d\n==> Return value is %d\n", cpu.getGPR(3).getLong(),address);
+
 		return true;
 	}
 	

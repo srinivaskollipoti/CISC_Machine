@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 
 /**
  * 
@@ -12,6 +13,53 @@ import java.io.*;
 public class ROM {
 	
 	private String message=new String();
+	
+	public ArrayList<WORD> getBinCode()
+	{
+		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
+		
+		String inputFile="rom.txt";
+		byte[] allBytes;		
+		InputStream inputStream=null;
+		try {
+			inputStream = new FileInputStream(inputFile);
+			long fileSize = new File(inputFile).length();
+	        allBytes = new byte[(int) fileSize];
+	        inputStream.read(allBytes);
+	    } catch (FileNotFoundException e) {
+	      e.printStackTrace();
+	      message="Failed to find rom file("+inputFile+")\n";
+	      return null;
+	    } catch (IOException e) {	
+	      e.printStackTrace();
+	      message="Failed to open rom file("+inputFile+")\n";
+	      return null;
+	    } finally {
+	    	if(inputStream!=null)
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+					message="Failed to close rom file("+inputFile+")\n";
+				}
+	    }
+		
+		for(int i=0;i<allBytes.length/2;i=i+1)
+		{	
+			byte[] readBytes=new byte[2];
+			readBytes[0]=allBytes[i*2];
+			readBytes[1]=allBytes[i*2+1];
+			WORD binCode=new WORD(WORD.valueOf(readBytes));
+        	arrBinCode.add(binCode);
+        	String asmCode=Translator.getAsmCode(binCode);
+        	System.out.println(asmCode);
+        	System.out.println(binCode);
+
+		}		
+
+		
+		return arrBinCode;
+	}
 	/*
 	 * Read boot program of binary format from rom.txt and translate into assemble code.
 	 * @return assemble code of boot program
@@ -63,8 +111,9 @@ public class ROM {
 			String asmCode=Translator.getAsmCode(ir);
 			if (asmCode==null)
 			{
-				message="Failed to parse rom file\n[+] Unknown instruction ["+ir.getString()+"]";
+				message="Failed to parse rom file\n==> Unknown instruction ["+ir.getString()+"]";
 				return null;
+				//continue;
 			}
 			buffer.append(asmCode);
         	buffer.append("\n");

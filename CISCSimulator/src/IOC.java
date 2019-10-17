@@ -16,6 +16,8 @@ public class IOC {
 
 	
 	public static final char NONE_INPUT=(char)-1;
+	public static final char END_OF_TEXT=(char)0;
+	
 	private StringBuffer[] ioBuffer;
 	CISCSimulator simu;
 

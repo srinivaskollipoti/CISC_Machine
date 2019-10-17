@@ -39,13 +39,13 @@ public class ALU {
 		WORD result=new SignedWORD();
 		short i1=(short) s1.getLong();
 		short i2=(short) s2.getLong();
-		message.append(String.format("[ALU] %d + %d\n",i1,i2));		
+		message.append(String.format("==> [ALU] %d + %d",i1,i2));		
 		short sum=(short) (i1+i2);
 		if(i1>0 && i2>0 && sum<0)
 			setOverflow(true);
 		else if(i1<0 && i2<0 && sum>0)
 			setOverflow(true);
-		message.append(String.format("[+] Result = %d\n",sum));
+		message.append(String.format(" = %d\n",sum));
 		result.setLong(sum);
 		return result;
 	}
@@ -64,12 +64,12 @@ public class ALU {
 		WORD result=new SignedWORD();
 		short i1=(short) s1.getLong();
 		short i2=(short) s2.getLong();
-		message.append(String.format("[ALU] %d - %d\n",i1,i2));		
+		message.append(String.format("==> [ALU] %d - %d",i1,i2));		
 		int afterSub=i1-i2;
 		if(afterSub>result.maxValue || afterSub<result.minValue)
 			setOverflow(true);
 		short sum=(short) afterSub;
-		message.append(String.format("[+] Result = %d\n",sum));
+		message.append(String.format(" = %d\n",sum));
 		result.setLong(sum);
 		return result;
 //		return add(s1,complement(s2));
@@ -91,7 +91,7 @@ public class ALU {
 		}
 		short i1=(short) s1.getLong();
 		short i2=(short) s2.getLong();
-		message.append(String.format("[ALU] %d * %d\n",i1,i2));
+		message.append(String.format("==> [ALU] %d * %d",i1,i2));
 		int afterMul= i1*i2;
 		
 		if(i1>0 && i2>0 && afterMul<0)
@@ -105,7 +105,7 @@ public class ALU {
 		
 		GBitSet bit32=new GBitSet(32);
 		bit32.setLong(afterMul);
-		message.append(String.format("[+] Result = %d\n",afterMul));
+		message.append(String.format(" = %d\n",afterMul));
 		result[0].copy(bit32.subSet(WORD.SIZE, WORD.SIZE*2));
 		result[1].copy(bit32.subSet(0,WORD.SIZE));
 		return result;
@@ -126,14 +126,14 @@ public class ALU {
 		}
 		short i1=(short) s1.getLong();
 		short i2=(short) s2.getLong();
-		message.append(String.format("[ALU] %d / %d\n",i1,i2));
+		message.append(String.format("==> [ALU] %d / %d",i1,i2));
 		if(i2==0){
 			setDivzero(true);
 			return null;
 		}
 		short quotient=(short) (i1/i2);
 		short remainer=(short) (i1%i2);
-		message.append(String.format("[+] Quotient = %d, Remainer = %d\n",quotient,remainer));
+		message.append(String.format(" => Quotient = %d, Remainer = %d\n",quotient,remainer));
 		result[0].setLong(quotient);
 		result[1].setLong(remainer);
 		
@@ -227,27 +227,31 @@ public class ALU {
 	}
 	
 	private void setOverflow(boolean input) {
+		cpu.getCC().clear();
 		cpu.getCC().set(0, input);
 		if(input)
-			message.append("[+] Set Overflow\n");
+			message.append(" === Set CC : Overflow\n");
 	}
 
 	private void setUnderflow(boolean input) {
+		cpu.getCC().clear();
 		cpu.getCC().set(1, input);
 		if(input)
-			message.append("[+] Set Underflow\n");
+			message.append(" ==> Set CC : Underflow\n");
 	}
 
 	private void setDivzero(boolean input) {
+		cpu.getCC().clear();
 		cpu.getCC().set(2, input);
 		if(input)
-			message.append("[+] Set Divzero\n");
+			message.append(" ==> Set CC : Divzero\n");
 	}
 
 	private void setEqualOrNot(boolean input) {
+		cpu.getCC().clear();
 		cpu.getCC().set(3, input);
 		if(input)
-			message.append("[+] Set EqualOrNot\n");
+			message.append(" ==> Set CC : EqualOrNot\n");
 	}
 
 	public String getMessage() { return message.toString();}

@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
@@ -90,17 +91,17 @@ class Translator
 				return null;
 			}
 			String lastParam = arrStr[1];
-			if (lastParam.endsWith(",I")) {
+			String[] arrParam=lastParam.split(",");
+			if(arrParam[arrParam.length-1].trim().equals("I"))
+			{
 				if (inst.isFlag() == false) {
-					message = arrStr[0] + " doesn't support I flag.\nInput parameters are not matched - " + asmCode+ "\n";
+					message = lastParam + " doesn't support I flag.\nInput parameters are not matched - " + asmCode+ "\n";
 					LOG.warning(message);
 					return null;
 				}
-				arrStr[1] = lastParam.substring(0, lastParam.length() - 2);
-				flag = 1;
+				arrParam=Arrays.copyOf(arrParam, arrParam.length-1);
+				flag = 1;			
 			}
-			
-			String[] arrParam=arrStr[1].split(",");
 			int paramLength=arrParam.length;
 			if (paramLength != inst.getParamLength()) {
 				message = arrStr[0] + " requires " + inst.getParamLength()
@@ -126,17 +127,7 @@ class Translator
 				return null;
 			}
 			
-			// parameter validation
-			// IX range limitation for LDX, STX
-			if(opcode==InstructionSet.LDX || opcode==InstructionSet.STX) 
-			{
-				if(ireg<1 || ireg>3)
-				{
-					message="Index Register must be between 1-3 : "+asmCode+"\n";
-					LOG.warning(message);			
-					return null;
-				}
-			}
+			
 		}
 		
 		// set default value
