@@ -301,7 +301,9 @@ public class CPU {
 		message="";
 		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
 		for(int i=0; i<arrAsmCode.length;i++) {
-			arrAsmCode[i]=arrAsmCode[i].toUpperCase();
+			arrAsmCode[i]=arrAsmCode[i].toUpperCase().trim();
+			if(arrAsmCode[i].isBlank())	
+				continue;
 			WORD binCode=Translator.getBinCode(arrAsmCode[i]);
 			if(binCode==null) {
 				message=Translator.getMessage()+"Failed to parse user instruction : "+arrAsmCode[i]+"\n";
@@ -412,9 +414,13 @@ public class CPU {
 		// need to implement to store cache and synchronize between cache and memory
 	    //cache.store(address,value);
 	    //storeIntoCache(address,value);
-		LOG.info(value+" "+address+"\n");
+		LOG.info("mem["+address+"] = "+value+"\n");
 		boolean result=true;
 		result= memory.store(address, value,this);
+		if(address==424)
+		{
+			LOG.info("Hello");
+		}
 		return result;
 	}
 

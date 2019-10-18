@@ -142,7 +142,7 @@ public class CISCSimulator implements Runnable{
 			if(isRun==false)
 				break;
 			
-			long sleep=200;
+			long sleep=1;
 			if(controller.isInterrupt()==true)
 			{
 				panel.printLog("Waiting user input for IN instruction..\n");
@@ -169,7 +169,9 @@ public class CISCSimulator implements Runnable{
 				panel.printScreen(output);
 			}
 		}while(state==StateType.READY);
+		buffer.append(memory.getString());
 		message=buffer.toString();
+		panel.updateDisplay();
 		isRun=false;
 		return;
 	}

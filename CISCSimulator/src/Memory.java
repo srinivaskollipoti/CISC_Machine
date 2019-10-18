@@ -189,8 +189,11 @@ public class Memory {
 		{
 			if(!memory[i].isEmpty())
 			{
-				String message = String.format("Memory [%04d]  %s (%02X%02X)\n", i, memory[i].getString(),
-						 memory[i].getLong()&0x00FF,(memory[i].getLong()&0xFF00)>>>8);
+				//String message = String.format("Memory [%04d]  %s (%02X%02X)\n", i, memory[i].getString(),
+				//		 (memory[i].getLong()&0xFF00)>>>8, memory[i].getLong()&0x00FF);
+				String message = String.format("Memory [%04d]  %s (%d)\n", i, memory[i].getString(),
+						memory[i].getLong());
+
 				buffer.append(message);
 			}
 		}
