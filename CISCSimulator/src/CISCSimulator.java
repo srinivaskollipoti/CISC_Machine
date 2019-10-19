@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -21,6 +22,8 @@ public class CISCSimulator implements Runnable{
 	private StateType state;				// state of computer
 	private String message=new String();	// state message of computer
 	private boolean isRun=false;
+	private int mode=0;						// 0: NORMAL, 1: Test Program1, 2: Test Program2
+	
 	/**
 	 * Enum type to distinguish the state of simulator.
 	 * POWEROFF = Turned off
@@ -144,7 +147,8 @@ public class CISCSimulator implements Runnable{
 			
 			long sleep=1;
 			if(controller.isInterrupt()==true)
-			{
+			{	
+				panel.setEnableIn(true);
 				panel.printLog("Waiting user input for IN instruction..\n");
 				try {
 					Thread.sleep(2000);
@@ -152,6 +156,8 @@ public class CISCSimulator implements Runnable{
 					e.printStackTrace();
 				}
 				continue;
+			}else {
+				panel.setEnableIn(false);
 			}
 			
 			singleStep();
@@ -285,6 +291,34 @@ public class CISCSimulator implements Runnable{
 		return result;
 	}
 	
+	public boolean loadTestProgram1()
+	{
+		message="[LOADED] Test Program 1\n";
+		ArrayList<WORD> arrBinCode=ROM.getBinCode("test1.txt");
+		if(arrBinCode==null)
+		{
+			message="[WARNING] Failed to load test program 1\n"+ROM.getMessage();
+			LOG.warning(message);
+			return false;
+		}
+		
+		String[] arrAsmCode= new String[arrBinCode.size()];
+		for (int i=0;i<arrBinCode.size();i++)
+		{	
+			String asmCode=Translator.getAsmCode(arrBinCode.get(i));
+			if(asmCode!=null)
+				arrAsmCode[i]=asmCode;
+			else {
+				LOG.warning("ERROR\n");
+			}
+		}
+		
+		boolean result=setUserCode(arrAsmCode);
+		if(result) mode=1;
+		panel.updateDisplay();
+		return result;
+	}
+	
 	/**
 	 * check if the simulator is turned off
 	 * @return A boolean indicating if the simulator is turned off.
@@ -297,4 +331,17 @@ public class CISCSimulator implements Runnable{
 	public IOC getIOC(){ return ioc;}
 	public StateType getState() { return state; }
 	public String getMessage() { return message; }
+
+	/**
+	 * @return
+	 */
+	public int getPhase() {
+		int result=0;
+		try {
+			result= (int)getCPU().loadMemory(550).getLong();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 }

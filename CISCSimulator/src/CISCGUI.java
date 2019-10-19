@@ -1,5 +1,8 @@
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 /*
@@ -116,6 +119,7 @@ public class CISCGUI extends javax.swing.JFrame {
         textArea.setEditable(false);
         textArea.setColumns(20);
         textArea.setRows(5);
+        textArea.setLineWrap(true);
         jScrollPane1.setViewportView(textArea);
 
         labelR0.setText("R0");
@@ -160,18 +164,26 @@ public class CISCGUI extends javax.swing.JFrame {
             }
         });
 
-        buttonLoadProgram1.setText("LoadProgram1");
+        buttonLoadProgram1.setText("Load Program 1");
+        buttonLoadProgram1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonLoadProgram1ActionPerformed(evt);
+            }
+        });
 
-        buttonLoadProgram2.setText("LoadProgram2");
+        buttonLoadProgram2.setText("Enter User Data");
         buttonLoadProgram2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonLoadProgram2ActionPerformed(evt);
             }
         });
+        buttonLoadProgram2.setEnabled(false);
+        textAreaSystemIN.setEnabled(false);
 
 
         textAreaSystemIN.setColumns(20);
         textAreaSystemIN.setRows(5);
+        textAreaSystemIN.setLineWrap(true);
         jScrollPane3.setViewportView(textAreaSystemIN);
         textAreaSystemIN.addKeyListener(new KeyListener(){
             
@@ -192,9 +204,7 @@ public class CISCGUI extends javax.swing.JFrame {
 				String text = textAreaSystemIN.getText();
 	            if(text.endsWith("\n")==true)
 	            {
-	            	printLog("[INFO] User inputs a text : "+text);
-	            	simu.inputUserText(text.substring(0,text.length()-1)+'\0');
-	            	textAreaSystemIN.setText("");
+	            	inputUserData();
 	            }
 			}
             });
@@ -204,6 +214,7 @@ public class CISCGUI extends javax.swing.JFrame {
 
         textareaSystemOUT.setColumns(20);
         textareaSystemOUT.setRows(5);
+        textareaSystemOUT.setLineWrap(true);
         jScrollPane4.setViewportView(textareaSystemOUT);
 
         labelSystemOUT.setText("SystemOUT");
@@ -429,7 +440,7 @@ public class CISCGUI extends javax.swing.JFrame {
 	 * Perform singlestep process.
 	 */
     private void buttonSingleStepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSingleStepActionPerformed
-    	printLog("[NOTICE] Simulator perform singlestep\n");
+    	//printLog("[NOTICE] Simulator perform singlestep\n");
     	if(simu.isPowerOff()==true) {
     		printLog("[NOTICE] Simulator is not turned on, push the IPL button\n");
     		return;
@@ -500,13 +511,14 @@ public class CISCGUI extends javax.swing.JFrame {
     	if(simu.isPowerOff()==true)
     	{
     		printLog("[NOTICE] Simulator is turned on\n");
-	    	simu.initProcessor();
+    		simu.initProcessor();
 	    	printLog(simu.getMessage());
     	}else {
     		simu.powerOff();
     		textareaSystemOUT.setText("");
     		textAreaSystemIN.setText("");
     		textArea.setText("");
+    		buttonLoadProgram1.setEnabled(true);
     		printLog("[NOTICE] Simulator is turned off\n");
             
     	}
@@ -554,9 +566,96 @@ public class CISCGUI extends javax.swing.JFrame {
         haltProcess();
     }                                          
 
-    private void buttonLoadProgram2ActionPerformed(java.awt.event.ActionEvent evt) {                                                   
-        // TODO add your handling code here:
+    private void buttonLoadProgram1ActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+    	if(simu.isPowerOff()==true) {
+    		printLog("[NOTICE] Simulator is not turned on, push the IPL button\n");
+    		return;
+    	}
+    	simu.loadTestProgram1();
+    	
+    	Random rand = new Random();
+    	StringBuffer buffer=new StringBuffer();
+    	for (int i=0;i<20;i++)
+    	{
+    		int n = rand.nextInt(32767);
+    		buffer.append(Integer.toString(n));
+    		if(i==19)
+    			break;
+    		buffer.append(",");	
+    	}
+    	textAreaSystemIN.setText(buffer.toString());
+    	textareaSystemOUT.setText("Push run button\n");
+    	buttonLoadProgram2.setEnabled(false);
     }  
+
+    
+    private void buttonLoadProgram2ActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+    	if(simu.isPowerOff()==true) {
+    		printLog("[NOTICE] Simulator is not turned on, push the IPL button\n");
+    		return;
+    	}
+    	inputUserData();
+    } 
+    
+    public boolean inputUserData()
+    {	
+    	int inputSize=0;
+    	int phase = simu.getPhase();
+    	
+		if (phase == 1)
+			inputSize = 20;
+		else if (phase== 2)
+			inputSize = 1;
+		else 
+    	{
+    		textareaSystemOUT.setText("Run test program 1 first\n");
+    		return false;
+    	}
+
+
+    	String text = textAreaSystemIN.getText().trim();
+    	String [] arrNumber= text.split(",");
+    	List<String> finalNumber=new ArrayList<String>();
+    	 
+    	for(int i =0;i<arrNumber.length;i++) {
+    		try {
+    			if(arrNumber[i].isBlank()!=true)
+    			{
+    				arrNumber[i]=Integer.toString(Integer.valueOf(arrNumber[i].trim()));
+    				finalNumber.add(arrNumber[i].trim());
+    			}
+    		}
+    		catch (NumberFormatException e)
+    		{
+    			textareaSystemOUT.setText(arrNumber[i]+" is not number\n");
+    			return false;
+    		}
+    	}
+
+		if (finalNumber.size() != inputSize) {
+			textareaSystemOUT.setText("Please enter "+inputSize+" numbers.\nYou entered " + finalNumber.size() + " numbers.");
+			return false;
+		}
+		for (String word : finalNumber) {
+			int number = Integer.valueOf(word);
+			if (number > 32767) {
+				textareaSystemOUT.setText("Sorry, number over 32767 are not supported.\nYour entered "+word+".\n");
+				return false;
+			}
+			if (number < 0) {
+				textareaSystemOUT.setText("Sorry, number under 0 are not supported.\nYour entered "+word+".\n");
+				return false;
+			}
+		}
+
+    	text=String.join(",",finalNumber)+'\0';
+        printLog("[INFO] User entered a text : ["+text+"]\n");
+        simu.inputUserText(text);
+        textAreaSystemIN.setText("");
+        textareaSystemOUT.setText("");
+        return true;
+    }
+    
     /**
 	 * Update display of UI  
 	 */
@@ -583,8 +682,19 @@ public class CISCGUI extends javax.swing.JFrame {
     	textFieldPC.setText(Long.toString(cpu.getPC().getLong()));
     	if(isMessage==true)
     		printLog(simu.getMessage());
+
     }
     
+    public void setEnableIn(boolean isEnable)
+    {
+    	textAreaSystemIN.setEnabled(isEnable);
+    	buttonLoadProgram2.setEnabled(isEnable);
+    	if(isEnable)
+    	{
+    		textAreaSystemIN.requestFocus();
+    	}
+    	
+    }
     public void printScreen(String text)
     {
     	textareaSystemOUT.append(text);
@@ -617,8 +727,6 @@ public class CISCGUI extends javax.swing.JFrame {
         }
         //</editor-fold>
         //</editor-fold>
-
-         
                 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {

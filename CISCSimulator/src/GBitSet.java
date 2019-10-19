@@ -90,7 +90,6 @@ public class GBitSet extends java.util.BitSet {
 		long[] temp = new long[1];
 		temp[0]=number;
 		this.or(GBitSet.valueOf(temp));
-		
 		return true;
 	}
 	

@@ -11,13 +11,16 @@ import java.util.ArrayList;
 
 public class Memory {
 	private SignedWORD memory[];
+	
+	private int user_program_end=0;
 	private static final int DEFAULT_MEMORY=2048;
 	private static final int MAX_MEMORY=4096;
 	private static final int MIN_MEMORY=2048;
-	private static final int USER_CODE_START=1000;
 	
 	public static final int BOOT_MEMORY_START=010;
 	public static final int USER_MEMORY_START=400;
+	public static final int USER_PROGRAM_START=1000;
+	
 	
 	/**
 	 * A constructor
@@ -147,7 +150,7 @@ public class Memory {
 	 */
 	public boolean storeUserCode(ArrayList<WORD> arrCode)
 	{
-		int address=USER_CODE_START;
+		int address=USER_PROGRAM_START;
 		for(WORD code : arrCode) {
 			try {
 			if(!store(address,code)) return false;
@@ -157,7 +160,8 @@ public class Memory {
 			}
 			address++;
 		}
-		memory[address].setLong(CPU.END_OF_CODE);
+		memory[address].setLong(CPU.END_OF_PROGRAM);
+		user_program_end=address;
 		return true;
 	}
 	
@@ -173,7 +177,7 @@ public class Memory {
 			if(!store(address,word,true)) return false;
 			address++;
 		}
-		memory[address].setLong(CPU.END_OF_CODE);
+		memory[address].setLong(CPU.END_OF_PROGRAM);
 		//userMemoryStart=address;
 		return true;
 	}
@@ -187,13 +191,14 @@ public class Memory {
 		StringBuffer buffer=new StringBuffer();
 		for(int i =0; i<memory.length;i++)
 		{
+//			if(i<400-1|| i>=user_program_end)
+//				continue;
 			if(!memory[i].isEmpty())
 			{
-				//String message = String.format("Memory [%04d]  %s (%02X%02X)\n", i, memory[i].getString(),
-				//		 (memory[i].getLong()&0xFF00)>>>8, memory[i].getLong()&0x00FF);
+				//String message = String.format("Memory [%04d]  %s (%02X%02X) (%d)\n", i, memory[i].getString(),
+				//		  memory[i].getLong()&0x00FF,(memory[i].getLong()&0xFF00)>>>8,memory[i].getLong());
 				String message = String.format("Memory [%04d]  %s (%d)\n", i, memory[i].getString(),
 						memory[i].getLong());
-
 				buffer.append(message);
 			}
 		}
@@ -221,8 +226,8 @@ public class Memory {
 	 * Get starting location for user program.
 	 * @return starting location for user program.
 	 */
-	public int getUserCodeLocation() {
-		return USER_CODE_START;
+	public int getUserProgramLocation() {
+		return USER_PROGRAM_START;
 	}
 
 }

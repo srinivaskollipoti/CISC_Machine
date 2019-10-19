@@ -166,7 +166,6 @@ public class TransInstHandler extends InstructionHandler {
 		cpu.getGPR(0).setLong(address);
 		cpu.setPC(cpu.getGPR(3).getLong());
 		message = String.format("==> PC is changed to %d\n==> Return value is %d\n", cpu.getGPR(3).getLong(),address);
-
 		return true;
 	}
 	

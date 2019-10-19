@@ -20,6 +20,7 @@ public class ALInstHandler extends InstructionHandler {
 	}
 
 	public boolean execute() throws IOException{
+		message="";
 		LOG.info("Execute AL Instruction\n");
 		parseIR(cpu.getIR());
 		switch(getOPCode())

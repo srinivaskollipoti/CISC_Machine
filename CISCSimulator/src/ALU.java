@@ -17,12 +17,8 @@ public class ALU {
 	StringBuffer message=new StringBuffer();
 	
 	private CPU cpu;
-	// acc
-	// temp register
+
 	
-	/**
-	 * 
-	 */
 	public ALU(CPU cpu) {
 		this.cpu=cpu;
 	}
@@ -227,28 +223,28 @@ public class ALU {
 	}
 	
 	private void setOverflow(boolean input) {
-		cpu.getCC().clear();
+		message.setLength(0);
 		cpu.getCC().set(0, input);
 		if(input)
 			message.append(" === Set CC : Overflow\n");
 	}
 
 	private void setUnderflow(boolean input) {
-		cpu.getCC().clear();
+		message.setLength(0);
 		cpu.getCC().set(1, input);
 		if(input)
 			message.append(" ==> Set CC : Underflow\n");
 	}
 
 	private void setDivzero(boolean input) {
-		cpu.getCC().clear();
+		message.setLength(0);
 		cpu.getCC().set(2, input);
 		if(input)
 			message.append(" ==> Set CC : Divzero\n");
 	}
 
 	private void setEqualOrNot(boolean input) {
-		cpu.getCC().clear();
+		message.setLength(0);
 		cpu.getCC().set(3, input);
 		if(input)
 			message.append(" ==> Set CC : EqualOrNot\n");

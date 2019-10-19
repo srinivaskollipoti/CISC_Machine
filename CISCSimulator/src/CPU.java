@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  */
 public class CPU {
 	
-	public final static int END_OF_CODE=-1;
+	public final static int END_OF_PROGRAM=-1;
 	private final static Logger LOG = Logger.getGlobal();
 	private Memory memory;
 	private IOC ioc;
@@ -151,8 +151,7 @@ public class CPU {
 			LOG.severe(e.getMessage());
 			LOG.severe("Failed to load Next Instruction");			
 		}
-		boolean result= (inst.getLong()==END_OF_CODE); // check if next instruction is none
-		//boolean result=inst.isEmpty();	
+		boolean result= (inst.getLong()==END_OF_PROGRAM); // check if next instruction is none
 		return !result;
 	}
 	
@@ -183,8 +182,8 @@ public class CPU {
 			}
 			MAR.copy(PC);
 			state=CPUState.LOAD_MBR;
-			message="[FETCH] MAR <- PC\n";
-			break;
+			//message="[FETCH] MAR <- PC\n";
+			//break;
 		case LOAD_MBR:
 			try {
 				MBR.copy(loadMemory(MAR.getLong()));
@@ -194,11 +193,12 @@ public class CPU {
 			}
 			state=CPUState.LOAD_IR;
 			increasePC();		// increase the program counter
-			message="[FETCH] MBR <- MEM[MAR]\n";
-			break;
+			//message=message+"[FETCH] MBR <- MEM[MAR]\n";
+			//break;
 		case LOAD_IR:
 			IR.copy(MBR);
-			message="[FETCH] IR <- MBR\n";
+			//message=message+"[FETCH] IR <- MBR\n";
+			message=message+"[FETCH] IR <- MEM[PC], PC <- PC + 1\n";
 			state=CPUState.EXECUTE;
 			break;
 		case EXECUTE:
@@ -260,12 +260,11 @@ public class CPU {
 	 */
 	public boolean setBootCode()
 	{
-		message="[LOAD] Boot Program\n";
-		ROM rom= new ROM();
-		ArrayList<WORD> arrBinCode=rom.getBinCode();
+		message="[LOADED] Boot Program\n";
+		ArrayList<WORD> arrBinCode=ROM.getBinCode();
 		if(arrBinCode==null)
 		{
-			message="[WARNING] Failed to load boot program\n"+rom.getMessage();
+			message="[WARNING] Failed to load boot program\n"+ROM.getMessage();
 			LOG.warning(message);
 			return false;
 		}
@@ -282,14 +281,13 @@ public class CPU {
 			LOG.warning(message);
 			return false;
 		}
-	    message=message+getMemory().getString();
-	    //message=message+"==> Loading Complete\n";
-	    //message=message+String.join("\n",arrAsmCode)+"\n";		
+	    message=message+getMemory().getString();	
 	    PC.setLong(Memory.BOOT_MEMORY_START);
-	    //message=message+"PC = "+Memory.BOOT_MEMORY_START+"\n";
 	    state=CPUState.LOAD_MAR;
 		return true;
 	}
+	
+	
 	
 	/**
 	 * Convert a list of instructions to a list of binary codes and print out the memory status.
@@ -319,8 +317,8 @@ public class CPU {
 	    	LOG.warning(message);
 			return false;
 		}
-	    PC.setLong(memory.getUserCodeLocation());
-	    message=("[LOAD] User program\n"+String.join("\n",arrAsmCode)+"\nPC = "+memory.getUserCodeLocation()+"\n"+memory.getString()+"\n");
+	    PC.setLong(memory.getUserProgramLocation());
+	    message=("[LOAD] User program\n"+String.join("\n",arrAsmCode)+"\nPC = "+memory.getUserProgramLocation()+"\n"+memory.getString()+"\n");
 	    state=CPUState.LOAD_MAR;
 		return true;
 	}
@@ -417,10 +415,6 @@ public class CPU {
 		LOG.info("mem["+address+"] = "+value+"\n");
 		boolean result=true;
 		result= memory.store(address, value,this);
-		if(address==424)
-		{
-			LOG.info("Hello");
-		}
 		return result;
 	}
 
