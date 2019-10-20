@@ -219,6 +219,7 @@ public class CPU {
 			state=CPUState.LOAD_MAR;
 			break;
 		}
+		addMessage(cache.toString()+"\n");
 		return result;
 	}
 	
@@ -336,97 +337,44 @@ public class CPU {
 	{
 		WORD result=null;
 		
-		// need to implement to load cache
-		//result = cache.load(address);
-		//if(result!=null)
-		//	return result;
-		
+		result = cache.load(address);
+		if(result!=null)
+		{
+			LOG.info(cache.toString()+"\n");
+			return result;
+		}
 		result = memory.load(address,this);
-		//cache.store(result);
+		cache.store(address,result);
+		LOG.info(cache.toString()+"\n");
 		return result;
 	}
-	
-	/**
-	 * 
-	 * fetch a word from cache. If the word is not in cache, fetch it from
-	 * memory, then store it into cache.
-	 * 
-	 * @param address
-	 * @return
-	 */
-	
-	public WORD fetchFromCache(long address) throws IOException {
-		for (Cache.CacheLoad lines : cache.getCacheLines()) { // check every block
-														// whether the tag is
-														// already exist
-			if (address == lines.getMemAddress()) {
-				return lines.getData(); // tag exist, return the data of the
-										// block
-			}
-		}
-		// tag not exist
-		WORD value = loadMemory(address);
-		System.out.println(value);
-		cache.add(address, value);
-		return value;
-	}
 
-	/**
-	 * 
-	 * store into cache with replacement. Also store into memory simultaneously.
-	 * 
-	 * @param address
-	 * @param value
-	 */
-	public void storeIntoCache(long address, WORD value) {
-	
-		LOG.info(" "+address+" "+value);
-		
-		try {
-			storeMemory(address, value);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		for (Cache.CacheLoad lines : cache.getCacheLines()) { // check every block the
-														// tag is already exist
-			if (address == lines.getMemAddress()) {
-				lines.setData(value); // replace the block
-				return;
-			}
-		}
-		// tag not exist
-		cache.add(address, value);
-	}
-	/**
-	 * Srinivas implements L1, L2 cache 
-	 * 
-	 * Store the input data to memory or cache with specific address.
-	 * @param address A integer indicating the memory slot to access.
-	 * @param value A WORD argument containing the input data for the memory to store.
-	 * @return On case success, true is returned, otherwise false is returned.
-	 * @throws IOException
-	 */
 	public boolean storeMemory(long address, WORD value) throws IOException
 	{
-		// need to implement to store cache and synchronize between cache and memory
-	    //cache.store(address,value);
-	    //storeIntoCache(address,value);
-		LOG.info("mem["+address+"] = "+value+"\n");
+		cache.store(address,value);
+	    LOG.info("mem["+address+"] = "+value+"\n");
 		boolean result=true;
 		result= memory.store(address, value,this);
 		return result;
 	}
 
 	/**
-	 * @param reg
-	 * @return
+	 * Set output buffer of IO controller
+	 * @param devID ID of device
+	 * @param out a character to output
+	 * @return if success, return true, otherwise return false
 	 */
 	public boolean setOutputChar(int devID,char out) {
 		ioc.appendIOBuffer(devID, out);
 		return false;
 	}
-	
+
+	/**
+	 * Get character from input buffer of IO controller
+	 * @param devID ID of device
+	 * @return
+	 */
+
 	public char getInputChar(int devID)
 	{
 		char result=0;
