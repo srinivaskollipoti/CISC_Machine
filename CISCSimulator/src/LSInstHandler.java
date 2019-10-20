@@ -1,19 +1,14 @@
 import java.io.IOException;
 
-/**
- * 
- */
 
 /**
+ * Perform load and store instruction
  * @author cozyu
  *
  */
 public class LSInstHandler extends InstructionHandler {
 
 	
-	/**
-	 * @param cpu
-	 */
 	public LSInstHandler(CPU cpu) {
 		super(cpu);
 	}

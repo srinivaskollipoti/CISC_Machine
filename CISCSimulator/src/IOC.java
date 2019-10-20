@@ -37,12 +37,22 @@ public class IOC {
 			ioBuffer[i].setLength(0);
 	}
 	
-	/// IO Controller
+	/**
+	 * Append a character into IO buffer
+	 * @param devID device ID
+	 * @param a character to append
+	 */
 	public void appendIOBuffer(int devID,char i) {
 		if(devID>MAX_DEVID || devID<KEYBOARD)
 			throw new IllegalArgumentException("DevID must be between 0-31");
 		ioBuffer[devID].append(i);
 	}
+	
+	/**
+	 * Get a character from IO buffer
+	 * @param devID device ID
+	 * @return a character gotten from the IO buffer
+	 */
 	public char getIOBuffer(int devID) {
 		if(devID>MAX_DEVID || devID<KEYBOARD)
 			throw new IllegalArgumentException("DevID must be between 0-31");
@@ -54,7 +64,11 @@ public class IOC {
 		return result;
 	}
 
-
+	/**
+	 * Check if IO buffer is empty
+	 * @param devID device iD
+	 * @return if empty, return false, otherwise return true
+	 */
 	public boolean isIOBuffer(int devID) {
 		if(devID>MAX_DEVID || devID<KEYBOARD)
 			throw new IllegalArgumentException("DevID must be between 0-31");

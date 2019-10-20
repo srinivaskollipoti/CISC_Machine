@@ -7,7 +7,11 @@
 import java.util.logging.Logger;
 import java.util.*;
 
-
+/**
+ * Implement cacheline
+ * @author cozyu(Yeongmok You)
+ *
+ */
 class CacheLine {	
 
 	public static final int MAX_DATA=16;
@@ -21,12 +25,23 @@ class CacheLine {
 	public void setTag(long tag) { this.tag = tag; }
 	public long getTag() { return this.tag; }
 
+	/**
+	 * get data from the index
+	 * @param index the location of data
+	 * @return data of the index
+	 */
 	public WORD getData(int index) {
 		if(index>MAX_DATA || index<0)
 			throw new IllegalArgumentException("Index must be between 0 and "+MAX_DATA);
 		return data[index];
 	}
 
+	/**
+	 * set data into the index
+	 * @param index the location of data
+	 * @param input the data to store
+	 * @return if success, return true, otherwise return false
+	 */
 	public boolean setData(int index,WORD input) {
 		if(index>MAX_DATA || index<0)
 			throw new IllegalArgumentException("Index must be between 0 and "+MAX_DATA);
@@ -38,15 +53,24 @@ class CacheLine {
 	}
 }
 
-
+/**
+ * Implement Cache
+ * The simulator has 2048 WORD memory, and has the cache of same size.
+ * Size of cache line is 16 WORD.
+ * The number of cacheline is 128.
+ * The replacement of cache is operated in accordance with FIFO policy.
+ * The tag is 12bit and the bytes is 4bit
+ * @author cozyu
+ *
+ */
 public class Cache {
 	
 	private final static Logger LOG = Logger.getGlobal();
 
 
 	private String message="";
-	private final LinkedList<CacheLine> cache;
-	private final static int MAX_CACHE_LINE = 128;
+	private final LinkedList<CacheLine> cache;		// the list of cacheline
+	private final static int MAX_CACHE_LINE = 128;	// maximum of cacheline
 	private long hit = 0, miss = 0, access = 0;
 
 	public Cache() {
@@ -74,7 +98,6 @@ public class Cache {
 	 * @return data matched the address
 	 * @author cozyu(Yeongmok You)
 	 */
-
 	public WORD load(long address) 
 	{	
 		message="";

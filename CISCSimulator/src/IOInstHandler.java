@@ -4,21 +4,15 @@ import java.io.FileNotFoundException;
 import java.util.Scanner; 
 import java.util.ArrayList;
 
-//import CPU.CPUState;
+
 
 /**
  *  perform IO instruction and Miscellaneous Instruction
- */
-
-/**
- * @author cozyu
+ * @author cozyu (Yeongmok You)
  * @author youcao
  */
 public class IOInstHandler extends InstructionHandler {
 	
-	/**
-	 * @param cpu
-	 */
 	int counter = 0;
 	public IOInstHandler(CPU cpu) {
 		super(cpu);
@@ -50,7 +44,10 @@ public class IOInstHandler extends InstructionHandler {
 		return true;
 	}
 
-	
+	/**
+	 * Execute IN instruction, it doesn't support PRINTER
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
 	private boolean executeIN() throws FileNotFoundException{	
 		int devId = address;
 		if(devId == IOC.PRINTER) {
@@ -81,6 +78,10 @@ public class IOInstHandler extends InstructionHandler {
 		return true;
 	}
 	
+	/**
+	 * Execute OUT instruction, it doesn't support KEYBOARD and CARD READER
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
 	private boolean executeOUT() {	
 		long devId = address;
 		if(devId == IOC.KEYBOARD || devId == IOC.CARD_READER) {
@@ -94,7 +95,11 @@ public class IOInstHandler extends InstructionHandler {
 		
 		return true;
 	}
-	
+
+	/**
+	 * Execute Halt instruction
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
 	private boolean executeHLT() {
 		cpu.getSimulator().setStop();
 		message="[NOTICE] System halted\n";

@@ -3,14 +3,11 @@ import java.util.ArrayList;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-/**
- * @author cozyu
- *
- */
  
 /**
- * @author youcao  documented by youcao.
  * Operates the simulator(basic machine) according to the user input. See below for detailed descriptions. 
+ * @author cozyu (Yeongmok You)
+ * @author youcao  documented by youcao.
  */
 public class CISCSimulator implements Runnable{
 	final static Logger LOG = Logger.getGlobal();
@@ -114,12 +111,18 @@ public class CISCSimulator implements Runnable{
 		state=StateType.POWEROFF;
 	}
 	
+	/**
+	 * Stop the simulator
+	 */
 	public void setStop()
 	{
 		isRun=false;
 	}
 	
-	
+	/**
+	 * Forward user input of console to IO controller
+	 * @param text
+	 */
 	public void inputUserText(String text)
 	{
 		ioc.appendIOBuffer(0, text);
@@ -291,9 +294,14 @@ public class CISCSimulator implements Runnable{
 		return result;
 	}
 	
+	/**
+	 * Load test program1
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
 	public boolean loadTestProgram1()
 	{
 		message="[LOADED] Test Program 1\n";
+		// read test program file
 		ArrayList<WORD> arrBinCode=ROM.getBinCode("test1.txt");
 		if(arrBinCode==null)
 		{
@@ -302,6 +310,7 @@ public class CISCSimulator implements Runnable{
 			return false;
 		}
 		
+		// change assembly code from binary code
 		String[] arrAsmCode= new String[arrBinCode.size()];
 		for (int i=0;i<arrBinCode.size();i++)
 		{	
@@ -313,6 +322,7 @@ public class CISCSimulator implements Runnable{
 			}
 		}
 		
+		// input user code to simulator
 		boolean result=setUserCode(arrAsmCode);
 		if(result) mode=1;
 		panel.updateDisplay();
@@ -333,6 +343,7 @@ public class CISCSimulator implements Runnable{
 	public String getMessage() { return message; }
 
 	/**
+	 * Get phase of the test program, it check the flag in the memory
 	 * @return
 	 */
 	public int getPhase() {

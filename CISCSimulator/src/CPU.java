@@ -5,11 +5,11 @@ import java.util.logging.Logger;
 
 
 /**
- * @author cozyu
- * @author youcao  documented by youcao.
- * cpu of simulator
  * it executes instruction and has registers for instructions.
  * also it controls memory loading and saving.
+ * @author cozyu(Yeongmok You)
+ * @author youcao  documented by youcao.
+ * cpu of simulator
  */
 public class CPU {
 	
@@ -326,8 +326,6 @@ public class CPU {
 	
 
 	/**
-	 * Srinivas implements L1, L2 cache 
-	 * 
 	 * Load data from memory or cache given address.
 	 * @param address an integer of the memory address the machine wants to access.
 	 * @return The data stored in the memory or cache slot.
@@ -349,6 +347,13 @@ public class CPU {
 		return result;
 	}
 
+	/**
+	 * Store data into memory, cpu stores the data into cache when the data is stored into memory
+	 * @param address	the address of data
+	 * @param value		the data
+	 * @return On case success, true is returned, otherwise false is returned.
+	 * @throws IOException
+	 */
 	public boolean storeMemory(long address, WORD value) throws IOException
 	{
 		cache.store(address,value);
@@ -372,9 +377,8 @@ public class CPU {
 	/**
 	 * Get character from input buffer of IO controller
 	 * @param devID ID of device
-	 * @return
+	 * @return a character gotten from IO controller
 	 */
-
 	public char getInputChar(int devID)
 	{
 		char result=0;

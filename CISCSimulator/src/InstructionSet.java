@@ -2,15 +2,20 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
-
+/**
+ * Translate between binary code and assembly code
+ * @author cozyu
+ *
+ */
 class Translator
 {
 	protected final static Logger LOG = Logger.getGlobal();	
 	protected static String message=new String();
 	
 	public static String getMessage() {return message;}
+	
 	/**
-	 * get assemble code from specific instruction
+	 * Get assemble code from specific instruction
 	 * @return An assemble code string.
 	 */
 	public static String getAsmCode(WORD ir)
@@ -53,8 +58,8 @@ class Translator
 	
 	
 	/**
-	 * Convert the input instruction into a machine code.
-	 * @return the machine code in WORD format.
+	 * Convert the input instruction into a binary code.
+	 * @return the binary code in WORD format.
 	 */
 	public static WORD getBinCode(String asmCode)
 	{

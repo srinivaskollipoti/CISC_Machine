@@ -494,6 +494,11 @@ public class CISCGUI extends javax.swing.JFrame {
     	printLog(log,false);    	
     }
     
+    /**
+     * Print log into logger screen
+     * @param log
+     * @param isOnlyDisplay
+     */
     public void printLog(String log,boolean isOnlyDisplay)
     {
     	String message=log;
@@ -562,10 +567,18 @@ public class CISCGUI extends javax.swing.JFrame {
     	updateDisplay();
     }//GEN-LAST:event_buttonSaveActionPerformed
 
+    /**
+     * Halt process
+     * @param evt
+     */
     private void buttonHaltActionPerformed(java.awt.event.ActionEvent evt) {                                           
         haltProcess();
     }                                          
 
+    /**
+     * Load Test Program 1
+     * @param evt
+     */
     private void buttonLoadProgram1ActionPerformed(java.awt.event.ActionEvent evt) {                                                   
     	if(simu.isPowerOff()==true) {
     		printLog("[NOTICE] Simulator is not turned on, push the IPL button\n");
@@ -588,7 +601,10 @@ public class CISCGUI extends javax.swing.JFrame {
     	buttonLoadProgram2.setEnabled(false);
     }  
 
-    
+    /**
+     * Get user input data
+     * @param evt
+     */    
     private void buttonLoadProgram2ActionPerformed(java.awt.event.ActionEvent evt) {                                                   
     	if(simu.isPowerOff()==true) {
     		printLog("[NOTICE] Simulator is not turned on, push the IPL button\n");
@@ -596,7 +612,10 @@ public class CISCGUI extends javax.swing.JFrame {
     	}
     	inputUserData();
     } 
-    
+
+    /**
+     * Get user input data, it control the flow according to the phase of program 
+     */    
     public boolean inputUserData()
     {	
     	int inputSize=0;
@@ -613,10 +632,12 @@ public class CISCGUI extends javax.swing.JFrame {
     	}
 
 
+		// remove space character
     	String text = textAreaSystemIN.getText().trim();
     	String [] arrNumber= text.split(",");
     	List<String> finalNumber=new ArrayList<String>();
-    	 
+
+    	// check number format
     	for(int i =0;i<arrNumber.length;i++) {
     		try {
     			if(arrNumber[i].isBlank()!=true)
@@ -632,10 +653,13 @@ public class CISCGUI extends javax.swing.JFrame {
     		}
     	}
 
+    	// check number of integer
 		if (finalNumber.size() != inputSize) {
 			textareaSystemOUT.setText("Please enter "+inputSize+" numbers.\nYou entered " + finalNumber.size() + " numbers.");
 			return false;
 		}
+		
+		// check range of integer
 		for (String word : finalNumber) {
 			int number = Integer.valueOf(word);
 			if (number > 32767) {
@@ -695,10 +719,16 @@ public class CISCGUI extends javax.swing.JFrame {
     	}
     	
     }
+    
+    /**
+     * print message into printer console
+     * @param text
+     */
     public void printScreen(String text)
     {
     	textareaSystemOUT.append(text);
     }
+    
     /**
      * main function
      * @param args the command line arguments

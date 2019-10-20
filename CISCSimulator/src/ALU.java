@@ -7,18 +7,15 @@ import java.util.logging.Logger;
 
 /**
  * Perform AND, OR, NOT, XOR, add, sub, mul, div and complement, shift operation 
- * @author cozyu
- * @param 
- * input : GPR, IR, MBR, PC  
+ * @author cozyu (Yeongmok You)
+ * @see ALInstHandler  
  */
 public class ALU {
 	protected final static Logger LOG = Logger.getGlobal();	
-
 	StringBuffer message=new StringBuffer();
 	
 	private CPU cpu;
 
-	
 	public ALU(CPU cpu) {
 		this.cpu=cpu;
 	}
@@ -154,6 +151,12 @@ public class ALU {
 		return comp;
 	}
 	
+	/**
+	 * check two word is same if it is same, set EqualOrNot flag
+	 * @param s1 select 1
+	 * @param s2 select 2
+	 * @return if same, return true, otherwise return false
+	 */
 	public boolean equal(final WORD s1,final WORD s2) {
 		message.setLength(0);
 		this.setEqualOrNot(false);
@@ -163,6 +166,11 @@ public class ALU {
 		return result;
 	}
 
+	/**
+	 * perform NOT operation.
+	 * @param s1 select 1
+	 * @return result after operation
+	 */
 	public WORD not(final WORD s1) {
 		message.setLength(0);
 		WORD result=new SignedWORD(s1);
@@ -170,6 +178,12 @@ public class ALU {
 		return result;
 	}	
 
+	/**
+	 * perform AND operation between two word,
+	 * @param s1 select 1
+	 * @param s2 select 2
+	 * @return result after operation
+	 */
 	public WORD and(final WORD s1,final WORD s2) {
 		message.setLength(0);
 		WORD result=new SignedWORD(s1);
@@ -177,6 +191,12 @@ public class ALU {
 		return result;
 	}
 
+	/**
+	 * perform OR operation between two word,
+	 * @param s1 select 1
+	 * @param s2 select 2
+	 * @return result after operation
+	 */
 	public WORD or(final WORD s1,final WORD s2) {
 		message.setLength(0);
 		WORD result=new SignedWORD(s1);
@@ -184,6 +204,16 @@ public class ALU {
 		return result;
 	}
 
+	/**
+	 * perform SHIFT operation on one WORD 
+	 * if overflow is occurred, set overflow flag
+	 * if underflow is occurred, set underflow flag
+	 * @param s1 select 1
+	 * @param count number of shift
+	 * @param isLeft left(true) or right(false)
+	 * @param isArith arithmetic(true) or logical(false)
+	 * @return result after operation
+	 */
 	public WORD shift(final WORD s1,int count, boolean isLeft, boolean isArith) {
 		message.setLength(0);
 		setOverflow(false);
@@ -212,6 +242,14 @@ public class ALU {
 		return result;
 	}
 
+	/**
+	 * perform ROTATE operation on one WORD
+	 * @param s1 select 1
+	 * @param count number of shift
+	 * @param isLeft left(true) or right(false)
+	 * @param isArith arithmetic(true) or logical(false)
+	 * @return result after operation
+	 */
 	public WORD rotate(final WORD s1,int count, boolean isLeft, boolean isArith) {
 		message.setLength(0);
 		LOG.info(String.format("ROTETE LEFT=%b, ARITH=%b, COUNT=%d\n",isLeft,isArith,count));

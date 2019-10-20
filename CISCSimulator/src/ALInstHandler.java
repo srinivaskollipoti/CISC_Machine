@@ -10,9 +10,10 @@ import java.io.IOException;
  */
 public class ALInstHandler extends InstructionHandler {
 
-	ALU alu;
+	
+	ALU alu; // class to perform arithmetic and logical operation
 	/**
-	 * @param cpu
+	 * @param cpu owner of this handler
 	 */
 	public ALInstHandler(CPU cpu) {
 		super(cpu);
@@ -69,6 +70,10 @@ public class ALInstHandler extends InstructionHandler {
 		return true;
 	}
 
+	/**
+	 * Check available range of registers 
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
 	private void checkRegIReg()
 	{
 		if(reg<0 || reg>3)
@@ -76,6 +81,7 @@ public class ALInstHandler extends InstructionHandler {
 		if(ireg<0 || ireg>3)
 			throw new IllegalArgumentException("Index Register must be between 0 and 3\n");
 	}
+	
 	/**
 	 * Execute AMR instruction
 	 * @return On case success, true is returned, otherwise false is returned.
