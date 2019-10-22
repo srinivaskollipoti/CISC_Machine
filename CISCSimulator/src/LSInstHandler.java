@@ -15,6 +15,7 @@ public class LSInstHandler extends InstructionHandler {
 	
 	public boolean execute() throws IOException{
 		LOG.info("Execute LS Instruction\n");
+		
 		message="";
 		parseIR(cpu.getIR());
 		switch(getOPCode())

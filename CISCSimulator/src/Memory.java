@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 
 public class Memory {
 	private SignedWORD memory[];
+	private boolean	isMemorys[];
 	
 	private int user_program_end=0;
 	private static final int DEFAULT_MEMORY=2048;
@@ -40,6 +42,7 @@ public class Memory {
 	public boolean setMemory(int size) throws IOException
 	{
 		memory= new SignedWORD[size];
+		isMemorys=new boolean[size];
 		if(size<MIN_MEMORY || size>MAX_MEMORY)
 		{
 			throw new IOException("Invalid memory size");
@@ -47,6 +50,7 @@ public class Memory {
 
 		for (int i=0; i<size;i++) {
 			memory[i]=new SignedWORD();
+			
 		}
 		//userMemoryStart=BOOT_MEMORY_START;	
 		return true;
@@ -61,6 +65,8 @@ public class Memory {
 		for(WORD word:memory) {
 			word.clear();
 		}
+		Arrays.fill(isMemorys, false);
+		
 		return true;
 	}
 	
@@ -98,6 +104,7 @@ public class Memory {
 			throw new IOException("Memory violation\n==> Insert empty data("+address+")\n");
 		
 		memory[address].copy(input);
+		isMemorys[address]=true;
 		return true;
 	}
 
@@ -161,6 +168,7 @@ public class Memory {
 			address++;
 		}
 		memory[address].setLong(CPU.END_OF_PROGRAM);
+		isMemorys[address]=true;
 		user_program_end=address;
 		return true;
 	}
@@ -178,7 +186,7 @@ public class Memory {
 			address++;
 		}
 		memory[address].setLong(CPU.END_OF_PROGRAM);
-		//userMemoryStart=address;
+		isMemorys[address]=true;
 		return true;
 	}
 	
@@ -191,9 +199,11 @@ public class Memory {
 		StringBuffer buffer=new StringBuffer();
 		for(int i =0; i<memory.length;i++)
 		{
-//			if(i<400-1|| i>=user_program_end)
-//				continue;
-			if(!memory[i].isEmpty())
+			//if(i<400|| i>=1000)
+			//if(i<1000|| i>this.user_program_end)
+			//	continue;
+			//if(!memory[i].isEmpty())
+			if(isEmpty(i))
 			{
 				//String message = String.format("Memory [%04d]  %s (%02X%02X) (%d)\n", i, memory[i].getString(),
 				//		  memory[i].getLong()&0x00FF,(memory[i].getLong()&0xFF00)>>>8,memory[i].getLong());
@@ -206,20 +216,27 @@ public class Memory {
 		return buffer.toString();
 	}
 	
+	public boolean isEmpty(long address)
+	{
+		return isMemorys[(int)address];
+	}
+	
 	/**
 	 * Get information of each memory slots, including the address and content.
 	 * @return The result in String type.
 	 */
-	public String toString() 
+	/*public String toString() 
 	{
 		StringBuffer buffer=new StringBuffer();
 		for(int i =0; i<memory.length;i++)
 		{
-			if(!memory[i].isEmpty())
+			//if(!memory[i].isEmpty())
+			if(isEmpty(i))
 				buffer.append("Memory ["+i+"] is "+memory[i]+"\n");
 		}
 		return buffer.toString();
 	}
+	*/
 	
 
 	/**

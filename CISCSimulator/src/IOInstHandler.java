@@ -102,7 +102,7 @@ public class IOInstHandler extends InstructionHandler {
 	 */
 	private boolean executeHLT() {
 		cpu.getSimulator().setStop();
-		message="[NOTICE] System halted\n";
+		//message="[NOTICE] System halted\n";
 		return true;
 	}
 	

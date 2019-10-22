@@ -19,6 +19,7 @@ public class CISCSimulator implements Runnable{
 	private StateType state;				// state of computer
 	private String message=new String();	// state message of computer
 	private boolean isRun=false;
+	private boolean isHalt=false;
 	private int mode=0;						// 0: NORMAL, 1: Test Program1, 2: Test Program2
 	
 	/**
@@ -96,6 +97,8 @@ public class CISCSimulator implements Runnable{
 		controller.showRegister();
 		controller.showMemory();
 		
+		mode=0;
+		
 		state=StateType.READY;
 		message=controller.getMessage();
 		message=message+"[NOTICE] Simulator has been initialized\n";
@@ -117,6 +120,7 @@ public class CISCSimulator implements Runnable{
 	public void setStop()
 	{
 		isRun=false;
+		isHalt=true;
 	}
 	
 	/**
@@ -144,11 +148,12 @@ public class CISCSimulator implements Runnable{
 			return;
 		}
 		isRun=true;
+		isHalt=false;
 		do{
 			if(isRun==false)
 				break;
 			
-			long sleep=1;
+			long sleep=3;
 			if(controller.isInterrupt()==true)
 			{	
 				panel.setEnableIn(true);
@@ -178,8 +183,11 @@ public class CISCSimulator implements Runnable{
 				panel.printScreen(output);
 			}
 		}while(state==StateType.READY);
+		// print the memory
 		buffer.append(memory.getString());
-		message=buffer.toString();
+		if(isHalt==true)
+			buffer.append("[NOTICE] System is halted\n");
+		message=buffer.toString();	
 		panel.updateDisplay();
 		isRun=false;
 		return;
@@ -216,7 +224,6 @@ public class CISCSimulator implements Runnable{
 		{
 			state=StateType.TERMINATE;
 			LOG.warning("No more instruction");	
-			message=message+memory.getString();
 		}else {
 			state=StateType.READY;
 		}
@@ -355,4 +362,6 @@ public class CISCSimulator implements Runnable{
 		}
 		return result;
 	}
+	
+	public int getMode() { return mode;}
 }

@@ -11,6 +11,7 @@ import java.util.logging.Logger;
  * and open the template in the editor.
  */
 
+
 /**
  *
  * @author cozyu
@@ -458,7 +459,6 @@ public class CISCGUI extends javax.swing.JFrame {
 		simu.setStop();
 		try {
 			runThread.join();
-			printLog("[NOTICE] Simulator halted\n");
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -501,12 +501,14 @@ public class CISCGUI extends javax.swing.JFrame {
      */
     public void printLog(String log,boolean isOnlyDisplay)
     {
+    	
     	String message=log;
     	textArea.append(message);
         textArea.setCaretPosition(textArea.getDocument().getLength() - 1);
 
     	if(isOnlyDisplay==false)
     		LOG.info(message);
+    		
     }
 
     /**
@@ -620,59 +622,67 @@ public class CISCGUI extends javax.swing.JFrame {
     {	
     	int inputSize=0;
     	int phase = simu.getPhase();
-    	
-		if (phase == 1)
-			inputSize = 20;
-		else if (phase== 2)
-			inputSize = 1;
-		else 
+    	String text=textAreaSystemIN.getText();
+    	if (simu.getMode()==1)
     	{
-    		textareaSystemOUT.setText("Run test program 1 first\n");
-    		return false;
-    	}
-
-
-		// remove space character
-    	String text = textAreaSystemIN.getText().trim();
-    	String [] arrNumber= text.split(",");
-    	List<String> finalNumber=new ArrayList<String>();
-
-    	// check number format
-    	for(int i =0;i<arrNumber.length;i++) {
-    		try {
-    			if(arrNumber[i].isBlank()!=true)
-    			{
-    				arrNumber[i]=Integer.toString(Integer.valueOf(arrNumber[i].trim()));
-    				finalNumber.add(arrNumber[i].trim());
-    			}
-    		}
-    		catch (NumberFormatException e)
-    		{
-    			textareaSystemOUT.setText(arrNumber[i]+" is not number\n");
-    			return false;
-    		}
-    	}
-
-    	// check number of integer
-		if (finalNumber.size() != inputSize) {
-			textareaSystemOUT.setText("Please enter "+inputSize+" numbers.\nYou entered " + finalNumber.size() + " numbers.");
-			return false;
-		}
-		
-		// check range of integer
-		for (String word : finalNumber) {
-			int number = Integer.valueOf(word);
-			if (number > 32767) {
-				textareaSystemOUT.setText("Sorry, number over 32767 are not supported.\nYour entered "+word+".\n");
+			if (phase == 1)
+				inputSize = 20;
+			else if (phase == 2)
+				inputSize = 1;
+			else {
+				textareaSystemOUT.setText("Run test program 1 first\n");
 				return false;
 			}
-			if (number < 0) {
-				textareaSystemOUT.setText("Sorry, number under 0 are not supported.\nYour entered "+word+".\n");
+
+			// remove space character
+			text = textAreaSystemIN.getText().trim();
+			String[] arrNumber = text.split(",");
+			List<String> finalNumber = new ArrayList<String>();
+
+			// check number format
+			for (int i = 0; i < arrNumber.length; i++) {
+				try {
+					if (arrNumber[i].isBlank() != true) {
+						arrNumber[i] = Integer.toString(Integer.valueOf(arrNumber[i].trim()));
+						finalNumber.add(arrNumber[i].trim());
+					}
+				} catch (NumberFormatException e) {
+					textareaSystemOUT.setText(arrNumber[i] + " is not number\n");
+					return false;
+				}
+			}
+
+			// check number of integer
+			if (finalNumber.size() != inputSize) {
+				textareaSystemOUT.setText(
+						"Please enter " + inputSize + " numbers.\nYou entered " + finalNumber.size() + " numbers.");
 				return false;
 			}
-		}
 
-    	text=String.join(",",finalNumber)+'\0';
+			// check range of integer
+			for (String word : finalNumber) {
+				int number = Integer.valueOf(word);
+				/*
+				if (number > 32767) {
+					textareaSystemOUT
+							.setText("Sorry, number over 32767 are not supported.\nYour entered " + word + ".\n");
+					return false;
+				}
+				*/
+				if (number < 0) {
+					textareaSystemOUT.setText("Sorry, number under 0 are not supported.\nYour entered " + word + ".\n");
+					return false;
+				}
+			}
+
+			text = String.join(",", finalNumber) + '\n';
+		}
+    	
+		if (text.endsWith("\n") == true) {
+			text=text.substring(0, text.length() - 1);
+		}		
+		text=text + '\0';
+
         printLog("[INFO] User entered a text : ["+text+"]\n");
         simu.inputUserText(text);
         textAreaSystemIN.setText("");

@@ -177,10 +177,11 @@ public class InstructionHandler{
 	 */
 	public void showInstruction()
 	{
-		System.out.println("### IR STATUS START ###");
-		System.out.println("[IR] "+ir);
-        System.out.println("[OPCODE] "+opcode+" [GPR] "+reg+" [XR] "+ireg+" [ADDR] "+address+" [FLAG] "+flag+" [AL] "+al+" [LR]"+lr);
-		System.out.println("### IR STATUS END ###");		
+		//LOG.info("### IR STATUS START ###");
+		//LOG.info("[IR] "+ir);
+		//LOG.info("[OPCODE] "+opcode+" [GPR] "+reg+" [XR] "+ireg+" [ADDR] "+address+" [FLAG] "+flag+" [AL] "+al+" [LR]"+lr);
+		//LOG.info("### IR STATUS END ###");
+		LOG.info("[Instruction] "+Translator.getAsmCode(ir)+"\n");
 	}
 
 	/**

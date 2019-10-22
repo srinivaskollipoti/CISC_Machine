@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
@@ -76,6 +77,8 @@ public class CPU {
 		// InstructionHandler is initialized at last because InstructionHandler use ALU
 		ih=new InstructionHandler(this);
 		ih.init();
+		// Remove below comment when the binary is released
+		// LOG.setLevel(Level.WARNING);
 		
 	}
 	
@@ -319,7 +322,9 @@ public class CPU {
 			return false;
 		}
 	    PC.setLong(memory.getUserProgramLocation());
-	    message=("[LOAD] User program\n"+String.join("\n",arrAsmCode)+"\nPC = "+memory.getUserProgramLocation()+"\n"+memory.getString()+"\n");
+	    message=("[LOAD] User program\n"+String.join("\n",arrAsmCode)
+	    		+"\nPC = "+memory.getUserProgramLocation()+"\n"
+	    		+memory.getString()+"\n");
 	    state=CPUState.LOAD_MAR;
 		return true;
 	}
@@ -394,7 +399,7 @@ public class CPU {
 	 */
 	public void addMessage(String message)
 	{
-		this.message+=this.message+message;
+		this.message=this.message+message;
 	}
 
 	public String getMessage(){ return message;}
