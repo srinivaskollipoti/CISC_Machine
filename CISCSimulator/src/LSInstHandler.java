@@ -50,7 +50,7 @@ public class LSInstHandler extends InstructionHandler {
 	private boolean executeLDR() throws IOException {
 		int eAddress=getEA();
 		cpu.getGPR(reg).copy(cpu.loadMemory(eAddress));
-		message="==> R"+reg+" = mem["+eAddress+"] = "+cpu.getGPR(reg).getLong()+"\n";
+		message+="==> R"+reg+" = mem["+eAddress+"] = "+cpu.getGPR(reg).getLong()+"\n";
 		return true;
 	}
 	
@@ -61,7 +61,7 @@ public class LSInstHandler extends InstructionHandler {
 	private boolean executeLDA() throws IOException {
 		int eAddress=getEA();
 		cpu.getGPR(reg).setLong(eAddress);
-		message="==> R"+reg+" = "+eAddress+"\n";
+		message+="==> R"+reg+" = "+eAddress+"\n";
 	    return true;
 	}
 	
@@ -74,7 +74,7 @@ public class LSInstHandler extends InstructionHandler {
 		WORD param=new WORD();
 	    param.copy(cpu.getGPR(reg));
 		cpu.storeMemory(eAddress,param);
-		message="==>  mem["+eAddress+"] = "+param.getLong()+"\n";
+		message+="==>  mem["+eAddress+"] = "+param.getLong()+"\n";
 		return true;
 	}
 	
@@ -88,7 +88,7 @@ public class LSInstHandler extends InstructionHandler {
 		
 		int eAddress=getEAWithoutIX();
 		cpu.getIX(ireg).copy(cpu.loadMemory(eAddress));
-		message="==> IX"+ireg+" = mem["+eAddress+"] = "+cpu.getIX(ireg).getLong()+"\n";
+		message+="==> IX"+ireg+" = mem["+eAddress+"] = "+cpu.getIX(ireg).getLong()+"\n";
 		return true;
 	}
 	
@@ -104,7 +104,7 @@ public class LSInstHandler extends InstructionHandler {
 		WORD param=new WORD();
 	    param.copy(cpu.getIX(ireg));
 		cpu.storeMemory(eAddress,param);
-		message="==> mem["+eAddress+"] = "+param.getLong()+"\n";
+		message+="==> mem["+eAddress+"] = "+param.getLong()+"\n";
 		return true;
 	}	
 	

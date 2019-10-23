@@ -61,7 +61,7 @@ public class ROM {
 			long value=binCode.getLong();	
 			binCode.setLong(value);   		// for 64bit setting, 
         	arrBinCode.add(binCode);
-        	String asmCode=Translator.getAsmCode(binCode);
+        	//String asmCode=Translator.getAsmCode(binCode);
         	//System.out.println(asmCode);
         	//System.out.println(binCode);
 		}		

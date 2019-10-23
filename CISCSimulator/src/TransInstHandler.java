@@ -74,7 +74,7 @@ public class TransInstHandler extends InstructionHandler {
 		int eAddress = getEA();
 	    if(cpu.getGPR(reg).getLong() == 0) {
 	    	cpu.setPC(eAddress);
-	    	message= String.format("==> PC is changed to %d\n", eAddress);
+	    	message+= String.format("==> PC is changed to %d\n", eAddress);
 	    }
 	    return true;
 	}
@@ -88,7 +88,7 @@ public class TransInstHandler extends InstructionHandler {
 		int eAddress = getEA();
 		if(cpu.getGPR(reg).getLong() != 0){
 	    	cpu.setPC(eAddress);
-	    	message= String.format("==> PC is changed to %d\n", eAddress);
+	    	message+= String.format("==> PC is changed to %d\n", eAddress);
 	    }
 	    return true;
 	}
@@ -103,7 +103,7 @@ public class TransInstHandler extends InstructionHandler {
 		int eAddress = getEA();
 	    if(cpu.getGPR(reg).getLong() >= 0){
 	    	cpu.setPC(eAddress);
-	    	message= String.format("==> PC is changed to %d\n", eAddress);
+	    	message+= String.format("==> PC is changed to %d\n", eAddress);
 	    }
 	    return true;
 	}
@@ -116,7 +116,7 @@ public class TransInstHandler extends InstructionHandler {
 	private boolean executeJMA() throws IOException {
 		int eAddress = getEA();
 		cpu.setPC(eAddress);
-		message = String.format("==> PC is changed to %d\n", eAddress);
+		message += String.format("==> PC is changed to %d\n", eAddress);
 		return true;
 	}
 	
@@ -130,7 +130,7 @@ public class TransInstHandler extends InstructionHandler {
 		cpu.getGPR(reg).setLong(cpu.getGPR(reg).getLong() - 1);
 		if(cpu.getGPR(reg).getLong() > 0){
 	    	cpu.setPC(eAddress);
-	    	message= String.format("==> PC is changed to %d\n", eAddress);
+	    	message+= String.format("==> PC is changed to %d\n", eAddress);
 	    }
 	    return true;
 	}
@@ -139,7 +139,7 @@ public class TransInstHandler extends InstructionHandler {
 		int eAddress = getEA();
 		cpu.getGPR(3).setLong(cpu.getPC().getLong()); // set R3 to PC+1
 		cpu.setPC(eAddress);
-		message = String.format("==> PC is changed to %d\n", eAddress);
+		message += String.format("==> PC is changed to %d\n", eAddress);
 		return true;
 	}
 	
@@ -152,7 +152,7 @@ public class TransInstHandler extends InstructionHandler {
 		int eAddress = getEA();
 		if(cpu.getCC().get(reg)){
 	    	cpu.setPC(eAddress);
-	    	message= String.format("==> PC is changed to %d\n", eAddress);
+	    	message+= String.format("==> PC is changed to %d\n", eAddress);
 	    }
 		return true;
 	}
@@ -165,7 +165,7 @@ public class TransInstHandler extends InstructionHandler {
 	private boolean executeRFS() throws IOException {
 		cpu.getGPR(0).setLong(address);
 		cpu.setPC(cpu.getGPR(3).getLong());
-		message = String.format("==> PC is changed to %d\n==> Return value is %d\n", cpu.getGPR(3).getLong(),address);
+		message += String.format("==> PC is changed to %d\n==> Return value is %d\n", cpu.getGPR(3).getLong(),address);
 		return true;
 	}
 	
