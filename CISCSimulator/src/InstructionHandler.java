@@ -177,10 +177,6 @@ public class InstructionHandler{
 	 */
 	public void showInstruction()
 	{
-		//LOG.info("### IR STATUS START ###");
-		//LOG.info("[IR] "+ir);
-		//LOG.info("[OPCODE] "+opcode+" [GPR] "+reg+" [XR] "+ireg+" [ADDR] "+address+" [FLAG] "+flag+" [AL] "+al+" [LR]"+lr);
-		//LOG.info("### IR STATUS END ###");
 		LOG.info("[Instruction] "+Translator.getAsmCode(ir)+"\n");
 	}
 

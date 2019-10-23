@@ -1,8 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
+import java.util.logging.*;
 
 
 /**
@@ -78,8 +76,7 @@ public class CPU {
 		ih=new InstructionHandler(this);
 		ih.init();
 		// Remove below comment when the binary is released
-		// LOG.setLevel(Level.WARNING);
-		
+		//LOG.setLevel(Level.WARNING);
 	}
 	
 	/**
@@ -122,6 +119,7 @@ public class CPU {
 	public boolean init()
 	{
 		memory.init();
+		cache.init();
 		PC.clear();
 		CC.clear();
 		MAR.clear();
@@ -145,7 +143,7 @@ public class CPU {
 	 * Check if there is next instruction
 	 * @return On case existing next instruction, true is returned, otherwise false is returned.
 	 */
-	private boolean isNextInstruction()
+	private boolean isInstruction()
 	{
 		WORD inst=new WORD();
 		try {
@@ -159,15 +157,6 @@ public class CPU {
 	}
 	
 	/**
-	 * Check if there is current instruction in IR
-	 * @return On case existing current instruction, true is returned, otherwise false is returned.
-	 */
-	public boolean isCurrentInstruction()
-	{
-		return state!=CPUState.NO_INST;
-	}
-	
-	/**
 	 * perform appropriate operation considering current state at every clock.
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
@@ -177,16 +166,13 @@ public class CPU {
 		message="";
 		switch(state){
 		case LOAD_MAR:
-			if(!isNextInstruction())
+			if(!isInstruction())
 			{
-				message="[TERMINATED] End of instruction\n";
 				state=CPUState.NO_INST;
 				return false;
 			}
 			MAR.copy(PC);
 			state=CPUState.LOAD_MBR;
-			//message="[FETCH] MAR <- PC\n";
-			//break;
 		case LOAD_MBR:
 			try {
 				MBR.copy(loadMemory(MAR.getLong()));
@@ -196,24 +182,20 @@ public class CPU {
 			}
 			state=CPUState.LOAD_IR;
 			increasePC();		// increase the program counter
-			//message=message+"[FETCH] MBR <- MEM[MAR]\n";
-			//break;
 		case LOAD_IR:
 			IR.copy(MBR);
-			//message=message+"[FETCH] IR <- MBR\n";
 			message=message+"[FETCH] IR <- MEM[PC], PC <- PC + 1\n";
 			state=CPUState.EXECUTE;
 			break;
 		case EXECUTE:
-			message="";
+			String prefix=String.format("[EXECUTE @%03d]",getPC().getLong()-1);
 			if(execute()==false)
 			{
 				message="[ERROR] Failed to execute code - "+message;
-				result=false;
+				return false;
 			}
-			if(isInterrupt()==false) {
-				message = String.format("[EXECUTE @%03d] %s\n%s" , getPC().getLong()-1,
-						Translator.getAsmCode(IR), message.toString());
+			if(isInputInterrupt()==false) {
+				message = String.format("%s %s\n%s",prefix,Translator.getAsmCode(IR), message.toString());
 				state=CPUState.LOAD_MAR;				
 			}
 			// in case of interrupt, current instruction is executed again
@@ -222,7 +204,7 @@ public class CPU {
 			state=CPUState.LOAD_MAR;
 			break;
 		}
-		addMessage(cache.toString()+"\n");
+		addMessage(cache.toString()+"\n"+cache.getMessage());
 		return result;
 	}
 	
@@ -254,8 +236,8 @@ public class CPU {
 	}
 	
 
-	public void setInterrupt() { this.state=CPUState.INTERRUPT; }
-	public boolean isInterrupt() { return this.state==CPUState.INTERRUPT; }
+	public void setInputInterrupt() { this.state=CPUState.INTERRUPT; }
+	public boolean isInputInterrupt() { return this.state==CPUState.INTERRUPT; }
 	public void setResume() { this.state=CPUState.EXECUTE; }
 
 	/**
@@ -325,6 +307,7 @@ public class CPU {
 	    message=("[LOAD] User program\n"+String.join("\n",arrAsmCode)
 	    		+"\nPC = "+memory.getUserProgramLocation()+"\n"
 	    		+memory.getString()+"\n");
+	    //System.out.println(memory);
 	    state=CPUState.LOAD_MAR;
 		return true;
 	}
@@ -342,13 +325,9 @@ public class CPU {
 		
 		result = cache.load(address);
 		if(result!=null)
-		{
-			LOG.info(cache.toString()+"\n");
 			return result;
-		}
 		result = memory.load(address,this);
 		cache.store(address,result);
-		LOG.info(cache.toString()+"\n");
 		return result;
 	}
 
@@ -361,10 +340,15 @@ public class CPU {
 	 */
 	public boolean storeMemory(long address, WORD value) throws IOException
 	{
+		return storeMemory(address,value,false);
+	}
+	
+	public boolean storeMemory(long address, WORD value, boolean isSystem) throws IOException
+	{
 		cache.store(address,value);
 	    LOG.info("mem["+address+"] = "+value+"\n");
 		boolean result=true;
-		result= memory.store(address, value,this);
+		result= memory.store(address, value,true,this);
 		return result;
 	}
 
@@ -388,10 +372,11 @@ public class CPU {
 	{
 		char result=0;
 		if(devID==IOC.KEYBOARD && ioc.isIOBuffer(devID)==false)
-			setInterrupt();
+			setInputInterrupt();
 		result=ioc.getIOBuffer(devID);
 		return result;
 	}
+	
 	
 	/**
 	 * Append new message to the original one.
@@ -402,8 +387,9 @@ public class CPU {
 		this.message=this.message+message;
 	}
 
-	public String getMessage(){ return message;}
+	public boolean isTerminate() { return state==CPUState.NO_INST; }
 
+	public String getMessage(){ return message;}
 	public SignedWORD getGPR(int i) { return GPR[i]; }
 	public SignedWORD getIX(int i) { return IX[i]; }
 	public GBitSet getPC() { return PC; }
@@ -414,10 +400,9 @@ public class CPU {
 	public WORD getMFR() { return MFR; }	
 	public WORD getIR() { return IR; }
 	public CPUState getState() { return state; }
-	public boolean isExecute() { return state==CPUState.LOAD_MAR || state==CPUState.NO_INST; }
-	
 	public Memory getMemory() {	return this.memory; }
 	public ALU getALU() { return alu;}
+	public IOC getIOC() { return ioc;}
 	public CISCSimulator getSimulator() {return this.simu;}
 
 }

@@ -97,6 +97,7 @@ public class ALU {
 			setOverflow(true);
 		
 		GBitSet bit32=new GBitSet(32);
+		bit32.setSigned(true);
 		bit32.setLong(afterMul);
 		message.append(String.format(" = %d\n",afterMul));
 		result[0].copy(bit32.subSet(WORD.SIZE, WORD.SIZE*2));

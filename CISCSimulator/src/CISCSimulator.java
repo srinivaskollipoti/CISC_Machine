@@ -11,17 +11,16 @@ import java.util.logging.SimpleFormatter;
  */
 public class CISCSimulator implements Runnable{
 	final static Logger LOG = Logger.getGlobal();
-	private CPU controller;					/// cpu of computer
+	private CPU cpu;					/// cpu of computer
 	private Memory memory;					/// memory of computer
 	private CISCGUI panel;					/// panel of computer
 	private IOC ioc;						/// io controller of computer
 	
 	private StateType state;				// state of computer
 	private String message=new String();	// state message of computer
-	private boolean isRun=false;
-	private boolean isHalt=false;
 	private int mode=0;						// 0: NORMAL, 1: Test Program1, 2: Test Program2
 	
+	private boolean isNeedReload=false;
 	/**
 	 * Enum type to distinguish the state of simulator.
 	 * POWEROFF = Turned off
@@ -31,7 +30,8 @@ public class CISCSimulator implements Runnable{
 	 * TERMINATE = Terminated
 	 */
 	enum StateType{
-		POWEROFF("Power off"), READY("Ready"), RUNNING("Running"), HALT("Halted"), TERMINATE("Terminated");
+		POWEROFF("Power off"), READY("Ready"), RUNNING("Running"), HALT("Halted"), 
+		TERMINATE("Terminated");
 		final private String name; 
 		private StateType(String name) 
 		{
@@ -56,7 +56,7 @@ public class CISCSimulator implements Runnable{
 		this.panel=panel;
 		
 		// cpu must be initialized late
-		controller=new CPU(this);
+		cpu=new CPU(this);
 		state = StateType.POWEROFF;
 		try {
 			System.setProperty("java.util.logging.SimpleFormatter.format",
@@ -80,38 +80,61 @@ public class CISCSimulator implements Runnable{
 	{
 		message="";
 		ioc.init();
-		if(!controller.init())
+		if(!cpu.init())
 		{
-			message=controller.getMessage();
+			message=cpu.getMessage();
 			message="[WARNING] Failed to initialize processor\n==> "+message+"\n";
-			state=StateType.POWEROFF;
+			powerOff();
 			return false;
 		}
-		if(!controller.setBootCode())
+		if(!cpu.setBootCode())
 		{
-			message=controller.getMessage();
+			message=cpu.getMessage();
 			message="[WARNING] Failed to load boot program\n==> "+message+"\n";
-			//state=StateType.POWEROFF;
-			//return false;
+			powerOff();
+			return false;
 		}
-		controller.showRegister();
-		controller.showMemory();
+	
+		initStatus();
 		
-		mode=0;
-		
-		state=StateType.READY;
-		message=controller.getMessage();
+		message+=cpu.getMessage();
 		message=message+"[NOTICE] Simulator has been initialized\n";
 		panel.updateDisplay();
-		message="";
+		
 		return true;
 	}
+	
+	public void initStatus() {
+		state=StateType.READY;
+		isNeedReload=false;
+		mode=0;
+	}
+	
+	/**
+	 * Set the user code to cpu.
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
+	public boolean setUserCode(String[] arrInst)
+	{
+		if(isPowerOff()==true)
+		{
+			message=("Simulator is not turned on, push the IPL button\n");
+			return false;
+		}
+		boolean result=cpu.setUserCode(arrInst);
+		message=cpu.getMessage();
+		if(result==true)
+			initStatus();
+		return result;
+	}
+
 
 	/**
 	 * Turn off the simulator 
 	 */
 	public void powerOff() {
-		state=StateType.POWEROFF;
+		setState(StateType.POWEROFF);
+		panel.printLog("[NOTICE] Simulator is turned off\n");
 	}
 	
 	/**
@@ -119,8 +142,7 @@ public class CISCSimulator implements Runnable{
 	 */
 	public void setStop()
 	{
-		isRun=false;
-		isHalt=true;
+		setState(StateType.HALT);
 	}
 	
 	/**
@@ -130,9 +152,21 @@ public class CISCSimulator implements Runnable{
 	public void inputUserText(String text)
 	{
 		ioc.appendIOBuffer(0, text);
-		controller.setResume();
+		cpu.setResume();
 	}
 	
+	
+	public boolean reloadROM()
+	{
+		if(initProcessor()==false)
+		{
+			LOG.severe("Failed to initialize processor");
+			powerOff();
+			return false;
+		}
+		isNeedReload=false;
+		return true;
+	}
 	
 	/**
 	 * Execute the whole process for the input instruction.
@@ -147,14 +181,18 @@ public class CISCSimulator implements Runnable{
 			message=("Simulator is not turned on, push the IPL button");
 			return;
 		}
-		isRun=true;
-		isHalt=false;
-		do{
-			if(isRun==false)
-				break;
-			
-			long sleep=3;
-			if(controller.isInterrupt()==true)
+		
+		if(isNeedReload==true)
+		{
+			reloadROM();
+		}
+		
+		setState(StateType.RUNNING);
+		while(checkRun()==true)
+		{	
+			// handle the input interrupt
+			long sleep=4;
+			if(cpu.isInputInterrupt()==true)
 			{	
 				panel.setEnableIn(true);
 				panel.printLog("Waiting user input for IN instruction..\n");
@@ -168,28 +206,33 @@ public class CISCSimulator implements Runnable{
 				panel.setEnableIn(false);
 			}
 			
+			// perform singlestep
 			singleStep();
 
-			// one clock is 200ms
-			try {
-				Thread.sleep(sleep);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}			
-			// checking io buffer for printer 
+			// handle io buffer for printer 
 			while(ioc.isIOBuffer(IOC.PRINTER)==true)
 			{
 				String output=Character.toString(ioc.getIOBuffer(IOC.PRINTER));
 				panel.printScreen(output);
 			}
-		}while(state==StateType.READY);
-		// print the memory
-		buffer.append(memory.getString());
-		if(isHalt==true)
-			buffer.append("[NOTICE] System is halted\n");
+
+			// sleep for clock time
+			try {
+				Thread.sleep(sleep);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}			
+		}
+
+		// handle the halt and terminate
+		if(isHalt()==true)
+		{
+			buffer.append(memory.getString());
+			buffer.append("[NOTICE] System is halted.\n==> Press the Run button to resume.\n\n");
+		}
+		
 		message=buffer.toString();	
 		panel.updateDisplay();
-		isRun=false;
 		return;
 	}
 
@@ -201,6 +244,7 @@ public class CISCSimulator implements Runnable{
 	public boolean singleStep()
 	{
 		message="";
+		StringBuffer buffer=new StringBuffer();
 		if(isPowerOff()==true)
 		{
 			message=("Simulator is not turned on, push the IPL button\n");
@@ -208,25 +252,20 @@ public class CISCSimulator implements Runnable{
 		}
 				
 		// if current program is terminated, initialize simulator.
-		if(state==StateType.TERMINATE)
-		{
-			if(initProcessor()==false)
-			{
-				LOG.severe("Failed to initialize processor");
-				return false;
-			}
-		}
+		if(isNeedReload==true)
+			reloadROM();
 		
-		state=StateType.RUNNING;
-		boolean result=controller.clock();
-		message=message+controller.getMessage();
-		if(controller.isCurrentInstruction()==false)
+		setState(StateType.RUNNING);
+		cpu.clock();
+		buffer.append(cpu.getMessage());
+		if(cpu.isTerminate()==true)
 		{
-			state=StateType.TERMINATE;
-			LOG.warning("No more instruction");	
-		}else {
-			state=StateType.READY;
+			setState(StateType.TERMINATE);
+			isNeedReload=true;
+			buffer.append(memory.getString());
+			buffer.append("[NOTICE] System is terminated\n\n");
 		}
+		message=buffer.toString();
 		panel.updateDisplay();
 		return true;
 	}
@@ -247,60 +286,45 @@ public class CISCSimulator implements Runnable{
 			return false;
 		}
 		try {
-		if(R0!=controller.getGPR(0).getLong()) message=message+"R0 ="+R0+"\n";
-		controller.getGPR(0).setLong(R0);
-		if(R1!=controller.getGPR(1).getLong()) message=message+"R1 = "+R1+"\n";
-		controller.getGPR(1).setLong(R1);
-		if(R2!=controller.getGPR(2).getLong()) message=message+"R2 = "+R2+"\n";
-		controller.getGPR(2).setLong(R2);
-		if(R3!=controller.getGPR(3).getLong()) message=message+"R3 = "+R3+"\n";
-		controller.getGPR(3).setLong(R3);
-		if(IX1!=controller.getIX(1).getLong()) message=message+"IX1 = "+IX1+"\n";
-		controller.getIX(1).setLong(IX1);
-		if(IX2!=controller.getIX(2).getLong()) message=message+"IX2 = "+IX2+"\n";
-		controller.getIX(2).setLong(IX2);
-		if(IX3!=controller.getIX(3).getLong()) message=message+"IX3 = "+IX3+"\n";
-		controller.getIX(3).setLong(IX3);
-		if(IR!=controller.getIR().getLong()) message=message+"IR = "+IR+"\n";
-		controller.getIR().setLong(IR);
-		if(PC!=controller.getPC().getLong()) message=message+"PC = "+PC+"\n";
-		controller.getPC().setLong(PC);
-		if(MAR!=controller.getMAR().getLong()) message=message+"MAR = "+MAR+"\n";
-		controller.getMAR().setLong(MAR);
-		if(MBR!=controller.getMBR().getLong()) message=message+"MBR = "+MBR+"\n";
-		controller.getMBR().setLong(MBR);
-		if(MFR!=controller.getMFR().getLong()) message=message+"MFR = "+MFR+"\n";
-		controller.getMFR().setLong(MFR);
-		if(CC!=controller.getCC().getLong()) message=message+"CC = "+CC+"\n";
-		controller.getCC().setLong(CC);
+		if(R0!=cpu.getGPR(0).getLong()) message=message+"R0 ="+R0+"\n";
+		cpu.getGPR(0).setLong(R0);
+		if(R1!=cpu.getGPR(1).getLong()) message=message+"R1 = "+R1+"\n";
+		cpu.getGPR(1).setLong(R1);
+		if(R2!=cpu.getGPR(2).getLong()) message=message+"R2 = "+R2+"\n";
+		cpu.getGPR(2).setLong(R2);
+		if(R3!=cpu.getGPR(3).getLong()) message=message+"R3 = "+R3+"\n";
+		cpu.getGPR(3).setLong(R3);
+		if(IX1!=cpu.getIX(1).getLong()) message=message+"IX1 = "+IX1+"\n";
+		cpu.getIX(1).setLong(IX1);
+		if(IX2!=cpu.getIX(2).getLong()) message=message+"IX2 = "+IX2+"\n";
+		cpu.getIX(2).setLong(IX2);
+		if(IX3!=cpu.getIX(3).getLong()) message=message+"IX3 = "+IX3+"\n";
+		cpu.getIX(3).setLong(IX3);
+		if(IR!=cpu.getIR().getLong()) message=message+"IR = "+IR+"\n";
+		cpu.getIR().setLong(IR);
+		if(PC!=cpu.getPC().getLong()) message=message+"PC = "+PC+"\n";
+		cpu.getPC().setLong(PC);
+		if(MAR!=cpu.getMAR().getLong()) message=message+"MAR = "+MAR+"\n";
+		cpu.getMAR().setLong(MAR);
+		if(MBR!=cpu.getMBR().getLong()) message=message+"MBR = "+MBR+"\n";
+		cpu.getMBR().setLong(MBR);
+		if(MFR!=cpu.getMFR().getLong()) message=message+"MFR = "+MFR+"\n";
+		cpu.getMFR().setLong(MFR);
+		if(CC!=cpu.getCC().getLong()) message=message+"CC = "+CC+"\n";
+		cpu.getCC().setLong(CC);
 		}catch(IllegalArgumentException e)
 		{
 			message="Failed to load user input\n==> "+e.getMessage()+"\n";
 			return false;
 		}
-		message="Loaded register from user input\n"+message;
+		if(message.isBlank()==false)
+			message="==> Loaded register from user input\n"+message;
+		else
+			message="==> There is no change\n"+message;
 		return true;
 	}
 
-		
-	/**
-	 * Set the user code to controller.
-	 * @return On case success, true is returned, otherwise false is returned.
-	 */
-	public boolean setUserCode(String[] arrInst)
-	{
-		if(isPowerOff()==true)
-		{
-			message=("Simulator is not turned on, push the IPL button\n");
-			return false;
-		}
-		boolean result=controller.setUserCode(arrInst);
-		message=controller.getMessage();
-		if(result==true)
-			state=StateType.READY;
-		return result;
-	}
-	
+
 	/**
 	 * Load test program1
 	 * @return On case success, true is returned, otherwise false is returned.
@@ -336,17 +360,26 @@ public class CISCSimulator implements Runnable{
 		return result;
 	}
 	
+	public boolean checkRun() {
+		if(cpu.isTerminate()==true )
+			state=StateType.TERMINATE;
+		return state==StateType.RUNNING; 
+	}
+	
 	/**
 	 * check if the simulator is turned off
 	 * @return A boolean indicating if the simulator is turned off.
 	 */
 	public boolean isPowerOff(){ return state==StateType.POWEROFF; }
-	public boolean isRun() { return isRun; }
+	public boolean isTerminate() { return state==StateType.TERMINATE; }
+	public boolean isHalt() { return state==StateType.HALT; }
 	
-	public CPU getCPU(){ return controller; }
+	
+	public CPU getCPU(){ return cpu; }
 	public Memory getMemory(){ return memory;}
 	public IOC getIOC(){ return ioc;}
 	public StateType getState() { return state; }
+	public void setState(StateType state){ this.state=state;}
 	public String getMessage() { return message; }
 
 	/**
@@ -356,7 +389,7 @@ public class CISCSimulator implements Runnable{
 	public int getPhase() {
 		int result=0;
 		try {
-			result= (int)getCPU().loadMemory(550).getLong();
+			result= (int)getMemory().load(550, getCPU()).getLong();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

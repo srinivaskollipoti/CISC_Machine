@@ -145,9 +145,9 @@ public class Memory {
 	 * @return Boolean indicating if the execution is success.
 	 * 
 	 */
-	public boolean store(long address, WORD input,CPU cpu) throws IOException
+	public boolean store(long address, WORD input,boolean isSystem, CPU cpu) throws IOException
 	{
-		return store((int)address,input,false);
+		return store((int)address,input,isSystem);
 	}
 	
 	/**
@@ -170,6 +170,7 @@ public class Memory {
 		memory[address].setLong(CPU.END_OF_PROGRAM);
 		isMemorys[address]=true;
 		user_program_end=address;
+		//System.out.println(this);
 		return true;
 	}
 	
@@ -197,12 +198,12 @@ public class Memory {
 	public String getString() 
 	{
 		StringBuffer buffer=new StringBuffer();
+		
+		buffer.append("### MEMORY STATUS START ###\n");
 		for(int i =0; i<memory.length;i++)
 		{
-			//if(i<400|| i>=1000)
-			//if(i<1000|| i>this.user_program_end)
-			//	continue;
-			//if(!memory[i].isEmpty())
+			if(i>=1000||i<400)
+				continue;
 			if(isEmpty(i))
 			{
 				//String message = String.format("Memory [%04d]  %s (%02X%02X) (%d)\n", i, memory[i].getString(),
@@ -212,31 +213,31 @@ public class Memory {
 				buffer.append(message);
 			}
 		}
+		buffer.append("### MEMORY STATUS END   ###\n");
+		
 		
 		return buffer.toString();
+	}
+	public String toString()
+	{
+		StringBuffer buffer=new StringBuffer();
+		for(int i =0; i<memory.length;i++)
+		{
+			if(isEmpty(i))
+			{
+				String message = String.format("Memory [%04d]  %s (%02X%02X) (%d)\n", i, memory[i].getString(),
+						  memory[i].getLong()&0x00FF,(memory[i].getLong()&0xFF00)>>>8,memory[i].getLong());
+				buffer.append(message);
+			}
+		}
+		return buffer.toString();
+		
 	}
 	
 	public boolean isEmpty(long address)
 	{
 		return isMemorys[(int)address];
 	}
-	
-	/**
-	 * Get information of each memory slots, including the address and content.
-	 * @return The result in String type.
-	 */
-	/*public String toString() 
-	{
-		StringBuffer buffer=new StringBuffer();
-		for(int i =0; i<memory.length;i++)
-		{
-			//if(!memory[i].isEmpty())
-			if(isEmpty(i))
-				buffer.append("Memory ["+i+"] is "+memory[i]+"\n");
-		}
-		return buffer.toString();
-	}
-	*/
 	
 
 	/**

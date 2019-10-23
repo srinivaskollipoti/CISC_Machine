@@ -26,6 +26,17 @@ public class GBitSet extends java.util.BitSet {
 		this.length=length;
 		maxValue=(int)Math.pow(2,length)-1;
 	}
+	
+	public void setSigned(boolean isSigned)
+	{
+		if(isSigned==true)
+		{
+			setMinValue((int)(Math.pow(2, length-1)*-1));
+			setMaxValue((int)(Math.pow(2, length-1)-1));
+		}else {
+			maxValue=(int)Math.pow(2,length)-1;
+		}
+	}
 
 	/**
 	 * A constructor that create a bit set given BitSet and length.

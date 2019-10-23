@@ -92,6 +92,13 @@ public class Cache {
 				getHitRate(), hit, miss);
 	}
 	
+	public void init()
+	{
+		hit=0; miss=0; access=0;
+		cache.clear();
+	}
+	
+	
 	/***
 	 * load data from cache
 	 * @param address the address of memory
@@ -100,7 +107,7 @@ public class Cache {
 	 */
 	public WORD load(long address) 
 	{	
-		message="";
+		//message="";
 		access++;
 		WORD word=new WORD();
 		word.setLong(address);
@@ -114,13 +121,13 @@ public class Cache {
 		if(data==null)
 		{
 			miss++;
-			message=String.format("address %4d is missed in cache\n", address);
+			message+=String.format("==> Address %4d is missed in cache\n", address);
 		}
 		else {
 			hit++;
-			message=String.format("address %4d is hit in cache\n", address);
+			//message=String.format("address %4d is hit in cache\n", address);
 		}
-		LOG.info(message);
+		//LOG.info(message);
 		return data;
 	}
 
@@ -173,6 +180,19 @@ public class Cache {
 		cache.addFirst(line);
 		return line;	
 	}
+	
+	public String getMessage()
+	{
+		String temp = new String(message);
+		message="";
+		return temp;
+	}
+	
+	public String seekMessage()
+	{
+		return message;
+	}
+
 
 
 

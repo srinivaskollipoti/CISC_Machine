@@ -2,7 +2,6 @@ import java.io.IOException;
 import java.io.File; 
 import java.io.FileNotFoundException; 
 import java.util.Scanner; 
-import java.util.ArrayList;
 
 
 
@@ -13,10 +12,8 @@ import java.util.ArrayList;
  */
 public class IOInstHandler extends InstructionHandler {
 	
-	int counter = 0;
 	public IOInstHandler(CPU cpu) {
 		super(cpu);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public boolean execute() throws IOException{
@@ -53,19 +50,19 @@ public class IOInstHandler extends InstructionHandler {
 		if(devId == IOC.PRINTER) {
 			message= "Printer is not input device.\n";
 		}else if(devId == IOC.CARD_READER) {
-			//read from reader.txt
-			File file = new File("reader.txt");
-			Scanner sc = new Scanner(file);
-			
-			try {
-				 char in = sc.next().charAt(counter);
-				 counter++;
-				 cpu.getGPR(reg).setLong((int) in);
-			} catch (IndexOutOfBoundsException e) {
-				counter = 0;
-				LOG.warning("reached the end.");
-				
+			char in=cpu.getInputChar(IOC.CARD_READER);
+			if(in==IOC.NONE_INPUT)
+			{
+				//read from reader.txt
+				File file = new File("reader.txt");
+				Scanner sc = new Scanner(file);
+				sc.useDelimiter("\0");
+			    String readText=sc.next(); 
+			    cpu.getIOC().appendIOBuffer(IOC.CARD_READER, readText);
+			    sc.close();
+			    in=cpu.getInputChar(IOC.CARD_READER);
 			}
+			cpu.getGPR(reg).setLong(in);
 		}else {
 			char in = cpu.getInputChar(address);
 			if(in!=IOC.NONE_INPUT) 
@@ -102,7 +99,6 @@ public class IOInstHandler extends InstructionHandler {
 	 */
 	private boolean executeHLT() {
 		cpu.getSimulator().setStop();
-		//message="[NOTICE] System halted\n";
 		return true;
 	}
 	

@@ -91,7 +91,7 @@ public class ALInstHandler extends InstructionHandler {
 		checkRegIReg();
 		int eAddress=getEA();
 		WORD result=alu.add(cpu.getGPR(reg),cpu.loadMemory(eAddress));
-		message=alu.getMessage();
+		message+=alu.getMessage();
 		cpu.getGPR(reg).copy(result);
 		return true;
 	}
@@ -105,7 +105,7 @@ public class ALInstHandler extends InstructionHandler {
 		checkRegIReg();
 		int eAddress=getEA();
 		WORD result=alu.sub(cpu.getGPR(reg),cpu.loadMemory(eAddress));
-		message=alu.getMessage();
+		message+=alu.getMessage();
 		cpu.getGPR(reg).copy(result);
 		return true;
 	}
@@ -122,7 +122,7 @@ public class ALInstHandler extends InstructionHandler {
 		WORD immed=new WORD();
 		immed.setLong(address);
 		WORD result=alu.add(cpu.getGPR(reg),immed);
-		message=alu.getMessage();
+		message+=alu.getMessage();
 		cpu.getGPR(reg).copy(result);
 		return true;
 	}
@@ -139,7 +139,7 @@ public class ALInstHandler extends InstructionHandler {
 		WORD immed=new WORD();
 		immed.setLong(address);
 		WORD result=alu.sub(cpu.getGPR(reg),immed);
-		message=alu.getMessage();
+		message+=alu.getMessage();
 		cpu.getGPR(reg).copy(result);
 		return true;
 	}
