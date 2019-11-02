@@ -14,7 +14,7 @@ public class Memory {
 	private SignedWORD memory[];
 	private boolean	isMemorys[];
 	
-	private int user_program_end=0;
+	private int user_program_end=USER_PROGRAM_START+1;
 	private static final int DEFAULT_MEMORY=2048;
 	private static final int MAX_MEMORY=4096;
 	private static final int MIN_MEMORY=2048;
@@ -45,7 +45,7 @@ public class Memory {
 		isMemorys=new boolean[size];
 		if(size<MIN_MEMORY || size>MAX_MEMORY)
 		{
-			throw new IOException("Invalid memory size");
+			throw new IOException("Invalid memory size\n");
 		}
 
 		for (int i=0; i<size;i++) {
@@ -67,6 +67,21 @@ public class Memory {
 		}
 		Arrays.fill(isMemorys, false);
 		
+		return true;
+	}
+	
+	/**
+	 * Set every elements in the memory array to null.
+	 * @param from start address to clear (inclusive)
+	 * @param to end address to clear (exclusive)
+	 * @return true
+	 */
+	public boolean clear(int from, int to)
+	{
+		for(int i=from;i<to;i++) {
+			memory[i].clear();
+			isMemorys[i]=false;
+		}
 		return true;
 	}
 	
@@ -95,13 +110,13 @@ public class Memory {
 		int limitMemoryStart=BOOT_MEMORY_START;
 		if(isSystem==false) limitMemoryStart=USER_MEMORY_START;
 		if(address>=memory.length)
-			throw new IOException("Memory violation\n==> Access over memory("+address+")\n");
+			throw new IOException("==> Memory violation\n==> Access over memory("+address+")\n");
 		else if(address<0)
-			throw new IOException("Memory violation\n==> Access invalid address("+address+")\n");	
+			throw new IOException("==> Memory violation\n==> Access invalid address("+address+")\n");	
 		else if(address<limitMemoryStart)
-			throw new IOException("Memory violation\n==> Access into system address("+address+")\n");
+			throw new IOException("==> Memory violation\n==> Access into system address("+address+")\n");
 		if (input==null)
-			throw new IOException("Memory violation\n==> Insert empty data("+address+")\n");
+			throw new IOException("==> Memory violation\n==> Insert empty data("+address+")\n");
 		
 		memory[address].copy(input);
 		isMemorys[address]=true;
@@ -116,10 +131,8 @@ public class Memory {
 	 */
 	private WORD load(int address) throws IOException
 	{
-		if(address<BOOT_MEMORY_START)
-			throw new IOException("Memory violation\n==> System address : "+address+"\n");
-		if(address>=memory.length)
-			throw new IOException("Memory violation\n==> Out of memory range : "+address+"\n");
+		if(address<0 || address>=memory.length)
+			throw new IOException("==>Memory violation\n==> Out of memory range : "+address+"\n");
 
 		return memory[address];
 	}
@@ -169,8 +182,25 @@ public class Memory {
 		}
 		memory[address].setLong(CPU.END_OF_PROGRAM);
 		isMemorys[address]=true;
-		user_program_end=address;
-		//System.out.println(this);
+		this.user_program_end=address;
+		return true;
+	}
+	
+	public boolean storeUserData(ArrayList<WORD> arrCode)
+	{
+		int address=USER_MEMORY_START;
+		for(WORD code : arrCode) {
+			try {
+			if(!store(address,code)) return false;
+			}catch(IOException e) {
+				e.getStackTrace();
+				return false;
+			}
+			address++;
+		}
+		memory[address].setLong(CPU.END_OF_PROGRAM);
+		isMemorys[address]=true;
+		this.user_program_end=address;
 		return true;
 	}
 	
@@ -190,34 +220,32 @@ public class Memory {
 		isMemorys[address]=true;
 		return true;
 	}
-	
+
+
 	/**
 	 * Get information of each memory slots, including the address and content.
 	 * @return The result in String type.
 	 */
-	public String getString() 
+	public String getString(int from, int to, boolean isDebug) 
 	{
-		StringBuffer buffer=new StringBuffer();
-		
-		buffer.append("### MEMORY STATUS START ###\n");
-		for(int i =0; i<memory.length;i++)
+		StringBuffer buffer=new StringBuffer();		
+		for(int i =from; i<to;i++)
 		{
-			if(i>=1000||i<400)
-				continue;
 			if(isEmpty(i))
 			{
-				//String message = String.format("Memory [%04d]  %s (%02X%02X) (%d)\n", i, memory[i].getString(),
-				//		  memory[i].getLong()&0x00FF,(memory[i].getLong()&0xFF00)>>>8,memory[i].getLong());
-				String message = String.format("Memory [%04d]  %s (%d)\n", i, memory[i].getString(),
-						memory[i].getLong());
+				String message="";
+				if (isDebug) {
+					message = String.format("Memory [%04d]  %s (%02X%02X) (%d)\n", i, memory[i].getString(),
+							memory[i].getLong() & 0x00FF, (memory[i].getLong() & 0xFF00) >>> 8, memory[i].getLong());
+				} else {
+					message = String.format("Memory [%04d]  %s (%d)\n", i, memory[i].getString(), memory[i].getLong());
+				}
 				buffer.append(message);
 			}
 		}
-		buffer.append("### MEMORY STATUS END   ###\n");
-		
-		
 		return buffer.toString();
 	}
+	
 	public String toString()
 	{
 		StringBuffer buffer=new StringBuffer();
@@ -244,8 +272,8 @@ public class Memory {
 	 * Get starting location for user program.
 	 * @return starting location for user program.
 	 */
-	public int getUserProgramLocation() {
-		return USER_PROGRAM_START;
-	}
+	public int getUserProgramLocation() { return USER_PROGRAM_START;}
+	public int getUserProgramEnd() { return user_program_end; }
+	public int getLength() {return memory.length;}
 
 }

@@ -191,7 +191,7 @@ public class CISCSimulator implements Runnable{
 		while(checkRun()==true)
 		{	
 			// handle the input interrupt
-			long sleep=4;
+			long sleep=1;
 			if(cpu.isInputInterrupt()==true)
 			{	
 				panel.setEnableIn(true);
@@ -227,7 +227,7 @@ public class CISCSimulator implements Runnable{
 		// handle the halt and terminate
 		if(isHalt()==true)
 		{
-			buffer.append(memory.getString());
+			buffer.append(cpu.getDataMemory());
 			buffer.append("[NOTICE] System is halted.\n==> Press the Run button to resume.\n\n");
 		}
 		
@@ -262,7 +262,7 @@ public class CISCSimulator implements Runnable{
 		{
 			setState(StateType.TERMINATE);
 			isNeedReload=true;
-			buffer.append(memory.getString());
+			buffer.append(cpu.getDataMemory());
 			buffer.append("[NOTICE] System is terminated\n\n");
 		}
 		message=buffer.toString();
@@ -340,6 +340,20 @@ public class CISCSimulator implements Runnable{
 			LOG.warning(message);
 			return false;
 		}
+		/*
+		boolean result=cpu.setUserData(arrBinCode);
+		message=cpu.getMessage();
+		if(result==true)
+		{
+			initStatus();
+			mode=1;
+		}
+		LOG.info(cpu.getAllMemory(true));
+		panel.updateDisplay();
+		return result;
+*/
+		
+		//setUserCode(arrBinCode);
 		
 		// change assembly code from binary code
 		String[] arrAsmCode= new String[arrBinCode.size()];
@@ -355,7 +369,9 @@ public class CISCSimulator implements Runnable{
 		
 		// input user code to simulator
 		boolean result=setUserCode(arrAsmCode);
+		
 		if(result) mode=1;
+		LOG.info(cpu.getAllMemory());
 		panel.updateDisplay();
 		return result;
 	}
@@ -364,6 +380,17 @@ public class CISCSimulator implements Runnable{
 		if(cpu.isTerminate()==true )
 			state=StateType.TERMINATE;
 		return state==StateType.RUNNING; 
+	}
+	
+	
+	public void showStack() {
+		message="### STACK STATUS START ###\n"+cpu.getStackMemory() +"### STACK STATUS END ###\n";
+		panel.printLog(message);
+	}
+
+	public void showMemory() {
+		message="### MEMORY STATUS START ###\n"+cpu.getDataMemory()+"### MEMORY STATUS END ###\n";
+		panel.printLog(message);
 	}
 	
 	/**
@@ -397,4 +424,5 @@ public class CISCSimulator implements Runnable{
 	}
 	
 	public int getMode() { return mode;}
+	public boolean isDebug(){ return Boolean.getBoolean("debug")==true;}
 }

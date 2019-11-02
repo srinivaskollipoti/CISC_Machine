@@ -34,11 +34,11 @@ public class ALU {
 		short i2=(short) s2.getLong();
 		message.append(String.format("==> [ALU] %d + %d",i1,i2));		
 		short sum=(short) (i1+i2);
+		message.append(String.format(" = %d\n",sum));		
 		if(i1>0 && i2>0 && sum<0)
 			setOverflow(true);
 		else if(i1<0 && i2<0 && sum>0)
 			setOverflow(true);
-		message.append(String.format(" = %d\n",sum));
 		result.setLong(sum);
 		return result;
 	}
@@ -59,13 +59,12 @@ public class ALU {
 		short i2=(short) s2.getLong();
 		message.append(String.format("==> [ALU] %d - %d",i1,i2));		
 		int afterSub=i1-i2;
-		if(afterSub>result.maxValue || afterSub<result.minValue)
-			setOverflow(true);
 		short sum=(short) afterSub;
 		message.append(String.format(" = %d\n",sum));
+		if(afterSub>result.maxValue || afterSub<result.minValue)
+			setOverflow(true);
 		result.setLong(sum);
 		return result;
-//		return add(s1,complement(s2));
 	}
 
 	
@@ -86,6 +85,12 @@ public class ALU {
 		short i2=(short) s2.getLong();
 		message.append(String.format("==> [ALU] %d * %d",i1,i2));
 		int afterMul= i1*i2;
+		GBitSet bit32=new GBitSet(32);
+		bit32.setSigned(true);
+		bit32.setLong(afterMul);
+		message.append(String.format(" = %d\n",afterMul));
+		result[0].copy(bit32.subSet(WORD.SIZE, WORD.SIZE*2));
+		result[1].copy(bit32.subSet(0,WORD.SIZE));
 		
 		if(i1>0 && i2>0 && afterMul<0)
 			setOverflow(true);
@@ -96,12 +101,6 @@ public class ALU {
 		else if(i1>0 && i2<0 && afterMul>0)
 			setOverflow(true);
 		
-		GBitSet bit32=new GBitSet(32);
-		bit32.setSigned(true);
-		bit32.setLong(afterMul);
-		message.append(String.format(" = %d\n",afterMul));
-		result[0].copy(bit32.subSet(WORD.SIZE, WORD.SIZE*2));
-		result[1].copy(bit32.subSet(0,WORD.SIZE));
 		return result;
 	}
 	
@@ -176,6 +175,7 @@ public class ALU {
 		message.setLength(0);
 		WORD result=new SignedWORD(s1);
 		result.flip(0,result.length);
+		message.append(String.format("==> [ALU] NOT %d = %d\n",s1.getLong(),result.getLong()));		
 		return result;
 	}	
 
@@ -189,6 +189,7 @@ public class ALU {
 		message.setLength(0);
 		WORD result=new SignedWORD(s1);
 		result.and(s2);
+		message.append(String.format("==> [ALU] %d AND %d = %d\n",s1.getLong(),s2.getLong(),result.getLong()));		
 		return result;
 	}
 
@@ -202,6 +203,7 @@ public class ALU {
 		message.setLength(0);
 		WORD result=new SignedWORD(s1);
 		result.or(s2);
+		message.append(String.format("==> [ALU] %d OR %d = %d\n",s1.getLong(),s2.getLong(),result.getLong()));		
 		return result;
 	}
 
@@ -220,10 +222,10 @@ public class ALU {
 		setOverflow(false);
 		setUnderflow(false);
 
-		LOG.info(String.format("SHIFT LEFT=%b, ARITH=%b, COUNT=%d\n",isLeft,isArith,count));
-		LOG.info(s1.toString());
 		WORD result=new SignedWORD(s1);
 		result.shift(isLeft, count,isArith);
+		message.append(String.format("[ALU] SHIFT %d (%s, %s, COUNT=%d)\n==> %d\n",
+				s1.getLong(),isLeft?"LEFT":"RIGHT",isArith?"ARITH":"LOGICAL",count,result.getLong()));
 		
 		if(isLeft) {
 			int end=s1.length;
@@ -238,8 +240,6 @@ public class ALU {
 			if(s1.subSet(0, count).isEmpty()==false)
 				setUnderflow(true);
 		}
-
-		LOG.info(result.toString());
 		return result;
 	}
 
@@ -253,40 +253,39 @@ public class ALU {
 	 */
 	public WORD rotate(final WORD s1,int count, boolean isLeft, boolean isArith) {
 		message.setLength(0);
-		LOG.info(String.format("ROTETE LEFT=%b, ARITH=%b, COUNT=%d\n",isLeft,isArith,count));
-		LOG.info(s1.toString());
 		WORD result=new SignedWORD(s1);
 		result.rotate(isLeft, count, isArith);
-		LOG.info(result.toString());
+		message.append(String.format("[ALU] ROTATE %d (%s, %s, COUNT=%d)\n==> %d\n",
+				s1.getLong(),isLeft?"LEFT":"RIGHT",isArith?"ARITH":"LOGICAL",count,result.getLong()));
 		return result;
 	}
 	
 	private void setOverflow(boolean input) {
-		message.setLength(0);
+		//message.setLength(0);
 		cpu.getCC().set(0, input);
 		if(input)
-			message.append(" === Set CC : Overflow\n");
+			message.append("==> Set CC : Overflow\n");
 	}
 
 	private void setUnderflow(boolean input) {
-		message.setLength(0);
+		//message.setLength(0);
 		cpu.getCC().set(1, input);
 		if(input)
-			message.append(" ==> Set CC : Underflow\n");
+			message.append("==> Set CC : Underflow\n");
 	}
 
 	private void setDivzero(boolean input) {
-		message.setLength(0);
+		//message.setLength(0);
 		cpu.getCC().set(2, input);
 		if(input)
-			message.append(" ==> Set CC : Divzero\n");
+			message.append("==> Set CC : Divzero\n");
 	}
 
 	private void setEqualOrNot(boolean input) {
-		message.setLength(0);
+		//message.setLength(0);
 		cpu.getCC().set(3, input);
 		if(input)
-			message.append(" ==> Set CC : EqualOrNot\n");
+			message.append("==> Set CC : EqualOrNot\n");
 	}
 
 	public String getMessage() { return message.toString();}

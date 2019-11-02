@@ -84,10 +84,11 @@ public class IOInstHandler extends InstructionHandler {
 		if(devId == IOC.KEYBOARD || devId == IOC.CARD_READER) {
 			message=String.format("Device %d is not output device\n",devId); //keyboard and card reader cannot use out
 		}else {
-			WORD param=new WORD();
+			WORD param=new SignedWORD();
 			param.copy(cpu.getGPR(reg));
 			char output = (char) param.getLong(); 
 			cpu.setOutputChar(address,output);
+			message="==> Output character is "+output+"\n";
 		}
 		
 		return true;

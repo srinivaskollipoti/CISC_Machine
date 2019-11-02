@@ -245,7 +245,8 @@ public class ALInstHandler extends InstructionHandler {
 	private boolean executeSRC() {
 		if(reg<0 && reg>3)
 			throw new IllegalArgumentException("reg must be between 0 and 3\n");
-		WORD result=alu.shift(cpu.getGPR(reg), count, lr==1, al==1);
+		WORD result=alu.shift(cpu.getGPR(reg), count, lr==1, al==0);
+		message=alu.getMessage();
 		cpu.getGPR(reg).copy(result);
 		return true;
 	}
@@ -257,7 +258,8 @@ public class ALInstHandler extends InstructionHandler {
 	private boolean executeRRC() {	
 		if(reg<0 && reg>3)
 			throw new IllegalArgumentException("reg must be between 0 and 3\n");
-		WORD result=alu.rotate(cpu.getGPR(reg), count, lr==1, al==1);
+		WORD result=alu.rotate(cpu.getGPR(reg), count, lr==1, al==0);
+		message=alu.getMessage();
 		cpu.getGPR(reg).copy(result);
 		return true;
 	}

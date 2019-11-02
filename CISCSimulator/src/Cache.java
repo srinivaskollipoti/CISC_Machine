@@ -4,7 +4,6 @@
  * @author cozyu (Yeongmok You)
  */
 
-import java.util.logging.Logger;
 import java.util.*;
 
 /**
@@ -51,6 +50,11 @@ class CacheLine {
 		data[index].copy(input);
 		return true;
 	}
+	
+	public boolean clear(int index) {		
+		data[index]=null;
+		return true;
+	}
 }
 
 /**
@@ -65,9 +69,6 @@ class CacheLine {
  */
 public class Cache {
 	
-	private final static Logger LOG = Logger.getGlobal();
-
-
 	private String message="";
 	private final LinkedList<CacheLine> cache;		// the list of cacheline
 	private final static int MAX_CACHE_LINE = 128;	// maximum of cacheline
@@ -96,6 +97,30 @@ public class Cache {
 	{
 		hit=0; miss=0; access=0;
 		cache.clear();
+	}
+	
+	/**
+	 * Clear every elements in the cache.
+	 * @param from start address to clear (inclusive)
+	 * @param to end address to clear (exclusive)
+	 * @return true
+	 */
+	public boolean clear(int from, int to)
+	{
+		for(int i=from;i<to;i++) {
+			this.clear(i);
+		}
+		return true;
+	}
+	
+	public boolean clear(long address) {
+		WORD wordAddr=new WORD();
+		wordAddr.setLong(address);
+		long tag=wordAddr.subSet(4, WORD.SIZE).getLong();
+		long bytes=wordAddr.subSet(0, 4).getLong();
+		CacheLine line= getCacheLine(tag);
+		if(line!=null) line.clear((int)bytes);
+		return true;
 	}
 	
 	

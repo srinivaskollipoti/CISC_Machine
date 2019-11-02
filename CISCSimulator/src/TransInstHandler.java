@@ -127,7 +127,7 @@ public class TransInstHandler extends InstructionHandler {
 	 */
 	private boolean executeSOB() throws IOException {
 		int eAddress = getEA();
-		cpu.getGPR(reg).setLong(cpu.getGPR(reg).getLong() - 1);
+		cpu.getGPR(reg).setLong((short)(cpu.getGPR(reg).getLong() - 1));
 		if(cpu.getGPR(reg).getLong() > 0){
 	    	cpu.setPC(eAddress);
 	    	message+= String.format("==> PC is changed to %d\n", eAddress);

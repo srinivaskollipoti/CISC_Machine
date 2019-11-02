@@ -80,16 +80,52 @@ public class CPU {
 	}
 	
 	/**
-	 * Print out memory status.
+	 * Get memory status.
 	 */
-	public boolean showMemory()
+	public String getAllMemory()
 	{
-		System.out.println("### MEMORY STATUS START ###\n");
-		System.out.println(memory);
-		System.out.println("### MEMORY STATUS END ###\n");
-		return true;
+		boolean isDebug=simu.isDebug();
+		return memory.getString(0,memory.getLength(),isDebug);
 	}
 	
+	public String getSystemMemory()
+	{
+		boolean isDebug=simu.isDebug();
+		return (memory.getString(0,Memory.USER_MEMORY_START,isDebug));
+	}
+
+	public String getCodeMemory()
+	{
+		boolean isDebug=simu.isDebug();
+		return (memory.getString(memory.getUserProgramLocation(),memory.getUserProgramEnd(),isDebug));
+	}
+
+	public String getDataMemory()
+	{
+		boolean isDebug=simu.isDebug();
+		return (memory.getString(Memory.USER_MEMORY_START,Memory.USER_PROGRAM_START,isDebug));
+	}
+
+	public String getStackMemory()
+	{
+		boolean isDebug=simu.isDebug();
+		long bp=0, sp=0;
+		try {
+			bp=memory.load(698, this).getLong();
+			sp=memory.load(699, this).getLong();
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (bp<=0) return "==> NO STACK\n";
+		
+		return String.format("[BP] %d, [SP] %d\n%s\n"
+				, bp,sp, 
+				memory.getString((int)bp-2,(int)sp+1,isDebug)
+				);
+	}
+
 	/**
 	 * Print out register status.
 	 */
@@ -188,15 +224,18 @@ public class CPU {
 			state=CPUState.EXECUTE;
 			break;
 		case EXECUTE:
-			String prefix=String.format("[EXECUTE @%03d]",getPC().getLong()-1);
+			if(Boolean.getBoolean("debug")==true)
+				message=String.format("[EXECUTE @%03d] %s\n",getPC().getLong()-1,Translator.getAsmCode(IR));
+			else
+				message=message+String.format("[EXECUTE @%03d] %s\n",getPC().getLong()-1,Translator.getAsmCode(IR));
 			if(execute()==false)
 			{
-				message="[ERROR] Failed to execute code - "+message;
+				message=message+"==> Failed to execute code\n";
+				state=CPUState.NO_INST;
 				return false;
 			}
 			if(isInputInterrupt()==false) {
-				message = String.format("%s %s\n%s",prefix,Translator.getAsmCode(IR), message.toString());
-				state=CPUState.LOAD_MAR;				
+				state=CPUState.LOAD_MAR;
 			}
 			// in case of interrupt, current instruction is executed again
 			break;
@@ -204,7 +243,8 @@ public class CPU {
 			state=CPUState.LOAD_MAR;
 			break;
 		}
-		addMessage(cache.toString()+"\n"+cache.getMessage());
+		if(simu.isDebug()!=true)
+			addMessage(cache.toString()+"\n"+cache.getMessage());
 		return result;
 	}
 	
@@ -231,7 +271,7 @@ public class CPU {
 			LOG.severe(message);
 			return false;
 		}
-		message=ih.getMessage();
+		message=message+ih.getMessage();
 		return true;
 	}
 	
@@ -246,7 +286,8 @@ public class CPU {
 	 */
 	public boolean setBootCode()
 	{
-		message="[LOADED] Boot Program\n";
+		cache.init();
+		message="";
 		ArrayList<WORD> arrBinCode=ROM.getBinCode();
 		if(arrBinCode==null)
 		{
@@ -267,21 +308,66 @@ public class CPU {
 			LOG.warning(message);
 			return false;
 		}
-	    message=message+getMemory().getString();	
 	    PC.setLong(Memory.BOOT_MEMORY_START);
+	    message=("[LOADED] Boot program\n"
+	    		+"==> PC = "+PC.getLong()+"\n"
+	    		+this.getAllMemory()+"\n");
 	    state=CPUState.LOAD_MAR;
 		return true;
 	}
 	
-	
+	/**
+	 * Store binary code in memory .
+	 * @param arrBinCode a WORD list storing multiple instructions
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
+	public boolean setUserData(ArrayList<WORD> arrBinCode) {
+		cache.clear(Memory.USER_MEMORY_START,memory.getUserProgramEnd()+1);
+		message="";
+		
+	    if(memory.storeUserData(arrBinCode)==false)
+	    {
+			message="[WARNING] Failed to store user program\n";
+	    	LOG.warning(message);
+			return false;
+		}
+	    PC.setLong(memory.getUserProgramLocation());
+	    message=("[LOAD] User program\n"
+	    		+"\nPC = "+PC.getLong()+"\n"
+	    		+this.getCodeMemory()+"\n");
+	    state=CPUState.LOAD_MAR;
+		return true;
+	}
 	
 	/**
-	 * Convert a list of instructions to a list of binary codes and print out the memory status.
+	 * Store binary code in memory .
+	 * @param arrBinCode a WORD list storing multiple instructions
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
+	public boolean setUserCode(ArrayList<WORD> arrBinCode) {
+		cache.clear(Memory.USER_PROGRAM_START,memory.getUserProgramEnd()+1);
+		message="";
+		
+	    if(memory.storeUserCode(arrBinCode)==false)
+	    {
+			message="[WARNING] Failed to store user program\n";
+	    	LOG.warning(message);
+			return false;
+		}
+	    PC.setLong(memory.getUserProgramLocation());
+	    message=("[LOAD] User program\n"
+	    		+"\nPC = "+PC.getLong()+"\n"
+	    		+this.getCodeMemory()+"\n");
+	    state=CPUState.LOAD_MAR;
+		return true;
+	}
+	
+	/**
+	 * Convert a list of assembly code to binary code and store in memory .
 	 * @param arrAsmCode a string list storing multiple instructions
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean setUserCode(String[] arrAsmCode) {
-		
 		message="";
 		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
 		for(int i=0; i<arrAsmCode.length;i++) {
@@ -297,19 +383,7 @@ public class CPU {
 			arrBinCode.add(binCode);
 		}
 		
-	    if(memory.storeUserCode(arrBinCode)==false)
-	    {
-			message="Failed to store user program\n"+String.join("\n", arrAsmCode);
-	    	LOG.warning(message);
-			return false;
-		}
-	    PC.setLong(memory.getUserProgramLocation());
-	    message=("[LOAD] User program\n"+String.join("\n",arrAsmCode)
-	    		+"\nPC = "+memory.getUserProgramLocation()+"\n"
-	    		+memory.getString()+"\n");
-	    //System.out.println(memory);
-	    state=CPUState.LOAD_MAR;
-		return true;
+	    return setUserCode(arrBinCode);
 	}
 	
 
@@ -345,10 +419,10 @@ public class CPU {
 	
 	public boolean storeMemory(long address, WORD value, boolean isSystem) throws IOException
 	{
+		boolean result=true;
+		result= memory.store(address, value,isSystem,this);
 		cache.store(address,value);
 	    LOG.info("mem["+address+"] = "+value+"\n");
-		boolean result=true;
-		result= memory.store(address, value,true,this);
 		return result;
 	}
 

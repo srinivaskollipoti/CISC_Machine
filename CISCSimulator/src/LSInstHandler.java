@@ -71,7 +71,7 @@ public class LSInstHandler extends InstructionHandler {
 	 */
 	private boolean executeSTR() throws IOException {
 		int eAddress=getEA();
-		WORD param=new WORD();
+		WORD param=new SignedWORD();
 	    param.copy(cpu.getGPR(reg));
 		cpu.storeMemory(eAddress,param);
 		message+="==>  mem["+eAddress+"] = "+param.getLong()+"\n";
@@ -101,7 +101,7 @@ public class LSInstHandler extends InstructionHandler {
 			throw new IllegalArgumentException("Index Register must be between 1 and 3\n");
 		
 		int eAddress=getEAWithoutIX();
-		WORD param=new WORD();
+		WORD param=new SignedWORD();
 	    param.copy(cpu.getIX(ireg));
 		cpu.storeMemory(eAddress,param);
 		message+="==> mem["+eAddress+"] = "+param.getLong()+"\n";
