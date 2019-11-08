@@ -28,8 +28,10 @@ public class CISCGUI extends javax.swing.JFrame {
     private CPU cpu;
     
     private javax.swing.JButton buttonMemory;
-    private javax.swing.JButton buttonClear;
-    final int SCROLL_BUFFER_SIZE = 2000;
+    private javax.swing.JButton buttonFunc2;
+    private javax.swing.JButton buttonEnter;
+
+    final int SCROLL_BUFFER_SIZE = 4000;
     
     /**
      * Creates new form CISCGUI
@@ -41,15 +43,24 @@ public class CISCGUI extends javax.swing.JFrame {
         this.setTitle("CISC Simulator");
     }
     
-    /**
-     * Get user input data
-     * @param evt
-     */    
+ 
     private void buttonMemoryActionPerformed(java.awt.event.ActionEvent evt) {                                                   
     	simu.showMemory();
     }
-    private void buttonClearActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+    private void buttonFunc2ActionPerformed(java.awt.event.ActionEvent evt) {                                                   
     	simu.showStack();
+    } 
+
+    /**
+     * Get user input data
+     * @param evt
+     */   
+    private void buttonEnterActionPerformed(java.awt.event.ActionEvent evt) {                                                   
+    	if(simu.isPowerOff()==true) {
+    		printLog("[NOTICE] Simulator is not turned on, push the IPL button\n");
+    		return;
+    	}
+    	inputUserData();
     } 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -68,20 +79,33 @@ public class CISCGUI extends javax.swing.JFrame {
 			}
 		});
 		
-		buttonClear = new javax.swing.JButton();
-		buttonClear.setSize(80, 30);
-		buttonClear.setText("Clear");
-		buttonClear.addActionListener(new java.awt.event.ActionListener() {
+		buttonFunc2 = new javax.swing.JButton();
+		buttonFunc2.setSize(80, 30);
+		buttonFunc2.setText("Stack");
+		buttonFunc2.addActionListener(new java.awt.event.ActionListener() {
 			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				buttonClearActionPerformed(evt);
+				buttonFunc2ActionPerformed(evt);
 			}
 		});
+		buttonEnter = new javax.swing.JButton();
+		buttonEnter.setSize(70, 110);
+		buttonEnter.setText("<html><center>Enter<br>Data</center></html>");
+		buttonEnter.setLocation(310, 194);
+		buttonEnter.setEnabled(false);
+		buttonEnter.setVisible(true);
+		buttonEnter.addActionListener(new java.awt.event.ActionListener() {
+			public void actionPerformed(java.awt.event.ActionEvent evt) {
+				buttonEnterActionPerformed(evt);
+			}
+		});
+		this.add(buttonEnter);
+
 		if (Boolean.getBoolean("debug") == true) {
-			this.add(buttonClear);
+			this.add(buttonFunc2);
 			this.add(buttonMemory);
-			buttonClear.setLocation(80, 0);
+			buttonFunc2.setLocation(80, 0);
 			buttonMemory.setVisible(true);
-			buttonClear.setVisible(true);
+			buttonFunc2.setVisible(true);
 
 		}
 		
@@ -216,7 +240,7 @@ public class CISCGUI extends javax.swing.JFrame {
             }
         });
 
-        buttonLoadProgram2.setText("Enter User Data");
+        buttonLoadProgram2.setText("Load Program 2");
         buttonLoadProgram2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buttonLoadProgram2ActionPerformed(evt);
@@ -238,13 +262,11 @@ public class CISCGUI extends javax.swing.JFrame {
             
 			@Override
 			public void keyTyped(KeyEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
 				
 			}
 
@@ -264,6 +286,7 @@ public class CISCGUI extends javax.swing.JFrame {
         textareaSystemOUT.setColumns(20);
         textareaSystemOUT.setRows(5);
         textareaSystemOUT.setLineWrap(true);
+        textareaSystemOUT.setEditable(false);
         jScrollPane4.setViewportView(textareaSystemOUT);
 
         labelSystemOUT.setText("SystemOUT");
@@ -545,8 +568,7 @@ public class CISCGUI extends javax.swing.JFrame {
     	if(runThread!=null) {
     		haltProcess();
     	}
-        	
-    	runProcess();
+        runProcess();
     }//GEN-LAST:event_buttonRunActionPerformed
 
     public void printLog(String log)
@@ -591,31 +613,38 @@ public class CISCGUI extends javax.swing.JFrame {
     	if(simu.isPowerOff()==true)
     	{
     		printLog("[NOTICE] Simulator is turned on\n");
-    		readyCtl();
+    		activateCtl(true);
     		simu.initProcessor();
     	}else {
     		simu.powerOff();
     		textareaSystemOUT.setText("");
     		textAreaSystemIN.setText("");
     		textArea.setText("");
-    		buttonLoadProgram1.setEnabled(false);
-    		buttonHalt.setEnabled(false);
-    		buttonSingleStep.setEnabled(false);
-    		buttonRun.setEnabled(false);
-    		buttonLoadProgram2.setEnabled(false);
-
+    		activateCtl(false);
+    		
     		printLog("[NOTICE] Simulator is turned off\n");
             
     	}
     }//GEN-LAST:event_buttonIPLActionPerformed
 
-    public void readyCtl()
+    public void activateCtl(boolean enable)
     {
-		buttonLoadProgram1.setEnabled(true);
-		buttonLoadProgram2.setEnabled(false);
-		buttonHalt.setEnabled(false);
-		buttonSingleStep.setEnabled(true);
-		buttonRun.setEnabled(true);
+    	if(enable)
+    	{
+			buttonLoadProgram1.setEnabled(true);
+			buttonLoadProgram2.setEnabled(true);
+			buttonEnter.setEnabled(false);
+			buttonHalt.setEnabled(false);
+			buttonSingleStep.setEnabled(true);
+			buttonRun.setEnabled(true);
+    	}else {
+			buttonLoadProgram1.setEnabled(false);
+			buttonLoadProgram2.setEnabled(false);
+			buttonEnter.setEnabled(false);
+			buttonHalt.setEnabled(false);
+			buttonSingleStep.setEnabled(false);
+			buttonRun.setEnabled(false);
+    	}
     }
     /**
 	 * Load registers' value from the UI and save into the simulator.  
@@ -672,6 +701,7 @@ public class CISCGUI extends javax.swing.JFrame {
     		return;
     	}
     	simu.loadTestProgram1();
+    	//printLog(simu.getMessage());
     	
     	Random rand = new Random();
     	StringBuffer buffer=new StringBuffer();
@@ -684,8 +714,7 @@ public class CISCGUI extends javax.swing.JFrame {
     		buffer.append(",");	
     	}
     	textAreaSystemIN.setText(buffer.toString());
-    	textareaSystemOUT.setText("Press the Run button to start program.\n");
-    	buttonLoadProgram2.setEnabled(false);
+    	textareaSystemOUT.setText("Press the Run button to start program.\n\n");
     	textAreaSystemIN.setEnabled(false);
     }  
 
@@ -698,7 +727,14 @@ public class CISCGUI extends javax.swing.JFrame {
     		printLog("[NOTICE] Simulator is not turned on, push the IPL button\n");
     		return;
     	}
-    	inputUserData();
+    	boolean result=simu.loadTestProgram2();
+    	//printLog(simu.getMessage());
+
+    	if(result==false)
+    		return;
+    	textAreaSystemIN.setText("");
+    	textareaSystemOUT.setText("Press the Run button to start program.\n\n");
+    	textAreaSystemIN.setEnabled(false);
     } 
 
     /**
@@ -708,8 +744,13 @@ public class CISCGUI extends javax.swing.JFrame {
     {	
     	int inputSize=0;
     	int phase = simu.getPhase();
+    	int mode = simu.getMode();
     	String text=textAreaSystemIN.getText();
-    	if (simu.getMode()==1)
+    	if (text.endsWith("\n") == true) {
+			text=text.substring(0, text.length() - 1);
+			textAreaSystemIN.setText(text);
+		}
+    	if (mode==1) // data check for test program 1
     	{
 			if (phase == 1)
 				inputSize = 20;
@@ -741,7 +782,8 @@ public class CISCGUI extends javax.swing.JFrame {
 			// check number of integer
 			if (finalNumber.size() != inputSize) {
 				textareaSystemOUT.setText(
-						"Please enter " + inputSize + " numbers.\nYou entered " + finalNumber.size() + " numbers.");
+						"Please enter " + inputSize + " numbers.\nYou entered " 
+				+ finalNumber.size() + " numbers.\n");
 				return false;
 			}
 
@@ -759,18 +801,38 @@ public class CISCGUI extends javax.swing.JFrame {
 				}
 			}
 
-			text = String.join(",", finalNumber) + '\n';
+			text = String.join(",", finalNumber);
+		}
+    	else if (mode==2)     	// data check for test program 2
+    	{
+			if (phase == 0)
+			{
+				textareaSystemOUT.setText("Run test program 2 first\n");
+				return false;
+			}else if(phase == 1)
+			{
+				// remove space character
+				text = textAreaSystemIN.getText().trim();
+				String[] arrWord = text.split(" ");
+				if (arrWord.length!=1){
+					printScreen(
+							"Please enter one word.\nYou entered " + arrWord.length + " words.\n");
+					return false;
+				}
+				if (arrWord[0].length()>20){
+					printScreen(
+							"Please enter under 20 characters.\nYou entered " + arrWord[0].length() + " characters.\n");
+					return false;
+				}
+			}
 		}
     	
-		if (text.endsWith("\n") == true) {
-			text=text.substring(0, text.length() - 1);
-		}		
 		text=text + '\0';
 		printLog(simu.getMessage());
         printLog("[INFO] User entered a text : ["+text+"]\n");
         simu.inputUserText(text);
         textAreaSystemIN.setText("");
-        //textareaSystemOUT.setText("");
+		textArea.requestFocus();
         return true;
     }
     
@@ -801,14 +863,14 @@ public class CISCGUI extends javax.swing.JFrame {
     	if(isMessage==true)
     		printLog(simu.getMessage());
     	if(simu.checkRun()==false)
-    		readyCtl();
+    		activateCtl(true);
 
     }
     
     public void setEnableIn(boolean isEnable)
     {
     	textAreaSystemIN.setEnabled(isEnable);
-    	buttonLoadProgram2.setEnabled(isEnable);
+    	buttonEnter.setEnabled(isEnable);
     	if(isEnable)
     	{
     		textAreaSystemIN.requestFocus();
@@ -822,7 +884,11 @@ public class CISCGUI extends javax.swing.JFrame {
      */
     public void printScreen(String text)
     {
-    	textareaSystemOUT.append(text);
+    	if(text.length()>0)
+    	{	
+	    	textareaSystemOUT.append(text);
+	    	textareaSystemOUT.setCaretPosition(textareaSystemOUT.getDocument().getLength() - 1);
+    	}
     }
     
     /**

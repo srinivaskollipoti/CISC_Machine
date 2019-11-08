@@ -1,5 +1,7 @@
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.logging.FileHandler;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -19,6 +21,7 @@ public class CISCSimulator implements Runnable{
 	private StateType state;				// state of computer
 	private String message=new String();	// state message of computer
 	private int mode=0;						// 0: NORMAL, 1: Test Program1, 2: Test Program2
+	private final int PHASE_FLAG_ADDRESS=997;
 	
 	private boolean isNeedReload=false;
 	/**
@@ -83,14 +86,16 @@ public class CISCSimulator implements Runnable{
 		if(!cpu.init())
 		{
 			message=cpu.getMessage();
-			message="[WARNING] Failed to initialize processor\n==> "+message+"\n";
+			message="[WARNING] Failed to initialize processor\n==> "+message;
+			panel.printLog(message);
 			powerOff();
 			return false;
 		}
 		if(!cpu.setBootCode())
 		{
 			message=cpu.getMessage();
-			message="[WARNING] Failed to load boot program\n==> "+message+"\n";
+			message="[WARNING] Failed to load boot program\n==> "+message;
+			panel.printLog(message);
 			powerOff();
 			return false;
 		}
@@ -122,7 +127,7 @@ public class CISCSimulator implements Runnable{
 			return false;
 		}
 		boolean result=cpu.setUserCode(arrInst);
-		message=cpu.getMessage();
+		message+=cpu.getMessage();
 		if(result==true)
 			initStatus();
 		return result;
@@ -209,12 +214,6 @@ public class CISCSimulator implements Runnable{
 			// perform singlestep
 			singleStep();
 
-			// handle io buffer for printer 
-			while(ioc.isIOBuffer(IOC.PRINTER)==true)
-			{
-				String output=Character.toString(ioc.getIOBuffer(IOC.PRINTER));
-				panel.printScreen(output);
-			}
 
 			// sleep for clock time
 			try {
@@ -265,6 +264,14 @@ public class CISCSimulator implements Runnable{
 			buffer.append(cpu.getDataMemory());
 			buffer.append("[NOTICE] System is terminated\n\n");
 		}
+
+		// handle io buffer for printer 
+		while(ioc.isIOBuffer(IOC.PRINTER)==true)
+		{
+			String output=Character.toString(ioc.getIOBuffer(IOC.PRINTER));
+			panel.printScreen(output);
+		}
+
 		message=buffer.toString();
 		panel.updateDisplay();
 		return true;
@@ -324,16 +331,15 @@ public class CISCSimulator implements Runnable{
 		return true;
 	}
 
-
 	/**
-	 * Load test program1
+	 * Load test program
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
-	public boolean loadTestProgram1()
+	private boolean loadProgram(int id,String path)
 	{
-		message="[LOADED] Test Program 1\n";
+		message="";
 		// read test program file
-		ArrayList<WORD> arrBinCode=ROM.getBinCode("test1.txt");
+		ArrayList<WORD> arrBinCode=ROM.getBinCode(path);
 		if(arrBinCode==null)
 		{
 			message="[WARNING] Failed to load test program 1\n"+ROM.getMessage();
@@ -369,12 +375,56 @@ public class CISCSimulator implements Runnable{
 		
 		// input user code to simulator
 		boolean result=setUserCode(arrAsmCode);
-		
-		if(result) mode=1;
-		LOG.info(cpu.getAllMemory());
+		if(result) mode=id;
+		message+="[LOADED] Test Program "+id+"\n";
+		//LOG.info(cpu.getAllMemory());
 		panel.updateDisplay();
 		return result;
+		
 	}
+
+	/**
+	 * Load test program1
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
+	public boolean loadTestProgram1()
+	{
+		return this.loadProgram(1, "test1.txt");
+	}
+	
+	/**
+	 * Load test program2
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
+	public boolean loadTestProgram2() {
+		File file = new File("reader.txt");
+		Scanner sc=null;
+		try {
+			sc = new Scanner(file);
+		}catch(Exception e)
+		{
+			message="[WARNING] Can't find reader.txt file\n";
+			return false;
+		}
+		sc.useDelimiter("\0");
+	    String readText=sc.next(); 
+	    sc.close();
+	    String [] sentences=readText.split("\n");
+	    int index=1;
+	    for(String sentence:sentences )
+	    {
+	    	if (sentence.length()>=90)
+	    	{
+	    		message="[WARNING] One sentence cannot be over 90 character\n==> Line "
+	    				+index+" has "+sentence.length()+" characters\n";
+				return false;
+	    	}
+	    	index++;
+	    }
+	    
+		return this.loadProgram(2, "test2.txt");		
+	}
+
 	
 	public boolean checkRun() {
 		if(cpu.isTerminate()==true )
@@ -389,7 +439,7 @@ public class CISCSimulator implements Runnable{
 	}
 
 	public void showMemory() {
-		message="### MEMORY STATUS START ###\n"+cpu.getDataMemory()+"### MEMORY STATUS END ###\n";
+		message="### MEMORY STATUS START ###\n"+cpu.getAllMemory()+"### MEMORY STATUS END ###\n";
 		panel.printLog(message);
 	}
 	
@@ -416,7 +466,7 @@ public class CISCSimulator implements Runnable{
 	public int getPhase() {
 		int result=0;
 		try {
-			result= (int)getMemory().load(550, getCPU()).getLong();
+			result= (int)getMemory().load(PHASE_FLAG_ADDRESS, getCPU()).getLong();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -425,4 +475,5 @@ public class CISCSimulator implements Runnable{
 	
 	public int getMode() { return mode;}
 	public boolean isDebug(){ return Boolean.getBoolean("debug")==true;}
+
 }

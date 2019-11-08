@@ -20,8 +20,6 @@ public class CPU {
 	
 	private Cache cache;
 	private CPUState state=CPUState.LOAD_MAR; 	
-	// Need to consider Instruction Cycle Code for pipeline  
-	// IF-ID-EX-MEM-WB
 	
 	private InstructionHandler ih;
 	
@@ -75,8 +73,8 @@ public class CPU {
 		// InstructionHandler is initialized at last because InstructionHandler use ALU
 		ih=new InstructionHandler(this);
 		ih.init();
-		// Remove below comment when the binary is released
-		//LOG.setLevel(Level.WARNING);
+		if(simu.isDebug()==false)
+			LOG.setLevel(Level.WARNING);
 	}
 	
 	/**
@@ -103,6 +101,9 @@ public class CPU {
 	public String getDataMemory()
 	{
 		boolean isDebug=simu.isDebug();
+		//if(isDebug)
+		//	return (memory.getString(800,900,isDebug));
+
 		return (memory.getString(Memory.USER_MEMORY_START,Memory.USER_PROGRAM_START,isDebug));
 	}
 
@@ -111,8 +112,8 @@ public class CPU {
 		boolean isDebug=simu.isDebug();
 		long bp=0, sp=0;
 		try {
-			bp=memory.load(698, this).getLong();
-			sp=memory.load(699, this).getLong();
+			bp=memory.load(998, this).getLong();
+			sp=memory.load(999, this).getLong();
 
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -120,7 +121,7 @@ public class CPU {
 		}
 		if (bp<=0) return "==> NO STACK\n";
 		
-		return String.format("[BP] %d, [SP] %d\n%s\n"
+		return String.format("[BP] %d, [SP] %d\n%s"
 				, bp,sp, 
 				memory.getString((int)bp-2,(int)sp+1,isDebug)
 				);
@@ -222,7 +223,8 @@ public class CPU {
 			IR.copy(MBR);
 			message=message+"[FETCH] IR <- MEM[PC], PC <- PC + 1\n";
 			state=CPUState.EXECUTE;
-			break;
+			if(Boolean.getBoolean("debug")==false)
+				break;
 		case EXECUTE:
 			if(Boolean.getBoolean("debug")==true)
 				message=String.format("[EXECUTE @%03d] %s\n",getPC().getLong()-1,Translator.getAsmCode(IR));
@@ -291,7 +293,7 @@ public class CPU {
 		ArrayList<WORD> arrBinCode=ROM.getBinCode();
 		if(arrBinCode==null)
 		{
-			message="[WARNING] Failed to load boot program\n"+ROM.getMessage();
+			message="Failed to get binary code\n"+ROM.getMessage();
 			LOG.warning(message);
 			return false;
 		}
@@ -299,12 +301,12 @@ public class CPU {
 	    try {
 			if(memory.storeBootCode(arrBinCode)==false)
 			{
-				message="[WARNING] Failed to store boot program\n";
+				message="Failed to load boot code\n";
 				LOG.warning(message);
 				return false;
 			}
 		} catch (IOException e) {
-			message="[WARNING] Failed to store boot program\n"+e.getMessage()+"\n";
+			message="Failed to access boot code\n"+e.getMessage()+"\n";
 			LOG.warning(message);
 			return false;
 		}
@@ -333,8 +335,8 @@ public class CPU {
 		}
 	    PC.setLong(memory.getUserProgramLocation());
 	    message=("[LOAD] User program\n"
-	    		+"\nPC = "+PC.getLong()+"\n"
-	    		+this.getCodeMemory()+"\n");
+	    		+this.getCodeMemory()
+	    		+"PC = "+PC.getLong()+"\n");
 	    state=CPUState.LOAD_MAR;
 		return true;
 	}
@@ -356,8 +358,8 @@ public class CPU {
 		}
 	    PC.setLong(memory.getUserProgramLocation());
 	    message=("[LOAD] User program\n"
-	    		+"\nPC = "+PC.getLong()+"\n"
-	    		+this.getCodeMemory()+"\n");
+	    		+this.getCodeMemory()
+	    		+"PC = "+PC.getLong()+"\n");
 	    state=CPUState.LOAD_MAR;
 		return true;
 	}

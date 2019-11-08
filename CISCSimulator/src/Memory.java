@@ -20,8 +20,8 @@ public class Memory {
 	private static final int MIN_MEMORY=2048;
 	
 	public static final int BOOT_MEMORY_START=010;
-	public static final int USER_MEMORY_START=400;
-	public static final int USER_PROGRAM_START=1000;
+	public static final int USER_MEMORY_START=200;
+	public static final int USER_PROGRAM_START=1200;
 	
 	
 	/**
@@ -107,7 +107,7 @@ public class Memory {
 	 */
 	private boolean store(int address, WORD input, boolean isSystem) throws IOException
 	{
-		int limitMemoryStart=BOOT_MEMORY_START;
+		int limitMemoryStart=0;
 		if(isSystem==false) limitMemoryStart=USER_MEMORY_START;
 		if(address>=memory.length)
 			throw new IOException("==> Memory violation\n==> Access over memory("+address+")\n");
@@ -211,7 +211,7 @@ public class Memory {
 	 */
 	public boolean storeBootCode(ArrayList<WORD> arrCode) throws IOException
 	{
-		int address=BOOT_MEMORY_START;
+		int address=0;
 		for(WORD word : arrCode) {
 			if(!store(address,word,true)) return false;
 			address++;
