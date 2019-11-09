@@ -1,10 +1,10 @@
 # CISC_Machine
 
-#[EXECUTION]
+[EXECUTION]
 * Release : java -jar CISCSimulator.jar
 * Debug : java -jar -Ddebug=true CISCSimulator.jar
 
-#[FILES]
+[FILES]
 * CISCSimulator.jar : program
 * test1.txt : test program 1 - find number
 * test2.txt : test program 2 - find word
