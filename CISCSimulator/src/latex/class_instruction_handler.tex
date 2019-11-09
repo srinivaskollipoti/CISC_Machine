@@ -1,0 +1,239 @@
+\hypertarget{class_instruction_handler}{}\doxysection{Instruction\+Handler Class Reference}
+\label{class_instruction_handler}\index{InstructionHandler@{InstructionHandler}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_instruction_handler_a82434d2a31ac95ff54e66e5817fd0984}{Instruction\+Handler}} (\mbox{\hyperlink{class_control_unit}{Control\+Unit}} controller)
+\item 
+boolean \mbox{\hyperlink{class_instruction_handler_afc4129c63dc42da3ecbb26ea0f1d227e}{execute}} ()  throws I\+O\+Exception 	
+\item 
+void \mbox{\hyperlink{class_instruction_handler_a6d2e0a5516b1d58a6f535497f56eff1e}{show\+Instruction}} ()
+\item 
+\mbox{\Hypertarget{class_instruction_handler_afa5fca638f7e24c2d5ed2834b59d2a4c}\label{class_instruction_handler_afa5fca638f7e24c2d5ed2834b59d2a4c}} 
+int {\bfseries get\+O\+P\+Code} ()
+\item 
+\mbox{\Hypertarget{class_instruction_handler_ae5d7f91b37c63545f51bbe000d90ba00}\label{class_instruction_handler_ae5d7f91b37c63545f51bbe000d90ba00}} 
+int {\bfseries get\+Reg} ()
+\item 
+\mbox{\Hypertarget{class_instruction_handler_a8c49f228482918ee5f4988682ea59ea7}\label{class_instruction_handler_a8c49f228482918ee5f4988682ea59ea7}} 
+int {\bfseries get\+I\+Reg} ()
+\item 
+\mbox{\Hypertarget{class_instruction_handler_a472ae0bd4b593c94f504de79185cd91d}\label{class_instruction_handler_a472ae0bd4b593c94f504de79185cd91d}} 
+int {\bfseries get\+Address} ()
+\item 
+\mbox{\Hypertarget{class_instruction_handler_a06434bccf8bb7358a031110bf5e64c43}\label{class_instruction_handler_a06434bccf8bb7358a031110bf5e64c43}} 
+int {\bfseries get\+Flag} ()
+\item 
+String \mbox{\hyperlink{class_instruction_handler_aa919f638a81ebab3364f116daaa571cf}{get\+Asm\+Code}} ()
+\item 
+\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} \mbox{\hyperlink{class_instruction_handler_abbf7e505fea657340ae36d29a87b7208}{get\+Bin\+Code}} (String asm\+Code)
+\item 
+String \mbox{\hyperlink{class_instruction_handler_aa259feb621482f7b99485e28dfc4fad0}{get\+Message}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+boolean \mbox{\hyperlink{class_instruction_handler_a54a4d1b818fce13b826607f9f7c5ee41}{parse\+IR}} (\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} ir)
+\item 
+boolean \mbox{\hyperlink{class_instruction_handler_ace4c4fe8fa3ee1690395a54b3182dfe9}{execute\+L\+DR}} ()  throws I\+O\+Exception 
+\item 
+boolean \mbox{\hyperlink{class_instruction_handler_ac7c46e199ef7c36dd04ab41cab482a02}{execute\+L\+DA}} ()  throws I\+O\+Exception 
+\item 
+boolean \mbox{\hyperlink{class_instruction_handler_a33762153a6fb575efdea60c35a0fdfcf}{execute\+S\+TR}} ()  throws I\+O\+Exception 
+\item 
+boolean \mbox{\hyperlink{class_instruction_handler_aa99db448674e2f01dd7908f1604ed61b}{execute\+L\+DX}} ()  throws I\+O\+Exception 
+\item 
+boolean \mbox{\hyperlink{class_instruction_handler_aaa72e47fb61fc0148015b99c2e2f316c}{execute\+S\+TX}} ()  throws I\+O\+Exception 
+\item 
+int \mbox{\hyperlink{class_instruction_handler_ac9ac5630b3fb12f38982e185b4d10646}{get\+E\+A\+Without\+IX}} ()  throws I\+O\+Exception 	
+\item 
+int \mbox{\hyperlink{class_instruction_handler_aa4cdcde918b35166efa89c4316b407aa}{get\+EA}} ()  throws I\+O\+Exception 	
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_instruction_handler_a9ee46a1b3a07f437650aafda57e091df}\label{class_instruction_handler_a9ee46a1b3a07f437650aafda57e091df}} 
+\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} {\bfseries ir} =new \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}}()
+\item 
+\mbox{\Hypertarget{class_instruction_handler_addfeebb9eace61a84c10a3b83ebb1262}\label{class_instruction_handler_addfeebb9eace61a84c10a3b83ebb1262}} 
+\mbox{\hyperlink{class_control_unit}{Control\+Unit}} {\bfseries controller}
+\item 
+\mbox{\Hypertarget{class_instruction_handler_af66e300b377cf8e7c2e264b25c572e86}\label{class_instruction_handler_af66e300b377cf8e7c2e264b25c572e86}} 
+int {\bfseries opcode} =0
+\item 
+\mbox{\Hypertarget{class_instruction_handler_a721703d2d42906b23a461b3f699cc415}\label{class_instruction_handler_a721703d2d42906b23a461b3f699cc415}} 
+int {\bfseries reg} =0
+\item 
+\mbox{\Hypertarget{class_instruction_handler_a11141b7822602382ca7d069cda11d367}\label{class_instruction_handler_a11141b7822602382ca7d069cda11d367}} 
+int {\bfseries ireg} =0
+\item 
+\mbox{\Hypertarget{class_instruction_handler_a62893f584a154bd06c610dfebed54614}\label{class_instruction_handler_a62893f584a154bd06c610dfebed54614}} 
+int {\bfseries flag} =0
+\item 
+\mbox{\Hypertarget{class_instruction_handler_a7bcca6a054d553eccf6b9d0658aedb45}\label{class_instruction_handler_a7bcca6a054d553eccf6b9d0658aedb45}} 
+int {\bfseries address} =0
+\item 
+\mbox{\Hypertarget{class_instruction_handler_ae6bc9081683ddaec424a467782139fe0}\label{class_instruction_handler_ae6bc9081683ddaec424a467782139fe0}} 
+Hashtable$<$ Integer, Instruction $>$ {\bfseries inst\+Set} = new Hashtable$<$ Integer, Instruction$>$()
+\item 
+\mbox{\Hypertarget{class_instruction_handler_a6faaee2f59b3849800491fdf170b0a76}\label{class_instruction_handler_a6faaee2f59b3849800491fdf170b0a76}} 
+Hashtable$<$ String, Integer $>$ {\bfseries text\+To\+Code} = new Hashtable$<$ String, Integer$>$()
+\item 
+\mbox{\Hypertarget{class_instruction_handler_ad400d0420ff12583e1931870ed2f3c5a}\label{class_instruction_handler_ad400d0420ff12583e1931870ed2f3c5a}} 
+String {\bfseries message} =new String()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_instruction_handler_a7ede0eeecc3651f64ffc08e46e5fca58}\label{class_instruction_handler_a7ede0eeecc3651f64ffc08e46e5fca58}} 
+static final Logger {\bfseries L\+OG} = Logger.\+get\+Global()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+cozyu 
+
+youcao documented by youcao. A class that process given instructions. 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_instruction_handler_a82434d2a31ac95ff54e66e5817fd0984}\label{class_instruction_handler_a82434d2a31ac95ff54e66e5817fd0984}} 
+\index{InstructionHandler@{InstructionHandler}!InstructionHandler@{InstructionHandler}}
+\index{InstructionHandler@{InstructionHandler}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{InstructionHandler()}{InstructionHandler()}}
+{\footnotesize\ttfamily Instruction\+Handler.\+Instruction\+Handler (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_control_unit}{Control\+Unit}}}]{controller }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+A constructor to initializes instruction set. 
+\begin{DoxyParams}{Parameters}
+{\em controller} & to use this class \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_instruction_handler_afc4129c63dc42da3ecbb26ea0f1d227e}\label{class_instruction_handler_afc4129c63dc42da3ecbb26ea0f1d227e}} 
+\index{InstructionHandler@{InstructionHandler}!execute@{execute}}
+\index{execute@{execute}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{execute()}{execute()}}
+{\footnotesize\ttfamily boolean Instruction\+Handler.\+execute (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}}
+
+Execute instructions and print out the information in register and memory \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_handler_ac7c46e199ef7c36dd04ab41cab482a02}\label{class_instruction_handler_ac7c46e199ef7c36dd04ab41cab482a02}} 
+\index{InstructionHandler@{InstructionHandler}!executeLDA@{executeLDA}}
+\index{executeLDA@{executeLDA}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{executeLDA()}{executeLDA()}}
+{\footnotesize\ttfamily boolean Instruction\+Handler.\+execute\+L\+DA (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Load register with address \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_handler_ace4c4fe8fa3ee1690395a54b3182dfe9}\label{class_instruction_handler_ace4c4fe8fa3ee1690395a54b3182dfe9}} 
+\index{InstructionHandler@{InstructionHandler}!executeLDR@{executeLDR}}
+\index{executeLDR@{executeLDR}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{executeLDR()}{executeLDR()}}
+{\footnotesize\ttfamily boolean Instruction\+Handler.\+execute\+L\+DR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Load register from a given memory address. \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_handler_aa99db448674e2f01dd7908f1604ed61b}\label{class_instruction_handler_aa99db448674e2f01dd7908f1604ed61b}} 
+\index{InstructionHandler@{InstructionHandler}!executeLDX@{executeLDX}}
+\index{executeLDX@{executeLDX}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{executeLDX()}{executeLDX()}}
+{\footnotesize\ttfamily boolean Instruction\+Handler.\+execute\+L\+DX (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Load Index Register from \mbox{\hyperlink{class_memory}{Memory}}. \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_handler_a33762153a6fb575efdea60c35a0fdfcf}\label{class_instruction_handler_a33762153a6fb575efdea60c35a0fdfcf}} 
+\index{InstructionHandler@{InstructionHandler}!executeSTR@{executeSTR}}
+\index{executeSTR@{executeSTR}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{executeSTR()}{executeSTR()}}
+{\footnotesize\ttfamily boolean Instruction\+Handler.\+execute\+S\+TR (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Store Register To \mbox{\hyperlink{class_memory}{Memory}}. \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_handler_aaa72e47fb61fc0148015b99c2e2f316c}\label{class_instruction_handler_aaa72e47fb61fc0148015b99c2e2f316c}} 
+\index{InstructionHandler@{InstructionHandler}!executeSTX@{executeSTX}}
+\index{executeSTX@{executeSTX}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{executeSTX()}{executeSTX()}}
+{\footnotesize\ttfamily boolean Instruction\+Handler.\+execute\+S\+TX (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Store Index Register to \mbox{\hyperlink{class_memory}{Memory}}. \begin{DoxyReturn}{Returns}
+On case success, true is returned, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_handler_aa919f638a81ebab3364f116daaa571cf}\label{class_instruction_handler_aa919f638a81ebab3364f116daaa571cf}} 
+\index{InstructionHandler@{InstructionHandler}!getAsmCode@{getAsmCode}}
+\index{getAsmCode@{getAsmCode}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{getAsmCode()}{getAsmCode()}}
+{\footnotesize\ttfamily String Instruction\+Handler.\+get\+Asm\+Code (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+get assemble code from current instruction \begin{DoxyReturn}{Returns}
+A assemble code string. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_handler_abbf7e505fea657340ae36d29a87b7208}\label{class_instruction_handler_abbf7e505fea657340ae36d29a87b7208}} 
+\index{InstructionHandler@{InstructionHandler}!getBinCode@{getBinCode}}
+\index{getBinCode@{getBinCode}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{getBinCode()}{getBinCode()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} Instruction\+Handler.\+get\+Bin\+Code (\begin{DoxyParamCaption}\item[{String}]{asm\+Code }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Convert the input instruction into a machine code. \begin{DoxyReturn}{Returns}
+the machine code in \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} format. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_handler_aa4cdcde918b35166efa89c4316b407aa}\label{class_instruction_handler_aa4cdcde918b35166efa89c4316b407aa}} 
+\index{InstructionHandler@{InstructionHandler}!getEA@{getEA}}
+\index{getEA@{getEA}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{getEA()}{getEA()}}
+{\footnotesize\ttfamily int Instruction\+Handler.\+get\+EA (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Get the effective address with given register. \begin{DoxyReturn}{Returns}
+An integer of the effective address. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_handler_ac9ac5630b3fb12f38982e185b4d10646}\label{class_instruction_handler_ac9ac5630b3fb12f38982e185b4d10646}} 
+\index{InstructionHandler@{InstructionHandler}!getEAWithoutIX@{getEAWithoutIX}}
+\index{getEAWithoutIX@{getEAWithoutIX}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{getEAWithoutIX()}{getEAWithoutIX()}}
+{\footnotesize\ttfamily int Instruction\+Handler.\+get\+E\+A\+Without\+IX (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Get the effective address without given register \begin{DoxyReturn}{Returns}
+an integer for the effective address. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_handler_aa259feb621482f7b99485e28dfc4fad0}\label{class_instruction_handler_aa259feb621482f7b99485e28dfc4fad0}} 
+\index{InstructionHandler@{InstructionHandler}!getMessage@{getMessage}}
+\index{getMessage@{getMessage}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{getMessage()}{getMessage()}}
+{\footnotesize\ttfamily String Instruction\+Handler.\+get\+Message (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Return result string of operation. \begin{DoxyReturn}{Returns}
+result string of operation. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_handler_a54a4d1b818fce13b826607f9f7c5ee41}\label{class_instruction_handler_a54a4d1b818fce13b826607f9f7c5ee41}} 
+\index{InstructionHandler@{InstructionHandler}!parseIR@{parseIR}}
+\index{parseIR@{parseIR}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{parseIR()}{parseIR()}}
+{\footnotesize\ttfamily boolean Instruction\+Handler.\+parse\+IR (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}}}]{ir }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Set up the instruction code by parts from given translated instruction. 
+\begin{DoxyParams}{Parameters}
+{\em ir} & A \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} containing the translated instruction. Format is explained in user guide. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_instruction_handler_a6d2e0a5516b1d58a6f535497f56eff1e}\label{class_instruction_handler_a6d2e0a5516b1d58a6f535497f56eff1e}} 
+\index{InstructionHandler@{InstructionHandler}!showInstruction@{showInstruction}}
+\index{showInstruction@{showInstruction}!InstructionHandler@{InstructionHandler}}
+\doxysubsubsection{\texorpdfstring{showInstruction()}{showInstruction()}}
+{\footnotesize\ttfamily void Instruction\+Handler.\+show\+Instruction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Print out the instruction meaning by parts. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Instruction\+Handler.\+java\end{DoxyCompactItemize}

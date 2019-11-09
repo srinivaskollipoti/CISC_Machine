@@ -1,0 +1,1336 @@
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2017.5.23)  25 SEP 2019 01:04
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**class_c_i_s_c_simulator.tex
+(./class_c_i_s_c_simulator.tex
+LaTeX2e <2017-04-15>
+Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
+! Undefined control sequence.
+l.1 \hypertarget
+                {class_c_i_s_c_simulator}{}\doxysection{C\+I\+S\+C\+Simulato...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Missing \begin{document}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.1 \hypertarget{c
+                  lass_c_i_s_c_simulator}{}\doxysection{C\+I\+S\+C\+Simulato...
+
+You're in trouble here.  Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.1 \hypertarget{class_
+                       c_i_s_c_simulator}{}\doxysection{C\+I\+S\+C\+Simulato...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 1.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 1.
+! Double subscript.
+l.1 \hypertarget{class_c_
+                         i_s_c_simulator}{}\doxysection{C\+I\+S\+C\+Simulato...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+l.1 \hypertarget{class_c_i_
+                           s_c_simulator}{}\doxysection{C\+I\+S\+C\+Simulato...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+l.1 \hypertarget{class_c_i_s_
+                             c_simulator}{}\doxysection{C\+I\+S\+C\+Simulato...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+l.1 \hypertarget{class_c_i_s_c_
+                               simulator}{}\doxysection{C\+I\+S\+C\+Simulato...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Extra }, or forgotten $.
+l.1 \hypertarget{class_c_i_s_c_simulator}
+                                         {}\doxysection{C\+I\+S\+C\+Simulato...
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Undefined control sequence.
+l.1 ...rget{class_c_i_s_c_simulator}{}\doxysection
+                                                  {C\+I\+S\+C\+Simulator Cla...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.1 ...{class_c_i_s_c_simulator}{}\doxysection{C\+
+                                                  I\+S\+C\+Simulator Class R...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.1 ...ass_c_i_s_c_simulator}{}\doxysection{C\+I\+
+                                                  S\+C\+Simulator Class Refe...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.1 ..._c_i_s_c_simulator}{}\doxysection{C\+I\+S\+
+                                                  C\+Simulator Class Reference}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.1 ...i_s_c_simulator}{}\doxysection{C\+I\+S\+C\+
+                                                  Simulator Class Reference}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+l.3 \doxysubsection
+                   *{Classes}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Environment DoxyCompactItemize undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.4 \begin{DoxyCompactItemize}
+                              
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Command \item invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.5 \item
+         
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.6 e
+     num {\bfseries State\+Type}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.6 e
+     num {\bfseries State\+Type}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.6 e
+     num {\bfseries State\+Type}
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Command \bfseries invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.6 enum {\bfseries
+                    State\+Type}
+Please use the math alphabet \mathbf instead of the \bfseries command. 
+
+! Undefined control sequence.
+l.6 enum {\bfseries State\+
+                           Type}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: \begin{document} ended by \end{DoxyCompactItemize}.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.7 \end{DoxyCompactItemize}
+                            
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+! Undefined control sequence.
+l.8 \doxysubsection
+                   *{Public Member Functions}
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+
+! LaTeX Error: Environment DoxyCompactItemize undefined.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.9 \begin{DoxyCompactItemize}
+                              
+Your command was ignored.
+Type  I <command> <return>  to replace it with another command,
+or  <return>  to continue without it.
+
+
+! LaTeX Error: Command \item invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.10 \item
+          
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.11 \mbox
+          {\hyperlink{class_c_i_s_c_simulator_a3baa735d78c248104a5e36e831b2b...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Missing \endgroup inserted.
+<inserted text> 
+                \endgroup 
+l.11 \mbox
+          {\hyperlink{class_c_i_s_c_simulator_a3baa735d78c248104a5e36e831b2b...
+I've inserted something that you may have forgotten.
+(See the <inserted text> above.)
+With luck, this will get me unwedged. But if you
+really didn't forget anything, try typing `2' now; then
+my insertion and my current dilemma will both disappear.
+
+
+Overfull \hbox (231.76631pt too wide) in paragraph at lines 1--11
+[]$[][][][][]\OML/cmm/m/it/10 imulator[][][] \OMS/cmsy/m/n/10 ^^C
+ []
+
+
+Overfull \hbox (111.26552pt too wide) in paragraph at lines 1--11
+[]\OML/cmm/m/it/10 enum[] \OMS/cmsy/m/n/10 ^^C
+ []
+
+
+Overfull \hbox (133.21115pt too wide) in paragraph at lines 1--11
+[][]$ 
+ []
+
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.11 \mbox
+          {\hyperlink{class_c_i_s_c_simulator_a3baa735d78c248104a5e36e831b2b...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Undefined control sequence.
+<argument> \hyperlink 
+                      {class_c_i_s_c_simulator_a3baa735d78c248104a5e36e831b2...
+l.11 ...04a5e36e831b2b42a}{C\+I\+S\+C\+Simulator}}
+                                                   (\mbox{\hyperlink{class_c...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.11 ...04a5e36e831b2b42a}{C\+I\+S\+C\+Simulator}}
+                                                   (\mbox{\hyperlink{class_c...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Double subscript.
+<argument> \hyperlink {class_c_
+                               i_s_c_simulator_a3baa735d78c248104a5e36e831b2...
+l.11 ...04a5e36e831b2b42a}{C\+I\+S\+C\+Simulator}}
+                                                   (\mbox{\hyperlink{class_c...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_
+                                 s_c_simulator_a3baa735d78c248104a5e36e831b2...
+l.11 ...04a5e36e831b2b42a}{C\+I\+S\+C\+Simulator}}
+                                                   (\mbox{\hyperlink{class_c...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_
+                                   c_simulator_a3baa735d78c248104a5e36e831b2...
+l.11 ...04a5e36e831b2b42a}{C\+I\+S\+C\+Simulator}}
+                                                   (\mbox{\hyperlink{class_c...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_c_
+                                     simulator_a3baa735d78c248104a5e36e831b2...
+l.11 ...04a5e36e831b2b42a}{C\+I\+S\+C\+Simulator}}
+                                                   (\mbox{\hyperlink{class_c...
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Extra }, or forgotten $.
+<argument> ...r_a3baa735d78c248104a5e36e831b2b42a}
+                                                  {C\+I\+S\+C\+Simulator}
+l.11 ...04a5e36e831b2b42a}{C\+I\+S\+C\+Simulator}}
+                                                   (\mbox{\hyperlink{class_c...
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Undefined control sequence.
+<argument> ...baa735d78c248104a5e36e831b2b42a}{C\+
+                                                  I\+S\+C\+Simulator}
+l.11 ...04a5e36e831b2b42a}{C\+I\+S\+C\+Simulator}}
+                                                   (\mbox{\hyperlink{class_c...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...735d78c248104a5e36e831b2b42a}{C\+I\+
+                                                  S\+C\+Simulator}
+l.11 ...04a5e36e831b2b42a}{C\+I\+S\+C\+Simulator}}
+                                                   (\mbox{\hyperlink{class_c...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...d78c248104a5e36e831b2b42a}{C\+I\+S\+
+                                                  C\+Simulator}
+l.11 ...04a5e36e831b2b42a}{C\+I\+S\+C\+Simulator}}
+                                                   (\mbox{\hyperlink{class_c...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...c248104a5e36e831b2b42a}{C\+I\+S\+C\+
+                                                  Simulator}
+l.11 ...04a5e36e831b2b42a}{C\+I\+S\+C\+Simulator}}
+                                                   (\mbox{\hyperlink{class_c...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Extra }, or forgotten $.
+\mbox #1->\leavevmode \hbox {#1}
+                                
+l.11 ...04a5e36e831b2b42a}{C\+I\+S\+C\+Simulator}}
+                                                   (\mbox{\hyperlink{class_c...
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Undefined control sequence.
+<argument> \hyperlink 
+                      {class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Double subscript.
+<argument> \hyperlink {class_c_
+                               i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_
+                                 s_c_g_u_i}{C\+I\+S\+C\+G\+UI}
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_
+                                   c_g_u_i}{C\+I\+S\+C\+G\+UI}
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_c_
+                                     g_u_i}{C\+I\+S\+C\+G\+UI}
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_c_g_
+                                       u_i}{C\+I\+S\+C\+G\+UI}
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_c_g_u_
+                                         i}{C\+I\+S\+C\+G\+UI}
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Extra }, or forgotten $.
+<argument> \hyperlink {class_c_i_s_c_g_u_i}
+                                           {C\+I\+S\+C\+G\+UI}
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Undefined control sequence.
+<argument> \hyperlink {class_c_i_s_c_g_u_i}{C\+
+                                               I\+S\+C\+G\+UI}
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> \hyperlink {class_c_i_s_c_g_u_i}{C\+I\+
+                                                  S\+C\+G\+UI}
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...link {class_c_i_s_c_g_u_i}{C\+I\+S\+
+                                                  C\+G\+UI}
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...k {class_c_i_s_c_g_u_i}{C\+I\+S\+C\+
+                                                  G\+UI}
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+
+                                                  UI}
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Extra }, or forgotten $.
+\mbox #1->\leavevmode \hbox {#1}
+                                
+l.11 ...k{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}
+                                                   panel)
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: Command \item invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.12 \item
+          
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.13 b
+      oolean \mbox{\hyperlink{class_c_i_s_c_simulator_a05422388f0bcc1da46d81...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.13 b
+      oolean \mbox{\hyperlink{class_c_i_s_c_simulator_a05422388f0bcc1da46d81...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.13 b
+      oolean \mbox{\hyperlink{class_c_i_s_c_simulator_a05422388f0bcc1da46d81...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Undefined control sequence.
+<argument> \hyperlink 
+                      {class_c_i_s_c_simulator_a05422388f0bcc1da46d8174376f9...
+l.13 ...0bcc1da46d8174376f97745}{init\+Processor}}
+                                                   ()
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.13 ...0bcc1da46d8174376f97745}{init\+Processor}}
+                                                   ()
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Double subscript.
+<argument> \hyperlink {class_c_
+                               i_s_c_simulator_a05422388f0bcc1da46d8174376f9...
+l.13 ...0bcc1da46d8174376f97745}{init\+Processor}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_
+                                 s_c_simulator_a05422388f0bcc1da46d8174376f9...
+l.13 ...0bcc1da46d8174376f97745}{init\+Processor}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_
+                                   c_simulator_a05422388f0bcc1da46d8174376f9...
+l.13 ...0bcc1da46d8174376f97745}{init\+Processor}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_c_
+                                     simulator_a05422388f0bcc1da46d8174376f9...
+l.13 ...0bcc1da46d8174376f97745}{init\+Processor}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Extra }, or forgotten $.
+<argument> ...r_a05422388f0bcc1da46d8174376f97745}
+                                                  {init\+Processor}
+l.13 ...0bcc1da46d8174376f97745}{init\+Processor}}
+                                                   ()
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Undefined control sequence.
+<argument> ...2388f0bcc1da46d8174376f97745}{init\+
+                                                  Processor}
+l.13 ...0bcc1da46d8174376f97745}{init\+Processor}}
+                                                   ()
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Extra }, or forgotten $.
+\mbox #1->\leavevmode \hbox {#1}
+                                
+l.13 ...0bcc1da46d8174376f97745}{init\+Processor}}
+                                                   ()
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: Command \item invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.14 \item
+          
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.15 b
+      oolean \mbox{\hyperlink{class_c_i_s_c_simulator_ae5372c91ac84b44626d52...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.15 b
+      oolean \mbox{\hyperlink{class_c_i_s_c_simulator_ae5372c91ac84b44626d52...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.15 b
+      oolean \mbox{\hyperlink{class_c_i_s_c_simulator_ae5372c91ac84b44626d52...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.15 b
+      oolean \mbox{\hyperlink{class_c_i_s_c_simulator_ae5372c91ac84b44626d52...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no b in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no n in font nullfont!
+! Undefined control sequence.
+<argument> \hyperlink 
+                      {class_c_i_s_c_simulator_ae5372c91ac84b44626d52d8c82a4...
+l.15 ...r_ae5372c91ac84b44626d52d8c82a4a7cd}{run}}
+                                                   ()
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.15 ...r_ae5372c91ac84b44626d52d8c82a4a7cd}{run}}
+                                                   ()
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Double subscript.
+<argument> \hyperlink {class_c_
+                               i_s_c_simulator_ae5372c91ac84b44626d52d8c82a4...
+l.15 ...r_ae5372c91ac84b44626d52d8c82a4a7cd}{run}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_
+                                 s_c_simulator_ae5372c91ac84b44626d52d8c82a4...
+l.15 ...r_ae5372c91ac84b44626d52d8c82a4a7cd}{run}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_
+                                   c_simulator_ae5372c91ac84b44626d52d8c82a4...
+l.15 ...r_ae5372c91ac84b44626d52d8c82a4a7cd}{run}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_c_
+                                     simulator_ae5372c91ac84b44626d52d8c82a4...
+l.15 ...r_ae5372c91ac84b44626d52d8c82a4a7cd}{run}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Extra }, or forgotten $.
+<argument> ...r_ae5372c91ac84b44626d52d8c82a4a7cd}
+                                                  {run}
+l.15 ...r_ae5372c91ac84b44626d52d8c82a4a7cd}{run}}
+                                                   ()
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Extra }, or forgotten $.
+\mbox #1->\leavevmode \hbox {#1}
+                                
+l.15 ...r_ae5372c91ac84b44626d52d8c82a4a7cd}{run}}
+                                                   ()
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: Command \item invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.16 \item
+          
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.17 b
+      oolean \mbox{\hyperlink{class_c_i_s_c_simulator_a82c46633ece7545ca567f...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.17 b
+      oolean \mbox{\hyperlink{class_c_i_s_c_simulator_a82c46633ece7545ca567f...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.17 b
+      oolean \mbox{\hyperlink{class_c_i_s_c_simulator_a82c46633ece7545ca567f...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.17 b
+      oolean \mbox{\hyperlink{class_c_i_s_c_simulator_a82c46633ece7545ca567f...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no b in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no e in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no n in font nullfont!
+! Undefined control sequence.
+<argument> \hyperlink 
+                      {class_c_i_s_c_simulator_a82c46633ece7545ca567fd497d8f...
+l.17 ...ece7545ca567fd497d8f0a56}{is\+Power\+Off}}
+                                                   ()
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.17 ...ece7545ca567fd497d8f0a56}{is\+Power\+Off}}
+                                                   ()
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Double subscript.
+<argument> \hyperlink {class_c_
+                               i_s_c_simulator_a82c46633ece7545ca567fd497d8f...
+l.17 ...ece7545ca567fd497d8f0a56}{is\+Power\+Off}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_
+                                 s_c_simulator_a82c46633ece7545ca567fd497d8f...
+l.17 ...ece7545ca567fd497d8f0a56}{is\+Power\+Off}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_
+                                   c_simulator_a82c46633ece7545ca567fd497d8f...
+l.17 ...ece7545ca567fd497d8f0a56}{is\+Power\+Off}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_c_
+                                     simulator_a82c46633ece7545ca567fd497d8f...
+l.17 ...ece7545ca567fd497d8f0a56}{is\+Power\+Off}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Extra }, or forgotten $.
+<argument> ...r_a82c46633ece7545ca567fd497d8f0a56}
+                                                  {is\+Power\+Off}
+l.17 ...ece7545ca567fd497d8f0a56}{is\+Power\+Off}}
+                                                   ()
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Undefined control sequence.
+<argument> ...c46633ece7545ca567fd497d8f0a56}{is\+
+                                                  Power\+Off}
+l.17 ...ece7545ca567fd497d8f0a56}{is\+Power\+Off}}
+                                                   ()
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Undefined control sequence.
+<argument> ...ce7545ca567fd497d8f0a56}{is\+Power\+
+                                                  Off}
+l.17 ...ece7545ca567fd497d8f0a56}{is\+Power\+Off}}
+                                                   ()
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Extra }, or forgotten $.
+\mbox #1->\leavevmode \hbox {#1}
+                                
+l.17 ...ece7545ca567fd497d8f0a56}{is\+Power\+Off}}
+                                                   ()
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: Command \item invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.18 \item
+          
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.19 v
+      oid \mbox{\hyperlink{class_c_i_s_c_simulator_a11125d2f86645af8a77e74bc...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.19 v
+      oid \mbox{\hyperlink{class_c_i_s_c_simulator_a11125d2f86645af8a77e74bc...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.19 v
+      oid \mbox{\hyperlink{class_c_i_s_c_simulator_a11125d2f86645af8a77e74bc...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.19 v
+      oid \mbox{\hyperlink{class_c_i_s_c_simulator_a11125d2f86645af8a77e74bc...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+Missing character: There is no v in font nullfont!
+Missing character: There is no o in font nullfont!
+Missing character: There is no i in font nullfont!
+Missing character: There is no d in font nullfont!
+! Undefined control sequence.
+<argument> \hyperlink 
+                      {class_c_i_s_c_simulator_a11125d2f86645af8a77e74bca7aa...
+l.19 ...2f86645af8a77e74bca7aaa719}{single\+Step}}
+                                                   ()
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.19 ...2f86645af8a77e74bca7aaa719}{single\+Step}}
+                                                   ()
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Double subscript.
+<argument> \hyperlink {class_c_
+                               i_s_c_simulator_a11125d2f86645af8a77e74bca7aa...
+l.19 ...2f86645af8a77e74bca7aaa719}{single\+Step}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_
+                                 s_c_simulator_a11125d2f86645af8a77e74bca7aa...
+l.19 ...2f86645af8a77e74bca7aaa719}{single\+Step}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_
+                                   c_simulator_a11125d2f86645af8a77e74bca7aa...
+l.19 ...2f86645af8a77e74bca7aaa719}{single\+Step}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_c_
+                                     simulator_a11125d2f86645af8a77e74bca7aa...
+l.19 ...2f86645af8a77e74bca7aaa719}{single\+Step}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Extra }, or forgotten $.
+<argument> ...r_a11125d2f86645af8a77e74bca7aaa719}
+                                                  {single\+Step}
+l.19 ...2f86645af8a77e74bca7aaa719}{single\+Step}}
+                                                   ()
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Undefined control sequence.
+<argument> ...2f86645af8a77e74bca7aaa719}{single\+
+                                                  Step}
+l.19 ...2f86645af8a77e74bca7aaa719}{single\+Step}}
+                                                   ()
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Extra }, or forgotten $.
+\mbox #1->\leavevmode \hbox {#1}
+                                
+l.19 ...2f86645af8a77e74bca7aaa719}{single\+Step}}
+                                                   ()
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+
+! LaTeX Error: Command \item invalid in math mode.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.20 \item
+          
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Missing $ inserted.
+<inserted text> 
+                $
+l.21 \mbox
+          {\hyperlink{class_control_unit}{Control\+Unit}} \mbox{\hyperlink{c...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.21 \mbox
+          {\hyperlink{class_control_unit}{Control\+Unit}} \mbox{\hyperlink{c...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Something's wrong--perhaps a missing \item.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.21 \mbox
+          {\hyperlink{class_control_unit}{Control\+Unit}} \mbox{\hyperlink{c...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+
+! LaTeX Error: Lonely \item--perhaps a missing list environment.
+
+See the LaTeX manual or LaTeX Companion for explanation.
+Type  H <return>  for immediate help.
+ ...                                              
+                                                  
+l.21 \mbox
+          {\hyperlink{class_control_unit}{Control\+Unit}} \mbox{\hyperlink{c...
+
+Try typing  <return>  to proceed.
+If that doesn't work, type  X <return>  to quit.
+
+! Undefined control sequence.
+<argument> \hyperlink 
+                      {class_control_unit}{Control\+Unit}
+l.21 ...erlink{class_control_unit}{Control\+Unit}}
+                                                   \mbox{\hyperlink{class_c_...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.21 ...erlink{class_control_unit}{Control\+Unit}}
+                                                   \mbox{\hyperlink{class_c_...
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Extra }, or forgotten $.
+<argument> \hyperlink {class_control_unit}
+                                          {Control\+Unit}
+l.21 ...erlink{class_control_unit}{Control\+Unit}}
+                                                   \mbox{\hyperlink{class_c_...
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Undefined control sequence.
+<argument> ...rlink {class_control_unit}{Control\+
+                                                  Unit}
+l.21 ...erlink{class_control_unit}{Control\+Unit}}
+                                                   \mbox{\hyperlink{class_c_...
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+! Extra }, or forgotten $.
+\mbox #1->\leavevmode \hbox {#1}
+                                
+l.21 ...erlink{class_control_unit}{Control\+Unit}}
+                                                   \mbox{\hyperlink{class_c_...
+I've deleted a group-closing symbol because it seems to be
+spurious, as in `$x}$'. But perhaps the } is legitimate and
+you forgot something else, as in `\hbox{$x}'. In such cases
+the way to recover is to insert both the forgotten and the
+deleted material, e.g., by typing `I$}'.
+
+! Undefined control sequence.
+<argument> \hyperlink 
+                      {class_c_i_s_c_simulator_abf78473f01529afa993f5bd7928c...
+l.21 ...473f01529afa993f5bd7928c95e5}{get\+C\+PU}}
+                                                   ()
+The control sequence at the end of the top line
+of your error message was never \def'ed. If you have
+misspelled it (e.g., `\hobx'), type `I' and the correct
+spelling (e.g., `I\hbox'). Otherwise just continue,
+and I'll forget about whatever was undefined.
+
+Missing character: There is no c in font nullfont!
+Missing character: There is no l in font nullfont!
+Missing character: There is no a in font nullfont!
+Missing character: There is no s in font nullfont!
+Missing character: There is no s in font nullfont!
+! Missing $ inserted.
+<inserted text> 
+                $
+l.21 ...473f01529afa993f5bd7928c95e5}{get\+C\+PU}}
+                                                   ()
+I've inserted a begin-math/end-math symbol since I think
+you left one out. Proceed, with fingers crossed.
+
+! Double subscript.
+<argument> \hyperlink {class_c_
+                               i_s_c_simulator_abf78473f01529afa993f5bd7928c...
+l.21 ...473f01529afa993f5bd7928c95e5}{get\+C\+PU}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_
+                                 s_c_simulator_abf78473f01529afa993f5bd7928c...
+l.21 ...473f01529afa993f5bd7928c95e5}{get\+C\+PU}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_
+                                   c_simulator_abf78473f01529afa993f5bd7928c...
+l.21 ...473f01529afa993f5bd7928c95e5}{get\+C\+PU}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Double subscript.
+<argument> \hyperlink {class_c_i_s_c_
+                                     simulator_abf78473f01529afa993f5bd7928c...
+l.21 ...473f01529afa993f5bd7928c95e5}{get\+C\+PU}}
+                                                   ()
+I treat `x_1_2' essentially like `x_1{}_2'.
+
+! Extra }, or forgotten $.
+<argument> ...r_abf78473f01529afa993f5bd7928c95e5}
+                                                  {get\+C\+PU}
+l.21 ...473f01529afa993f5bd7928c95e5}{get\+C\+PU}}
+                                                   ()
+(That makes 100 errors; please try again.) 
+Here is how much of TeX's memory you used:
+ 13 strings out of 492995
+ 292 string characters out of 6132704
+ 55074 words of memory out of 5000000
+ 3665 multiletter control sequences out of 15000+600000
+ 3948 words of font info for 15 fonts, out of 8000000 for 9000
+ 1141 hyphenation exceptions out of 8191
+ 18i,12n,12p,195b,118s stack positions out of 5000i,500n,10000p,200000b,80000s
+
+!  ==> Fatal error occurred, no output PDF file produced!
