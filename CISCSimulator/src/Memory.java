@@ -85,6 +85,21 @@ public class Memory {
 		return true;
 	}
 	
+
+	/**
+	 * Load data from a memory given address.
+	 * @param address an integer of the memory address the machine wants to access.
+	 * @return The data stored in the memory slot.
+	 */
+	private WORD load(int address) throws IOException
+	{
+		if(address<0 || address>=memory.length)
+			throw new IOException("==>Memory violation\n==> Out of memory range : "+address+"\n");
+
+		return memory[address];
+	}
+
+	
 	/**
 	 * Store the input data to a memory with specific address.
 	 * @param address A integer indicating the memory slot to access.
@@ -122,20 +137,7 @@ public class Memory {
 		isMemorys[address]=true;
 		return true;
 	}
-
 	
-	/**
-	 * Load data from a memory given address.
-	 * @param address an integer of the memory address the machine wants to access.
-	 * @return The data stored in the memory slot.
-	 */
-	private WORD load(int address) throws IOException
-	{
-		if(address<0 || address>=memory.length)
-			throw new IOException("==>Memory violation\n==> Out of memory range : "+address+"\n");
-
-		return memory[address];
-	}
 	
 	/**
 	 * Load data from a memory given address.

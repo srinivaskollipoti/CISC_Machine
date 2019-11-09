@@ -55,15 +55,47 @@ class Translator
 		return buffer.toString();
 		
 	}
-	
+
+	/**
+	 * Convert the hex input instruction into a binary code.
+	 * @param hexCode hex code
+	 * @return the binary code in WORD format.
+	 */
+	public static WORD getBinCodeofHex(String hexCode)
+	{
+		if(hexCode.length()!=6)
+		{
+			message="==> Invalid hex code : "+hexCode+"\n";
+			return null;
+		}
+		hexCode=hexCode.substring(2);
+		byte[] readData = new byte[2];
+		int hexNum = Integer.parseInt(hexCode.substring(0, 2), 16);
+		readData[0] = (byte) hexNum;
+		hexNum = Integer.parseInt(hexCode.substring(2, 4), 16);
+		readData[1] = (byte) hexNum;		
+		
+		WORD binCode=new SignedWORD(GBitSet.valueOf(readData));
+		long value=binCode.getLong();	
+		binCode.setLong(value);   		// for 64bit setting, 
+    	
+		return binCode;
+	}
+
 	
 	/**
 	 * Convert the input instruction into a binary code.
+	 * @param asmCode assembly code
 	 * @return the binary code in WORD format.
 	 */
 	public static WORD getBinCode(String asmCode)
 	{
 		message="";
+		
+		if(asmCode.startsWith("0X")==true)
+		{
+			return getBinCodeofHex(asmCode);
+		}
 		
 		WORD result=new WORD();
 		
@@ -150,7 +182,7 @@ class Translator
 			bitCount.setLong(count);
 		}catch(IllegalArgumentException e)
 		{
-			message=e.getMessage()+" : "+asmCode+"\n";
+			message=e.getMessage()+"==> "+asmCode+"\n";
 			LOG.warning(message);			
 			return null;
 		}
@@ -336,7 +368,7 @@ class InstructionSet
 			put(OUT,new Instruction("OUT",OUT,2,true,false,true,false,false,false,false,Instruction.InstType.IO_MISC_INST));
 			put(CHK,new Instruction("CHK",CHK,2,true,false,true,false,false,false,false,Instruction.InstType.IO_MISC_INST));
 			put(HLT,new Instruction("HLT",HLT,0,false,false,false,false,false,false,false,Instruction.InstType.IO_MISC_INST));
-			put(TRAP,new Instruction("TRAP",TRAP,1,false,false,false,true,false,false,false,Instruction.InstType.IO_MISC_INST));
+			put(TRAP,new Instruction("TRAP",TRAP,1,false,false,true,false,false,false,false,Instruction.InstType.IO_MISC_INST));
 
 			put(JZ,new Instruction("JZ",JZ,3,true,true,true,false,false,false,true,Instruction.InstType.TRANS_INST)); 
 			put(JNE,new Instruction("JNE",JNE,3,true,true,true,false,false,false,true,Instruction.InstType.TRANS_INST)); 

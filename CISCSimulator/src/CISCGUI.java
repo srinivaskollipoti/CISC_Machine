@@ -633,7 +633,7 @@ public class CISCGUI extends javax.swing.JFrame {
     	{
 			buttonLoadProgram1.setEnabled(true);
 			buttonLoadProgram2.setEnabled(true);
-			buttonEnter.setEnabled(false);
+			//buttonEnter.setEnabled(false);
 			buttonHalt.setEnabled(false);
 			buttonSingleStep.setEnabled(true);
 			buttonRun.setEnabled(true);
@@ -792,11 +792,11 @@ public class CISCGUI extends javax.swing.JFrame {
 				int number = Integer.valueOf(word);
 				if (number > MAX_INTEGER) {
 					textareaSystemOUT
-							.setText("Sorry, numbers over "+MAX_INTEGER+" are not supported.\nYou entered " + word + ".\n");
+							.setText("Number over "+MAX_INTEGER+" is not supported.\nYou entered " + word + ".\n");
 					return false;
 				}
 				if (number < 0) {
-					textareaSystemOUT.setText("Sorry, numbers under 0 are not supported.\nYou entered " + word + ".\n");
+					textareaSystemOUT.setText("Number under 0 is not supported.\nYou entered " + word + ".\n");
 					return false;
 				}
 			}
@@ -843,7 +843,10 @@ public class CISCGUI extends javax.swing.JFrame {
     {
     	updateDisplay(true);
     }
-    
+
+    /**
+	 * Update display of UI  
+	 */
     public void updateDisplay(boolean isMessage)
     {
     	textFieldR0.setText(Long.toString(cpu.getGPR(0).getLong()));
@@ -867,6 +870,9 @@ public class CISCGUI extends javax.swing.JFrame {
 
     }
     
+    /**
+	 * Enable Input UI  
+	 */
     public void setEnableIn(boolean isEnable)
     {
     	textAreaSystemIN.setEnabled(isEnable);

@@ -13,15 +13,15 @@ import java.util.logging.SimpleFormatter;
  */
 public class CISCSimulator implements Runnable{
 	final static Logger LOG = Logger.getGlobal();
-	private CPU cpu;					/// cpu of computer
+	private CPU cpu;						/// cpu of computer
 	private Memory memory;					/// memory of computer
 	private CISCGUI panel;					/// panel of computer
 	private IOC ioc;						/// io controller of computer
 	
-	private StateType state;				// state of computer
-	private String message=new String();	// state message of computer
-	private int mode=0;						// 0: NORMAL, 1: Test Program1, 2: Test Program2
-	private final int PHASE_FLAG_ADDRESS=997;
+	private StateType state;				/// state of computer
+	private String message=new String();	/// state message of computer
+	private int mode=0;						/// 0: NORMAL, 1: Test Program1, 2: Test Program2
+	private final int PHASE_FLAG_ADDRESS=997;	/// address of flag value
 	
 	private boolean isNeedReload=false;
 	/**
@@ -108,7 +108,10 @@ public class CISCSimulator implements Runnable{
 		
 		return true;
 	}
-	
+
+	/**
+	 * Initialize the state of cpu
+	 */
 	public void initStatus() {
 		state=StateType.READY;
 		isNeedReload=false;
@@ -160,7 +163,10 @@ public class CISCSimulator implements Runnable{
 		cpu.setResume();
 	}
 	
-	
+
+	/**
+	 * initialize boot program
+	 */
 	public boolean reloadROM()
 	{
 		if(initProcessor()==false)
@@ -173,6 +179,22 @@ public class CISCSimulator implements Runnable{
 		return true;
 	}
 	
+
+	/**
+	 * Enable Input UI
+	 */
+	public void setEnableIn(boolean enable)
+	{
+		if(enable)
+		{
+			panel.setEnableIn(true);
+			panel.printLog("Waiting user input for IN instruction..\n");
+		}else {
+			panel.setEnableIn(false);
+		}
+		
+	}
+
 	/**
 	 * Execute the whole process for the input instruction.
 	 * @return On case success, true is returned, otherwise false is returned.
@@ -199,8 +221,7 @@ public class CISCSimulator implements Runnable{
 			long sleep=1;
 			if(cpu.isInputInterrupt()==true)
 			{	
-				panel.setEnableIn(true);
-				panel.printLog("Waiting user input for IN instruction..\n");
+				setEnableIn(true);
 				try {
 					Thread.sleep(2000);
 				} catch (InterruptedException e) {
@@ -208,7 +229,7 @@ public class CISCSimulator implements Runnable{
 				}
 				continue;
 			}else {
-				panel.setEnableIn(false);
+				setEnableIn(false);
 			}
 			
 			// perform singlestep
@@ -377,7 +398,6 @@ public class CISCSimulator implements Runnable{
 		boolean result=setUserCode(arrAsmCode);
 		if(result) mode=id;
 		message+="[LOADED] Test Program "+id+"\n";
-		//LOG.info(cpu.getAllMemory());
 		panel.updateDisplay();
 		return result;
 		
@@ -397,13 +417,13 @@ public class CISCSimulator implements Runnable{
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean loadTestProgram2() {
-		File file = new File("reader.txt");
+		File file = new File(IOC.CARD_READER_FILE);
 		Scanner sc=null;
 		try {
 			sc = new Scanner(file);
 		}catch(Exception e)
 		{
-			message="[WARNING] Can't find reader.txt file\n";
+			message="[WARNING] Can't find "+IOC.CARD_READER_FILE+" file\n";
 			return false;
 		}
 		sc.useDelimiter("\0");
@@ -425,7 +445,11 @@ public class CISCSimulator implements Runnable{
 		return this.loadProgram(2, "test2.txt");		
 	}
 
-	
+
+	/**
+	 * Check if simulator is running
+	 * @return if it is running, true, otherwise false
+	 */
 	public boolean checkRun() {
 		if(cpu.isTerminate()==true )
 			state=StateType.TERMINATE;
@@ -461,7 +485,7 @@ public class CISCSimulator implements Runnable{
 
 	/**
 	 * Get phase of the test program, it check the flag in the memory
-	 * @return
+	 * @return phase
 	 */
 	public int getPhase() {
 		int result=0;

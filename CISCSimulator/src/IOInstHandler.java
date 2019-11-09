@@ -12,6 +12,7 @@ import java.util.Scanner;
  */
 public class IOInstHandler extends InstructionHandler {
 	
+	
 	public IOInstHandler(CPU cpu) {
 		super(cpu);
 	}
@@ -29,10 +30,16 @@ public class IOInstHandler extends InstructionHandler {
 			case InstructionSet.OUT:
 				executeOUT();
 				break;
-				
+			case InstructionSet.CHK:
+				executeCHK();
+				break;
 			case InstructionSet.HLT:
 				executeHLT();
 				break;
+			case InstructionSet.TRAP:
+				executeTRAP();
+				break;
+
 			default:
 				message="Unknown Instruction(OPCODE): "+ir;
 				LOG.warning(message);
@@ -48,7 +55,7 @@ public class IOInstHandler extends InstructionHandler {
 	private boolean executeIN() throws FileNotFoundException{	
 		int devId = address;
 		if(devId == IOC.PRINTER) {
-			message= "Printer is not input device.\n";
+			message= "==> Printer is not input device.\n";
 		}else if(devId == IOC.CARD_READER) {
 			char in=cpu.getInputChar(IOC.CARD_READER);
 			if(in==IOC.NONE_INPUT)
@@ -63,12 +70,13 @@ public class IOInstHandler extends InstructionHandler {
 			    in=cpu.getInputChar(IOC.CARD_READER);
 			}
 			cpu.getGPR(reg).setLong(in);
+			message="==> Input character is '"+in+"'\n";
 		}else {
 			char in = cpu.getInputChar(address);
 			if(in!=IOC.NONE_INPUT) 
 			{
 				cpu.getGPR(reg).setLong(in);
-				message="==> Input character is "+in+"\n";
+				message="==> Input character is '"+in+"'\n";
 			}
 		}
 		
@@ -82,13 +90,13 @@ public class IOInstHandler extends InstructionHandler {
 	private boolean executeOUT() {	
 		long devId = address;
 		if(devId == IOC.KEYBOARD || devId == IOC.CARD_READER) {
-			message=String.format("Device %d is not output device\n",devId); //keyboard and card reader cannot use out
+			message=String.format("==> Device %d is not output device\n",devId); //keyboard and card reader cannot use out
 		}else {
 			WORD param=new SignedWORD();
 			param.copy(cpu.getGPR(reg));
 			char output = (char) param.getLong(); 
 			cpu.setOutputChar(address,output);
-			message="==> Output character is "+output+"\n";
+			message="==> Output character is '"+output+"'\n";
 		}
 		
 		return true;
@@ -102,5 +110,32 @@ public class IOInstHandler extends InstructionHandler {
 		cpu.getSimulator().setStop();
 		return true;
 	}
+
+	/**
+	 * Execute CHK instruction
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
+	private boolean executeCHK() {
+		int devId = address;
+		if(devId < IOC.KEYBOARD || devId > IOC.CARD_READER) {
+			message=String.format("==>  Device %d does not support CHK instruction\n",devId); 
+			return false;
+		} 
+		
+		boolean status=cpu.getIOC().getStatus(devId);		
+		cpu.getGPR(reg).setLong(status?1:0);			
+		message = String.format("==> %s is %s\n", cpu.getIOC().getName(devId),
+				cpu.getGPR(reg).getLong()==1?"available":"unavailable");
 	
+		return true;
+	}
+	
+	/**
+	 * Execute TRAP instruction
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
+	private boolean executeTRAP() {
+		return cpu.setTrap(address);
+	}
+
 }

@@ -13,6 +13,17 @@ import java.util.logging.*;
 public class CPU {
 	
 	public final static int END_OF_PROGRAM=-1;
+	
+	public final static int TRAP_CODE_ADDRESS=0;
+	public final static int MF_CODE_ADDRESS=1;
+	public final static int TRAP_PC_ADDRESS=2;
+	public final static int MF_PC_ADDRESS=4;
+
+	public final static int MF_ILLEGAL_MEMORY_ACCESS=0;
+	public final static int MF_ILLEGAL_TRAP=1;
+	public final static int MF_ILLEGAL_OPERATION=2;
+	public final static int MF_ILLEGAL_MEMORY_ADDRESS=3;
+	
 	private final static Logger LOG = Logger.getGlobal();
 	private Memory memory;
 	private IOC ioc;
@@ -35,6 +46,10 @@ public class CPU {
 	private WORD IR=new WORD();				/// Instruction Register
 	
 	private ALU alu;	/// Arithmetic Logical Unit
+	
+	private int trap=-1;	/// flag for trap
+	private long backupIX3=0;
+	private long backupR0=0;
 	
 	private String message=new String(); // A text indicating current state
 	
@@ -78,6 +93,24 @@ public class CPU {
 	}
 	
 	/**
+	 * Backup current R0,IX3 register
+	 */
+	private void backupRegister()
+	{
+		backupR0=getGPR(0).getLong();
+		backupIX3=getIX(3).getLong();		
+	}
+
+	/**
+	 * Restore current R0,IX3 register
+	 */
+	private void restoreRegister()
+	{
+		getGPR(0).setLong(backupR0);
+		getIX(3).setLong(backupIX3);
+	}
+
+	/**
 	 * Get memory status.
 	 */
 	public String getAllMemory()
@@ -116,7 +149,6 @@ public class CPU {
 			sp=memory.load(999, this).getLong();
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (bp<=0) return "==> NO STACK\n";
@@ -184,7 +216,7 @@ public class CPU {
 	{
 		WORD inst=new WORD();
 		try {
-			inst = loadMemory(PC.getLong());
+			inst = memory.load(PC.getLong(),this);			
 		} catch (IOException e){
 			LOG.severe(e.getMessage());
 			LOG.severe("Failed to load Next Instruction");			
@@ -205,6 +237,37 @@ public class CPU {
 		case LOAD_MAR:
 			if(!isInstruction())
 			{
+				// if the status is trapped or machine fault, recover PC from memory
+				if(trap>=0)
+				{
+					long address=0;
+					try {
+						address = memory.load(TRAP_PC_ADDRESS,this).getLong();
+					} catch (IOException e) {
+						message="Failed to access memeory\n";
+						return false;
+					}
+					this.restoreRegister();
+					this.setPC(address);
+					this.trap=-1;
+					message="[TRAP] Finished to execute trap code.\nPC = "+address+"\n";
+					break;
+				}
+				else if(this.getMFR().getLong()>0)
+				{
+					long address=0;
+					try {
+						address = memory.load(MF_PC_ADDRESS,this).getLong();
+					} catch (IOException e) {
+						message="Failed to access memeory\n";
+						return false;
+					}
+					this.restoreRegister();
+					this.setPC(address);
+					this.getMFR().clear();
+					message="[FAULT] Finished to execute machine fault code.\nPC = "+address+"\n";
+					break;
+				}
 				state=CPUState.NO_INST;
 				return false;
 			}
@@ -226,20 +289,31 @@ public class CPU {
 			if(Boolean.getBoolean("debug")==false)
 				break;
 		case EXECUTE:
+			String code=Translator.getAsmCode(IR);
 			if(Boolean.getBoolean("debug")==true)
-				message=String.format("[EXECUTE @%03d] %s\n",getPC().getLong()-1,Translator.getAsmCode(IR));
+				message=String.format("[EXECUTE @%03d] ",getPC().getLong()-1);
 			else
-				message=message+String.format("[EXECUTE @%03d] %s\n",getPC().getLong()-1,Translator.getAsmCode(IR));
+				message=message+String.format("[EXECUTE @%03d] ",getPC().getLong()-1);
+			if(code!=null)
+				message+=code;
+			message+="\n";
+				
 			if(execute()==false)
 			{
-				message=message+"==> Failed to execute code\n";
-				state=CPUState.NO_INST;
+				//message=message+"Failed to execute code\n";
+				state=CPUState.LOAD_MAR;
 				return false;
 			}
 			if(isInputInterrupt()==false) {
 				state=CPUState.LOAD_MAR;
+				simu.setEnableIn(false);
+			}else {
+				simu.setEnableIn(true);
 			}
 			// in case of interrupt, current instruction is executed again
+			break;
+		case INTERRUPT:
+			simu.setEnableIn(true);
 			break;
 		default:
 			state=CPUState.LOAD_MAR;
@@ -260,12 +334,17 @@ public class CPU {
 		return true;
 	}
 	
-
 	/**
 	 * Execute instructions.
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	private boolean execute() {
+		if(ih.checkOPCode()==false)
+		{
+			message+=ih.getMessage();
+			this.setFault(MF_ILLEGAL_OPERATION);
+			return false;
+		}
 		try {
 			ih.execute();
 		} catch (IOException e) {
@@ -312,8 +391,8 @@ public class CPU {
 		}
 	    PC.setLong(Memory.BOOT_MEMORY_START);
 	    message=("[LOADED] Boot program\n"
-	    		+"==> PC = "+PC.getLong()+"\n"
-	    		+this.getAllMemory()+"\n");
+	    		+this.getAllMemory()
+	    		+"==> PC = "+PC.getLong()+"\n");
 	    state=CPUState.LOAD_MAR;
 		return true;
 	}
@@ -387,7 +466,28 @@ public class CPU {
 		
 	    return setUserCode(arrBinCode);
 	}
-	
+
+	/**
+	 * Check if the address is illegal.
+	 * @param address target address
+	 * @return On case legal, true is returned, otherwise false is returned.
+	 */
+	private boolean checkAddress(long address)
+	{
+		if(address<Memory.BOOT_MEMORY_START && address>=0)
+		{
+			this.addMessage("==> Failed to access address : "+address+"\n");
+			this.setFault(MF_ILLEGAL_MEMORY_ACCESS);
+			return false;
+		}
+		else if(address<0 || address>=getMemory().getLength())
+		{
+			this.addMessage("==> Failed to access address : "+address+"\n");
+			this.setFault(MF_ILLEGAL_MEMORY_ADDRESS);
+			return false;
+		}
+		return true;
+	}
 
 	/**
 	 * Load data from memory or cache given address.
@@ -397,6 +497,9 @@ public class CPU {
 	 */
 	public WORD loadMemory(long address) throws IOException
 	{
+		if(checkAddress(address)==false)
+			throw new IOException("");
+		
 		WORD result=null;
 		
 		result = cache.load(address);
@@ -421,6 +524,8 @@ public class CPU {
 	
 	public boolean storeMemory(long address, WORD value, boolean isSystem) throws IOException
 	{
+		if(checkAddress(address)==false)
+			throw new IOException("");
 		boolean result=true;
 		result= memory.store(address, value,isSystem,this);
 		cache.store(address,value);
@@ -452,7 +557,100 @@ public class CPU {
 		result=ioc.getIOBuffer(devID);
 		return result;
 	}
-	
+
+	/**
+	 * Activate trap instruction
+	 * @param code the code of trap
+	 * @return if success, return true, otherwise return false
+	 */
+	public boolean setTrap(int code) {
+		
+		if(code < 0 || code > 15) {
+			message+=String.format("==> Illegal TRAP code(%d)\n",code); 
+			return this.setFault(MF_ILLEGAL_TRAP);
+		}
+		
+		// store current PC to memory[2]
+		WORD word = new WORD();
+		word.setLong(this.getPC().getLong());
+		try {
+			memory.store(TRAP_PC_ADDRESS, word,true,this);
+		} catch (IOException e) {
+			message += e.getMessage();
+			return false;
+		}
+
+		// store trap code
+		String text = String.format("Occured trap code(%d)\n", code) + "\0";
+		this.getIOC().appendIOBuffer(30, text);
+		long address = 0;
+		try {			
+			address = memory.load(TRAP_CODE_ADDRESS,this).getLong();
+		} catch (IOException e) {
+			message += ("==> Failed to access memory "+TRAP_CODE_ADDRESS+"\n");
+			return false;
+		}
+
+		this.backupRegister();
+		
+		this.getIX(3).setLong(address);
+		message += String.format("[TRAP] Executed trap code(%d)\n==> PC = %d\n", code, address);
+		this.setPC(address);
+
+		this.trap = code;
+		return true;
+	}
+
+	/**
+	 * Activate machine fault instruction
+	 * @param id the id of machine fault
+	 * @return if success, return true, otherwise return false
+	 */
+	public boolean setFault(int id)
+	{
+		if(id<MF_ILLEGAL_MEMORY_ACCESS || id>MF_ILLEGAL_MEMORY_ADDRESS)
+		{
+			message+="==> Wrong machine fault ID "+id+"\n";
+			return false;
+		}
+		String notice=new String();
+		if(id==MF_ILLEGAL_MEMORY_ACCESS) notice="Occured machine fault\n=> Illegal Memory Address to Reserved Locations\n";
+		else if(id==MF_ILLEGAL_TRAP) notice="Occured machine fault\n=> Illegal TRAP Code\n";
+		else if(id==MF_ILLEGAL_OPERATION) notice="Occured machine fault\n=> Illegal Operation Code\n";
+		else if(id==MF_ILLEGAL_MEMORY_ADDRESS) notice="Occured machine fault\n=> Illegal Memory Address\n";
+		
+		// store current PC
+		WORD word= new WORD();
+		word.setLong(this.getPC().getLong());
+		try {
+			memory.store(MF_PC_ADDRESS, word,true,this);
+		} catch (IOException e) {
+			message+=e.getMessage();
+			return false;
+		}
+		
+		// store machine fault code
+		this.getIOC().appendIOBuffer(31, notice+"\0");
+		long address=0;
+		try {
+			address = memory.load(MF_CODE_ADDRESS,this).getLong();
+		} catch (IOException e) {
+			message+=("==> Failed to access memory "+MF_CODE_ADDRESS+"\n");
+			return false;
+		}
+		
+		this.backupRegister();
+		
+		this.getIX(3).setLong(address);
+		message+=String.format("[FAULT] Executed machine fault code\n==> PC = %d\n",address); 
+
+		this.setPC(address);
+		getMFR().clear();
+		getMFR().set(id);
+		
+		
+		return true;
+	}
 	
 	/**
 	 * Append new message to the original one.
@@ -480,5 +678,6 @@ public class CPU {
 	public ALU getALU() { return alu;}
 	public IOC getIOC() { return ioc;}
 	public CISCSimulator getSimulator() {return this.simu;}
-
+	
+	
 }

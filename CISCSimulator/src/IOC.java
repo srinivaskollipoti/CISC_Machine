@@ -1,3 +1,5 @@
+import java.io.File;
+
 /**
  * 
  */
@@ -13,6 +15,7 @@ public class IOC {
 	public static final int KEYBOARD=0;
 	public static final int PRINTER=1;
 	public static final int CARD_READER=2;
+	public static final String CARD_READER_FILE="reader.txt";
 
 	
 	public static final char NONE_INPUT=(char)-1;
@@ -96,6 +99,44 @@ public class IOC {
 		String result=ioBuffer[devID].toString();
 		ioBuffer[devID].setLength(0);
 		return result;
+	}
+
+	/**
+	 * Return name of device
+	 * @param devId
+	 * @return name of device
+	 */
+	public String getName(int devId) {
+		String result= "Device #"+Integer.toString(devId);
+		switch(devId)
+		{
+		case KEYBOARD:
+			result="Keyboard";
+			break;
+		case PRINTER:
+			result="Printer";
+			break;
+		case CARD_READER:
+			result="Card Reader";
+			break;
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Return status of device
+	 * @param devId
+	 * @return status of device
+	 */
+	public boolean getStatus(int devId) {
+		boolean status=true;
+		if(devId==CARD_READER)
+		{
+			File f = new File(CARD_READER_FILE); 
+			status= f.exists();
+		}
+		return status;
 	}
 
 	

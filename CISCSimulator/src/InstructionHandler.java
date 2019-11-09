@@ -119,7 +119,22 @@ public class InstructionHandler{
 		else throw new IOException("Wrong indirect flag");
 		return eAddress;
 	}
-	
+
+	/**
+	 * Check if the opcode is valid
+	 * @return On case valid, true is returned, otherwise false is returned.
+	 */
+	public boolean checkOPCode()
+	{
+        opcode=cpu.getIR().subSet(10,16).getInt();
+		Instruction inst=InstructionSet.getInstruction(opcode);
+		if(inst==null)
+		{
+			message="Unknown Instruction(OPCODE:"+opcode+")\n";
+			return false;
+		}
+		return true;
+	}
 	
 	/**
 	 * Execute instructions and print out the information in register and memory
@@ -132,7 +147,7 @@ public class InstructionHandler{
 		int opcode=this.opcode;
 		InstructionHandler handler=null;
 		Instruction inst=InstructionSet.getInstruction(opcode);
-		if(inst==null) {
+		if(inst==null) {			
 			message="Unknown Instruction(OPCODE:"+opcode+")\n";
 			LOG.warning(message);
 			return false;
