@@ -4,7 +4,7 @@ import java.util.logging.Logger;
  */
 
 /**
- * @author cozyu
+ * @author cozyu(Yeongmok You)
  * implement bit operation for the simulator
  * all registers and memory implemented based on GBitSet
  */
@@ -25,6 +25,17 @@ public class GBitSet extends java.util.BitSet {
 		super(length);
 		this.length=length;
 		maxValue=(int)Math.pow(2,length)-1;
+	}
+	
+	public void setSigned(boolean isSigned)
+	{
+		if(isSigned==true)
+		{
+			setMinValue((int)(Math.pow(2, length-1)*-1));
+			setMaxValue((int)(Math.pow(2, length-1)-1));
+		}else {
+			maxValue=(int)Math.pow(2,length)-1;
+		}
 	}
 
 	/**
@@ -90,7 +101,6 @@ public class GBitSet extends java.util.BitSet {
 		long[] temp = new long[1];
 		temp[0]=number;
 		this.or(GBitSet.valueOf(temp));
-		
 		return true;
 	}
 	
@@ -124,6 +134,12 @@ public class GBitSet extends java.util.BitSet {
 		return true;
 	}
 
+	/**
+	 * Perform ROTATE operation
+	 * @param isLeft	left(true) or right(false)
+	 * @param count		the number of move
+	 * @param isArith	arithmetic(true) or logical(false)
+	 */
 	public void rotate(boolean isLeft,int count, boolean isArith )
 	{
 		GBitSet copy;
@@ -164,7 +180,12 @@ public class GBitSet extends java.util.BitSet {
 		}
 	}
 	
-	
+	/**
+	 * Perform SHIFT operation
+	 * @param isLeft	left(true) or right(false)
+	 * @param count		the number of move
+	 * @param isArith	arithmetic(true) or logical(false)
+	 */
 	public void shift(boolean isLeft,int count, boolean isArith )
 	{
 		if(count>length || count<0)
@@ -190,6 +211,7 @@ public class GBitSet extends java.util.BitSet {
 				set(i-count,get(i));
 			}
 			boolean fill=false;
+			// if the mode is arithmetic, extend the MSB bit
 			if(isArith) fill=MSB;
 			for(int i=length-1;i>length-1-count;i--)
 			{		

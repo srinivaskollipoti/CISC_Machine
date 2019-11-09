@@ -1,19 +1,29 @@
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Logger;
-
+import java.util.logging.*;
 
 
 /**
- * @author cozyu
- * @author youcao  documented by youcao.
- * cpu of simulator
  * it executes instruction and has registers for instructions.
  * also it controls memory loading and saving.
+ * @author cozyu(Yeongmok You)
+ * @author youcao  documented by youcao.
+ * cpu of simulator
  */
 public class CPU {
 	
-	public final static int END_OF_CODE=-1;
+	public final static int END_OF_PROGRAM=-1;
+	
+	public final static int TRAP_CODE_ADDRESS=0;
+	public final static int MF_CODE_ADDRESS=1;
+	public final static int TRAP_PC_ADDRESS=2;
+	public final static int MF_PC_ADDRESS=4;
+
+	public final static int MF_ILLEGAL_MEMORY_ACCESS=0;
+	public final static int MF_ILLEGAL_TRAP=1;
+	public final static int MF_ILLEGAL_OPERATION=2;
+	public final static int MF_ILLEGAL_MEMORY_ADDRESS=3;
+	
 	private final static Logger LOG = Logger.getGlobal();
 	private Memory memory;
 	private IOC ioc;
@@ -21,8 +31,6 @@ public class CPU {
 	
 	private Cache cache;
 	private CPUState state=CPUState.LOAD_MAR; 	
-	// Need to consider Instruction Cycle Code for pipeline  
-	// IF-ID-EX-MEM-WB
 	
 	private InstructionHandler ih;
 	
@@ -38,6 +46,10 @@ public class CPU {
 	private WORD IR=new WORD();				/// Instruction Register
 	
 	private ALU alu;	/// Arithmetic Logical Unit
+	
+	private int trap=-1;	/// flag for trap
+	private long backupIX3=0;
+	private long backupR0=0;
 	
 	private String message=new String(); // A text indicating current state
 	
@@ -76,20 +88,77 @@ public class CPU {
 		// InstructionHandler is initialized at last because InstructionHandler use ALU
 		ih=new InstructionHandler(this);
 		ih.init();
-		
+		if(simu.isDebug()==false)
+			LOG.setLevel(Level.WARNING);
 	}
 	
 	/**
-	 * Print out memory status.
+	 * Backup current R0,IX3 register
 	 */
-	public boolean showMemory()
+	private void backupRegister()
 	{
-		System.out.println("### MEMORY STATUS START ###\n");
-		System.out.println(memory);
-		System.out.println("### MEMORY STATUS END ###\n");
-		return true;
+		backupR0=getGPR(0).getLong();
+		backupIX3=getIX(3).getLong();		
+	}
+
+	/**
+	 * Restore current R0,IX3 register
+	 */
+	private void restoreRegister()
+	{
+		getGPR(0).setLong(backupR0);
+		getIX(3).setLong(backupIX3);
+	}
+
+	/**
+	 * Get memory status.
+	 */
+	public String getAllMemory()
+	{
+		boolean isDebug=simu.isDebug();
+		return memory.getString(0,memory.getLength(),isDebug);
 	}
 	
+	public String getSystemMemory()
+	{
+		boolean isDebug=simu.isDebug();
+		return (memory.getString(0,Memory.USER_MEMORY_START,isDebug));
+	}
+
+	public String getCodeMemory()
+	{
+		boolean isDebug=simu.isDebug();
+		return (memory.getString(memory.getUserProgramLocation(),memory.getUserProgramEnd(),isDebug));
+	}
+
+	public String getDataMemory()
+	{
+		boolean isDebug=simu.isDebug();
+		//if(isDebug)
+		//	return (memory.getString(800,900,isDebug));
+
+		return (memory.getString(Memory.USER_MEMORY_START,Memory.USER_PROGRAM_START,isDebug));
+	}
+
+	public String getStackMemory()
+	{
+		boolean isDebug=simu.isDebug();
+		long bp=0, sp=0;
+		try {
+			bp=memory.load(998, this).getLong();
+			sp=memory.load(999, this).getLong();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		if (bp<=0) return "==> NO STACK\n";
+		
+		return String.format("[BP] %d, [SP] %d\n%s"
+				, bp,sp, 
+				memory.getString((int)bp-2,(int)sp+1,isDebug)
+				);
+	}
+
 	/**
 	 * Print out register status.
 	 */
@@ -119,6 +188,7 @@ public class CPU {
 	public boolean init()
 	{
 		memory.init();
+		cache.init();
 		PC.clear();
 		CC.clear();
 		MAR.clear();
@@ -142,27 +212,17 @@ public class CPU {
 	 * Check if there is next instruction
 	 * @return On case existing next instruction, true is returned, otherwise false is returned.
 	 */
-	private boolean isNextInstruction()
+	private boolean isInstruction()
 	{
 		WORD inst=new WORD();
 		try {
-			inst = loadMemory(PC.getLong());
+			inst = memory.load(PC.getLong(),this);			
 		} catch (IOException e){
 			LOG.severe(e.getMessage());
 			LOG.severe("Failed to load Next Instruction");			
 		}
-		boolean result= (inst.getLong()==END_OF_CODE); // check if next instruction is none
-		//boolean result=inst.isEmpty();	
+		boolean result= (inst.getLong()==END_OF_PROGRAM); // check if next instruction is none
 		return !result;
-	}
-	
-	/**
-	 * Check if there is current instruction in IR
-	 * @return On case existing current instruction, true is returned, otherwise false is returned.
-	 */
-	public boolean isCurrentInstruction()
-	{
-		return state!=CPUState.NO_INST;
 	}
 	
 	/**
@@ -175,16 +235,44 @@ public class CPU {
 		message="";
 		switch(state){
 		case LOAD_MAR:
-			if(!isNextInstruction())
+			if(!isInstruction())
 			{
-				message="[TERMINATED] End of instruction\n";
+				// if the status is trapped or machine fault, recover PC from memory
+				if(trap>=0)
+				{
+					long address=0;
+					try {
+						address = memory.load(TRAP_PC_ADDRESS,this).getLong();
+					} catch (IOException e) {
+						message="Failed to access memeory\n";
+						return false;
+					}
+					this.restoreRegister();
+					this.setPC(address);
+					this.trap=-1;
+					message="[TRAP] Finished to execute trap code.\nPC = "+address+"\n";
+					break;
+				}
+				else if(this.getMFR().getLong()>0)
+				{
+					long address=0;
+					try {
+						address = memory.load(MF_PC_ADDRESS,this).getLong();
+					} catch (IOException e) {
+						message="Failed to access memeory\n";
+						return false;
+					}
+					this.restoreRegister();
+					this.setPC(address);
+					this.getMFR().clear();
+					message="[FAULT] Finished to execute machine fault code.\nPC = "+address+"\n";
+					break;
+				}
 				state=CPUState.NO_INST;
 				return false;
 			}
 			MAR.copy(PC);
 			state=CPUState.LOAD_MBR;
-			message="[FETCH] MAR <- PC\n";
-			break;
 		case LOAD_MBR:
 			try {
 				MBR.copy(loadMemory(MAR.getLong()));
@@ -194,31 +282,45 @@ public class CPU {
 			}
 			state=CPUState.LOAD_IR;
 			increasePC();		// increase the program counter
-			message="[FETCH] MBR <- MEM[MAR]\n";
-			break;
 		case LOAD_IR:
 			IR.copy(MBR);
-			message="[FETCH] IR <- MBR\n";
+			message=message+"[FETCH] IR <- MEM[PC], PC <- PC + 1\n";
 			state=CPUState.EXECUTE;
-			break;
+			if(Boolean.getBoolean("debug")==false)
+				break;
 		case EXECUTE:
-			message="";
+			String code=Translator.getAsmCode(IR);
+			if(Boolean.getBoolean("debug")==true)
+				message=String.format("[EXECUTE @%03d] ",getPC().getLong()-1);
+			else
+				message=message+String.format("[EXECUTE @%03d] ",getPC().getLong()-1);
+			if(code!=null)
+				message+=code;
+			message+="\n";
+				
 			if(execute()==false)
 			{
-				message="[ERROR] Failed to execute code - "+message;
-				result=false;
+				//message=message+"Failed to execute code\n";
+				state=CPUState.LOAD_MAR;
+				return false;
 			}
-			if(isInterrupt()==false) {
-				message = String.format("[EXECUTE @%03d] %s\n%s" , getPC().getLong()-1,
-						Translator.getAsmCode(IR), message.toString());
-				state=CPUState.LOAD_MAR;				
+			if(isInputInterrupt()==false) {
+				state=CPUState.LOAD_MAR;
+				simu.setEnableIn(false);
+			}else {
+				simu.setEnableIn(true);
 			}
 			// in case of interrupt, current instruction is executed again
+			break;
+		case INTERRUPT:
+			simu.setEnableIn(true);
 			break;
 		default:
 			state=CPUState.LOAD_MAR;
 			break;
 		}
+		if(simu.isDebug()!=true)
+			addMessage(cache.toString()+"\n"+cache.getMessage());
 		return result;
 	}
 	
@@ -232,12 +334,17 @@ public class CPU {
 		return true;
 	}
 	
-
 	/**
 	 * Execute instructions.
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	private boolean execute() {
+		if(ih.checkOPCode()==false)
+		{
+			message+=ih.getMessage();
+			this.setFault(MF_ILLEGAL_OPERATION);
+			return false;
+		}
 		try {
 			ih.execute();
 		} catch (IOException e) {
@@ -245,13 +352,13 @@ public class CPU {
 			LOG.severe(message);
 			return false;
 		}
-		message=ih.getMessage();
+		message=message+ih.getMessage();
 		return true;
 	}
 	
 
-	public void setInterrupt() { this.state=CPUState.INTERRUPT; }
-	public boolean isInterrupt() { return this.state==CPUState.INTERRUPT; }
+	public void setInputInterrupt() { this.state=CPUState.INTERRUPT; }
+	public boolean isInputInterrupt() { return this.state==CPUState.INTERRUPT; }
 	public void setResume() { this.state=CPUState.EXECUTE; }
 
 	/**
@@ -260,12 +367,12 @@ public class CPU {
 	 */
 	public boolean setBootCode()
 	{
-		message="[LOAD] Boot Program\n";
-		ROM rom= new ROM();
-		ArrayList<WORD> arrBinCode=rom.getBinCode();
+		cache.init();
+		message="";
+		ArrayList<WORD> arrBinCode=ROM.getBinCode();
 		if(arrBinCode==null)
 		{
-			message="[WARNING] Failed to load boot program\n"+rom.getMessage();
+			message="Failed to get binary code\n"+ROM.getMessage();
 			LOG.warning(message);
 			return false;
 		}
@@ -273,35 +380,81 @@ public class CPU {
 	    try {
 			if(memory.storeBootCode(arrBinCode)==false)
 			{
-				message="[WARNING] Failed to store boot program\n";
+				message="Failed to load boot code\n";
 				LOG.warning(message);
 				return false;
 			}
 		} catch (IOException e) {
-			message="[WARNING] Failed to store boot program\n"+e.getMessage()+"\n";
+			message="Failed to access boot code\n"+e.getMessage()+"\n";
 			LOG.warning(message);
 			return false;
 		}
-	    message=message+getMemory().getString();
-	    //message=message+"==> Loading Complete\n";
-	    //message=message+String.join("\n",arrAsmCode)+"\n";		
 	    PC.setLong(Memory.BOOT_MEMORY_START);
-	    //message=message+"PC = "+Memory.BOOT_MEMORY_START+"\n";
+	    message=("[LOADED] Boot program\n"
+	    		+this.getAllMemory()
+	    		+"==> PC = "+PC.getLong()+"\n");
 	    state=CPUState.LOAD_MAR;
 		return true;
 	}
 	
 	/**
-	 * Convert a list of instructions to a list of binary codes and print out the memory status.
+	 * Store binary code in memory .
+	 * @param arrBinCode a WORD list storing multiple instructions
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
+	public boolean setUserData(ArrayList<WORD> arrBinCode) {
+		cache.clear(Memory.USER_MEMORY_START,memory.getUserProgramEnd()+1);
+		message="";
+		
+	    if(memory.storeUserData(arrBinCode)==false)
+	    {
+			message="[WARNING] Failed to store user program\n";
+	    	LOG.warning(message);
+			return false;
+		}
+	    PC.setLong(memory.getUserProgramLocation());
+	    message=("[LOAD] User program\n"
+	    		+this.getCodeMemory()
+	    		+"PC = "+PC.getLong()+"\n");
+	    state=CPUState.LOAD_MAR;
+		return true;
+	}
+	
+	/**
+	 * Store binary code in memory .
+	 * @param arrBinCode a WORD list storing multiple instructions
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
+	public boolean setUserCode(ArrayList<WORD> arrBinCode) {
+		cache.clear(Memory.USER_PROGRAM_START,memory.getUserProgramEnd()+1);
+		message="";
+		
+	    if(memory.storeUserCode(arrBinCode)==false)
+	    {
+			message="[WARNING] Failed to store user program\n";
+	    	LOG.warning(message);
+			return false;
+		}
+	    PC.setLong(memory.getUserProgramLocation());
+	    message=("[LOAD] User program\n"
+	    		+this.getCodeMemory()
+	    		+"PC = "+PC.getLong()+"\n");
+	    state=CPUState.LOAD_MAR;
+		return true;
+	}
+	
+	/**
+	 * Convert a list of assembly code to binary code and store in memory .
 	 * @param arrAsmCode a string list storing multiple instructions
 	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean setUserCode(String[] arrAsmCode) {
-		
 		message="";
 		ArrayList<WORD> arrBinCode=new ArrayList<WORD>();
 		for(int i=0; i<arrAsmCode.length;i++) {
-			arrAsmCode[i]=arrAsmCode[i].toUpperCase();
+			arrAsmCode[i]=arrAsmCode[i].toUpperCase().trim();
+			if(arrAsmCode[i].isBlank())	
+				continue;
 			WORD binCode=Translator.getBinCode(arrAsmCode[i]);
 			if(binCode==null) {
 				message=Translator.getMessage()+"Failed to parse user instruction : "+arrAsmCode[i]+"\n";
@@ -311,22 +464,32 @@ public class CPU {
 			arrBinCode.add(binCode);
 		}
 		
-	    if(memory.storeUserCode(arrBinCode)==false)
-	    {
-			message="Failed to store user program\n"+String.join("\n", arrAsmCode);
-	    	LOG.warning(message);
-			return false;
-		}
-	    PC.setLong(memory.getUserCodeLocation());
-	    message=("[LOAD] User program\n"+String.join("\n",arrAsmCode)+"\nPC = "+memory.getUserCodeLocation()+"\n"+memory.getString()+"\n");
-	    state=CPUState.LOAD_MAR;
-		return true;
+	    return setUserCode(arrBinCode);
 	}
-	
 
 	/**
-	 * Srinivas implements L1, L2 cache 
-	 * 
+	 * Check if the address is illegal.
+	 * @param address target address
+	 * @return On case legal, true is returned, otherwise false is returned.
+	 */
+	private boolean checkAddress(long address)
+	{
+		if(address<Memory.BOOT_MEMORY_START && address>=0)
+		{
+			this.addMessage("==> Failed to access address : "+address+"\n");
+			this.setFault(MF_ILLEGAL_MEMORY_ACCESS);
+			return false;
+		}
+		else if(address<0 || address>=getMemory().getLength())
+		{
+			this.addMessage("==> Failed to access address : "+address+"\n");
+			this.setFault(MF_ILLEGAL_MEMORY_ADDRESS);
+			return false;
+		}
+		return true;
+	}
+
+	/**
 	 * Load data from memory or cache given address.
 	 * @param address an integer of the memory address the machine wants to access.
 	 * @return The data stored in the memory or cache slot.
@@ -334,106 +497,159 @@ public class CPU {
 	 */
 	public WORD loadMemory(long address) throws IOException
 	{
+		if(checkAddress(address)==false)
+			throw new IOException("");
+		
 		WORD result=null;
 		
-		// need to implement to load cache
-		//result = cache.load(address);
-		//if(result!=null)
-		//	return result;
-		
+		result = cache.load(address);
+		if(result!=null)
+			return result;
 		result = memory.load(address,this);
-		//cache.store(result);
+		cache.store(address,result);
 		return result;
-	}
-	
-	/**
-	 * 
-	 * fetch a word from cache. If the word is not in cache, fetch it from
-	 * memory, then store it into cache.
-	 * 
-	 * @param address
-	 * @return
-	 */
-	
-	public WORD fetchFromCache(long address) throws IOException {
-		for (Cache.CacheLoad lines : cache.getCacheLines()) { // check every block
-														// whether the tag is
-														// already exist
-			if (address == lines.getMemAddress()) {
-				return lines.getData(); // tag exist, return the data of the
-										// block
-			}
-		}
-		// tag not exist
-		WORD value = loadMemory(address);
-		System.out.println(value);
-		cache.add(address, value);
-		return value;
 	}
 
 	/**
-	 * 
-	 * store into cache with replacement. Also store into memory simultaneously.
-	 * 
-	 * @param address
-	 * @param value
-	 */
-	public void storeIntoCache(long address, WORD value) {
-	
-		LOG.info(" "+address+" "+value);
-		
-		try {
-			storeMemory(address, value);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		for (Cache.CacheLoad lines : cache.getCacheLines()) { // check every block the
-														// tag is already exist
-			if (address == lines.getMemAddress()) {
-				lines.setData(value); // replace the block
-				return;
-			}
-		}
-		// tag not exist
-		cache.add(address, value);
-	}
-	/**
-	 * Srinivas implements L1, L2 cache 
-	 * 
-	 * Store the input data to memory or cache with specific address.
-	 * @param address A integer indicating the memory slot to access.
-	 * @param value A WORD argument containing the input data for the memory to store.
+	 * Store data into memory, cpu stores the data into cache when the data is stored into memory
+	 * @param address	the address of data
+	 * @param value		the data
 	 * @return On case success, true is returned, otherwise false is returned.
 	 * @throws IOException
 	 */
 	public boolean storeMemory(long address, WORD value) throws IOException
 	{
-		// need to implement to store cache and synchronize between cache and memory
-	    //cache.store(address,value);
-	    //storeIntoCache(address,value);
-		LOG.info(value+" "+address+"\n");
+		return storeMemory(address,value,false);
+	}
+	
+	public boolean storeMemory(long address, WORD value, boolean isSystem) throws IOException
+	{
+		if(checkAddress(address)==false)
+			throw new IOException("");
 		boolean result=true;
-		result= memory.store(address, value,this);
+		result= memory.store(address, value,isSystem,this);
+		cache.store(address,value);
+	    LOG.info("mem["+address+"] = "+value+"\n");
 		return result;
 	}
 
 	/**
-	 * @param reg
-	 * @return
+	 * Set output buffer of IO controller
+	 * @param devID ID of device
+	 * @param out a character to output
+	 * @return if success, return true, otherwise return false
 	 */
 	public boolean setOutputChar(int devID,char out) {
 		ioc.appendIOBuffer(devID, out);
 		return false;
 	}
-	
+
+	/**
+	 * Get character from input buffer of IO controller
+	 * @param devID ID of device
+	 * @return a character gotten from IO controller
+	 */
 	public char getInputChar(int devID)
 	{
 		char result=0;
 		if(devID==IOC.KEYBOARD && ioc.isIOBuffer(devID)==false)
-			setInterrupt();
+			setInputInterrupt();
 		result=ioc.getIOBuffer(devID);
 		return result;
+	}
+
+	/**
+	 * Activate trap instruction
+	 * @param code the code of trap
+	 * @return if success, return true, otherwise return false
+	 */
+	public boolean setTrap(int code) {
+		
+		if(code < 0 || code > 15) {
+			message+=String.format("==> Illegal TRAP code(%d)\n",code); 
+			return this.setFault(MF_ILLEGAL_TRAP);
+		}
+		
+		// store current PC to memory[2]
+		WORD word = new WORD();
+		word.setLong(this.getPC().getLong());
+		try {
+			memory.store(TRAP_PC_ADDRESS, word,true,this);
+		} catch (IOException e) {
+			message += e.getMessage();
+			return false;
+		}
+
+		// store trap code
+		String text = String.format("Occured trap code(%d)\n", code) + "\0";
+		this.getIOC().appendIOBuffer(30, text);
+		long address = 0;
+		try {			
+			address = memory.load(TRAP_CODE_ADDRESS,this).getLong();
+		} catch (IOException e) {
+			message += ("==> Failed to access memory "+TRAP_CODE_ADDRESS+"\n");
+			return false;
+		}
+
+		this.backupRegister();
+		
+		this.getIX(3).setLong(address);
+		message += String.format("[TRAP] Executed trap code(%d)\n==> PC = %d\n", code, address);
+		this.setPC(address);
+
+		this.trap = code;
+		return true;
+	}
+
+	/**
+	 * Activate machine fault instruction
+	 * @param id the id of machine fault
+	 * @return if success, return true, otherwise return false
+	 */
+	public boolean setFault(int id)
+	{
+		if(id<MF_ILLEGAL_MEMORY_ACCESS || id>MF_ILLEGAL_MEMORY_ADDRESS)
+		{
+			message+="==> Wrong machine fault ID "+id+"\n";
+			return false;
+		}
+		String notice=new String();
+		if(id==MF_ILLEGAL_MEMORY_ACCESS) notice="Occured machine fault\n=> Illegal Memory Address to Reserved Locations\n";
+		else if(id==MF_ILLEGAL_TRAP) notice="Occured machine fault\n=> Illegal TRAP Code\n";
+		else if(id==MF_ILLEGAL_OPERATION) notice="Occured machine fault\n=> Illegal Operation Code\n";
+		else if(id==MF_ILLEGAL_MEMORY_ADDRESS) notice="Occured machine fault\n=> Illegal Memory Address\n";
+		
+		// store current PC
+		WORD word= new WORD();
+		word.setLong(this.getPC().getLong());
+		try {
+			memory.store(MF_PC_ADDRESS, word,true,this);
+		} catch (IOException e) {
+			message+=e.getMessage();
+			return false;
+		}
+		
+		// store machine fault code
+		this.getIOC().appendIOBuffer(31, notice+"\0");
+		long address=0;
+		try {
+			address = memory.load(MF_CODE_ADDRESS,this).getLong();
+		} catch (IOException e) {
+			message+=("==> Failed to access memory "+MF_CODE_ADDRESS+"\n");
+			return false;
+		}
+		
+		this.backupRegister();
+		
+		this.getIX(3).setLong(address);
+		message+=String.format("[FAULT] Executed machine fault code\n==> PC = %d\n",address); 
+
+		this.setPC(address);
+		getMFR().clear();
+		getMFR().set(id);
+		
+		
+		return true;
 	}
 	
 	/**
@@ -442,11 +658,12 @@ public class CPU {
 	 */
 	public void addMessage(String message)
 	{
-		this.message+=this.message+message;
+		this.message=this.message+message;
 	}
 
-	public String getMessage(){ return message;}
+	public boolean isTerminate() { return state==CPUState.NO_INST; }
 
+	public String getMessage(){ return message;}
 	public SignedWORD getGPR(int i) { return GPR[i]; }
 	public SignedWORD getIX(int i) { return IX[i]; }
 	public GBitSet getPC() { return PC; }
@@ -457,10 +674,10 @@ public class CPU {
 	public WORD getMFR() { return MFR; }	
 	public WORD getIR() { return IR; }
 	public CPUState getState() { return state; }
-	public boolean isExecute() { return state==CPUState.LOAD_MAR || state==CPUState.NO_INST; }
-	
 	public Memory getMemory() {	return this.memory; }
 	public ALU getALU() { return alu;}
+	public IOC getIOC() { return ioc;}
 	public CISCSimulator getSimulator() {return this.simu;}
-
+	
+	
 }

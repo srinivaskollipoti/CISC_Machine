@@ -2,27 +2,19 @@ import java.io.IOException;
 import java.io.File; 
 import java.io.FileNotFoundException; 
 import java.util.Scanner; 
-import java.util.ArrayList;
 
-//import CPU.CPUState;
+
 
 /**
  *  perform IO instruction and Miscellaneous Instruction
- */
-
-/**
- * @author cozyu
+ * @author cozyu (Yeongmok You)
  * @author youcao
  */
 public class IOInstHandler extends InstructionHandler {
 	
-	/**
-	 * @param cpu
-	 */
-	int counter = 0;
+	
 	public IOInstHandler(CPU cpu) {
 		super(cpu);
-		// TODO Auto-generated constructor stub
 	}
 	
 	public boolean execute() throws IOException{
@@ -38,10 +30,16 @@ public class IOInstHandler extends InstructionHandler {
 			case InstructionSet.OUT:
 				executeOUT();
 				break;
-				
+			case InstructionSet.CHK:
+				executeCHK();
+				break;
 			case InstructionSet.HLT:
 				executeHLT();
 				break;
+			case InstructionSet.TRAP:
+				executeTRAP();
+				break;
+
 			default:
 				message="Unknown Instruction(OPCODE): "+ir;
 				LOG.warning(message);
@@ -50,55 +48,94 @@ public class IOInstHandler extends InstructionHandler {
 		return true;
 	}
 
-	
+	/**
+	 * Execute IN instruction, it doesn't support PRINTER
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
 	private boolean executeIN() throws FileNotFoundException{	
 		int devId = address;
 		if(devId == IOC.PRINTER) {
-			message= "Printer is not input device.\n";
+			message= "==> Printer is not input device.\n";
 		}else if(devId == IOC.CARD_READER) {
-			//read from reader.txt
-			File file = new File("reader.txt");
-			Scanner sc = new Scanner(file);
-			
-			try {
-				 char in = sc.next().charAt(counter);
-				 counter++;
-				 cpu.getGPR(reg).setLong((int) in);
-			} catch (IndexOutOfBoundsException e) {
-				counter = 0;
-				LOG.warning("reached the end.");
-				
+			char in=cpu.getInputChar(IOC.CARD_READER);
+			if(in==IOC.NONE_INPUT)
+			{
+				//read from reader.txt
+				File file = new File("reader.txt");
+				Scanner sc = new Scanner(file);
+				sc.useDelimiter("\0");
+			    String readText=sc.next(); 
+			    cpu.getIOC().appendIOBuffer(IOC.CARD_READER, readText);
+			    sc.close();
+			    in=cpu.getInputChar(IOC.CARD_READER);
 			}
+			cpu.getGPR(reg).setLong(in);
+			message="==> Input character is '"+in+"'\n";
 		}else {
 			char in = cpu.getInputChar(address);
 			if(in!=IOC.NONE_INPUT) 
 			{
 				cpu.getGPR(reg).setLong(in);
-				message="==> Input character is "+in+"\n";
+				message="==> Input character is '"+in+"'\n";
 			}
 		}
 		
 		return true;
 	}
 	
+	/**
+	 * Execute OUT instruction, it doesn't support KEYBOARD and CARD READER
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
 	private boolean executeOUT() {	
 		long devId = address;
 		if(devId == IOC.KEYBOARD || devId == IOC.CARD_READER) {
-			message=String.format("Device %d is not output device\n",devId); //keyboard and card reader cannot use out
+			message=String.format("==> Device %d is not output device\n",devId); //keyboard and card reader cannot use out
 		}else {
-			WORD param=new WORD();
+			WORD param=new SignedWORD();
 			param.copy(cpu.getGPR(reg));
 			char output = (char) param.getLong(); 
 			cpu.setOutputChar(address,output);
+			message="==> Output character is '"+output+"'\n";
 		}
 		
 		return true;
 	}
-	
+
+	/**
+	 * Execute Halt instruction
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
 	private boolean executeHLT() {
 		cpu.getSimulator().setStop();
-		message="[NOTICE] System halted\n";
+		return true;
+	}
+
+	/**
+	 * Execute CHK instruction
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
+	private boolean executeCHK() {
+		int devId = address;
+		if(devId < IOC.KEYBOARD || devId > IOC.CARD_READER) {
+			message=String.format("==>  Device %d does not support CHK instruction\n",devId); 
+			return false;
+		} 
+		
+		boolean status=cpu.getIOC().getStatus(devId);		
+		cpu.getGPR(reg).setLong(status?1:0);			
+		message = String.format("==> %s is %s\n", cpu.getIOC().getName(devId),
+				cpu.getGPR(reg).getLong()==1?"available":"unavailable");
+	
 		return true;
 	}
 	
+	/**
+	 * Execute TRAP instruction
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
+	private boolean executeTRAP() {
+		return cpu.setTrap(address);
+	}
+
 }

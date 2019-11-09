@@ -1,3 +1,5 @@
+import java.io.File;
+
 /**
  * 
  */
@@ -13,6 +15,7 @@ public class IOC {
 	public static final int KEYBOARD=0;
 	public static final int PRINTER=1;
 	public static final int CARD_READER=2;
+	public static final String CARD_READER_FILE="reader.txt";
 
 	
 	public static final char NONE_INPUT=(char)-1;
@@ -37,12 +40,22 @@ public class IOC {
 			ioBuffer[i].setLength(0);
 	}
 	
-	/// IO Controller
+	/**
+	 * Append a character into IO buffer
+	 * @param devID device ID
+	 * @param a character to append
+	 */
 	public void appendIOBuffer(int devID,char i) {
 		if(devID>MAX_DEVID || devID<KEYBOARD)
 			throw new IllegalArgumentException("DevID must be between 0-31");
 		ioBuffer[devID].append(i);
 	}
+	
+	/**
+	 * Get a character from IO buffer
+	 * @param devID device ID
+	 * @return a character gotten from the IO buffer
+	 */
 	public char getIOBuffer(int devID) {
 		if(devID>MAX_DEVID || devID<KEYBOARD)
 			throw new IllegalArgumentException("DevID must be between 0-31");
@@ -54,7 +67,11 @@ public class IOC {
 		return result;
 	}
 
-
+	/**
+	 * Check if IO buffer is empty
+	 * @param devID device iD
+	 * @return if empty, return false, otherwise return true
+	 */
 	public boolean isIOBuffer(int devID) {
 		if(devID>MAX_DEVID || devID<KEYBOARD)
 			throw new IllegalArgumentException("DevID must be between 0-31");
@@ -82,6 +99,44 @@ public class IOC {
 		String result=ioBuffer[devID].toString();
 		ioBuffer[devID].setLength(0);
 		return result;
+	}
+
+	/**
+	 * Return name of device
+	 * @param devId
+	 * @return name of device
+	 */
+	public String getName(int devId) {
+		String result= "Device #"+Integer.toString(devId);
+		switch(devId)
+		{
+		case KEYBOARD:
+			result="Keyboard";
+			break;
+		case PRINTER:
+			result="Printer";
+			break;
+		case CARD_READER:
+			result="Card Reader";
+			break;
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Return status of device
+	 * @param devId
+	 * @return status of device
+	 */
+	public boolean getStatus(int devId) {
+		boolean status=true;
+		if(devId==CARD_READER)
+		{
+			File f = new File(CARD_READER_FILE); 
+			status= f.exists();
+		}
+		return status;
 	}
 
 	

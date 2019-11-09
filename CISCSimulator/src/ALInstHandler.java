@@ -10,9 +10,10 @@ import java.io.IOException;
  */
 public class ALInstHandler extends InstructionHandler {
 
-	ALU alu;
+	
+	ALU alu; // class to perform arithmetic and logical operation
 	/**
-	 * @param cpu
+	 * @param cpu owner of this handler
 	 */
 	public ALInstHandler(CPU cpu) {
 		super(cpu);
@@ -20,6 +21,7 @@ public class ALInstHandler extends InstructionHandler {
 	}
 
 	public boolean execute() throws IOException{
+		message="";
 		LOG.info("Execute AL Instruction\n");
 		parseIR(cpu.getIR());
 		switch(getOPCode())
@@ -68,6 +70,10 @@ public class ALInstHandler extends InstructionHandler {
 		return true;
 	}
 
+	/**
+	 * Check available range of registers 
+	 * @return On case success, true is returned, otherwise false is returned.
+	 */
 	private void checkRegIReg()
 	{
 		if(reg<0 || reg>3)
@@ -75,6 +81,7 @@ public class ALInstHandler extends InstructionHandler {
 		if(ireg<0 || ireg>3)
 			throw new IllegalArgumentException("Index Register must be between 0 and 3\n");
 	}
+	
 	/**
 	 * Execute AMR instruction
 	 * @return On case success, true is returned, otherwise false is returned.
@@ -84,7 +91,7 @@ public class ALInstHandler extends InstructionHandler {
 		checkRegIReg();
 		int eAddress=getEA();
 		WORD result=alu.add(cpu.getGPR(reg),cpu.loadMemory(eAddress));
-		message=alu.getMessage();
+		message+=alu.getMessage();
 		cpu.getGPR(reg).copy(result);
 		return true;
 	}
@@ -98,7 +105,7 @@ public class ALInstHandler extends InstructionHandler {
 		checkRegIReg();
 		int eAddress=getEA();
 		WORD result=alu.sub(cpu.getGPR(reg),cpu.loadMemory(eAddress));
-		message=alu.getMessage();
+		message+=alu.getMessage();
 		cpu.getGPR(reg).copy(result);
 		return true;
 	}
@@ -115,7 +122,7 @@ public class ALInstHandler extends InstructionHandler {
 		WORD immed=new WORD();
 		immed.setLong(address);
 		WORD result=alu.add(cpu.getGPR(reg),immed);
-		message=alu.getMessage();
+		message+=alu.getMessage();
 		cpu.getGPR(reg).copy(result);
 		return true;
 	}
@@ -132,7 +139,7 @@ public class ALInstHandler extends InstructionHandler {
 		WORD immed=new WORD();
 		immed.setLong(address);
 		WORD result=alu.sub(cpu.getGPR(reg),immed);
-		message=alu.getMessage();
+		message+=alu.getMessage();
 		cpu.getGPR(reg).copy(result);
 		return true;
 	}
@@ -238,7 +245,8 @@ public class ALInstHandler extends InstructionHandler {
 	private boolean executeSRC() {
 		if(reg<0 && reg>3)
 			throw new IllegalArgumentException("reg must be between 0 and 3\n");
-		WORD result=alu.shift(cpu.getGPR(reg), count, lr==1, al==1);
+		WORD result=alu.shift(cpu.getGPR(reg), count, lr==1, al==0);
+		message=alu.getMessage();
 		cpu.getGPR(reg).copy(result);
 		return true;
 	}
@@ -250,7 +258,8 @@ public class ALInstHandler extends InstructionHandler {
 	private boolean executeRRC() {	
 		if(reg<0 && reg>3)
 			throw new IllegalArgumentException("reg must be between 0 and 3\n");
-		WORD result=alu.rotate(cpu.getGPR(reg), count, lr==1, al==1);
+		WORD result=alu.rotate(cpu.getGPR(reg), count, lr==1, al==0);
+		message=alu.getMessage();
 		cpu.getGPR(reg).copy(result);
 		return true;
 	}
