@@ -1,0 +1,1 @@
+java -jar -Ddebug=true CISCSimulator.jar 

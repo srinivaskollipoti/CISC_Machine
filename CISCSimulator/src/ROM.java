@@ -33,12 +33,12 @@ public class ROM {
 	        allBytes = new byte[(int) fileSize];
 	        inputStream.read(allBytes);
 	    } catch (FileNotFoundException e) {
-	      e.printStackTrace();
-	      message="Failed to find rom file("+inputFile+")\n";
+	      //e.printStackTrace();
+	      message="Failed to find ROM file("+inputFile+")\n";
 	      return null;
 	    } catch (IOException e) {	
 	      e.printStackTrace();
-	      message="Failed to open rom file("+inputFile+")\n";
+	      message="Failed to open ROM file("+inputFile+")\n";
 	      return null;
 	    } finally {
 	    	if(inputStream!=null)
@@ -46,7 +46,7 @@ public class ROM {
 					inputStream.close();
 				} catch (IOException e) {
 					e.printStackTrace();
-					message="Failed to close rom file("+inputFile+")\n";
+					message="Failed to close ROM file("+inputFile+")\n";
 					return null;
 				}
 	    }

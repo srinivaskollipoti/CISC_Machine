@@ -363,7 +363,7 @@ public class CISCSimulator implements Runnable{
 		ArrayList<WORD> arrBinCode=ROM.getBinCode(path);
 		if(arrBinCode==null)
 		{
-			message="[WARNING] Failed to load test program 1\n"+ROM.getMessage();
+			message="[WARNING] Failed to load test program\n==> "+ROM.getMessage();
 			LOG.warning(message);
 			return false;
 		}

@@ -700,9 +700,14 @@ public class CISCGUI extends javax.swing.JFrame {
     		printLog("[NOTICE] Simulator is not turned on, push the IPL button\n");
     		return;
     	}
-    	simu.loadTestProgram1();
-    	//printLog(simu.getMessage());
     	
+    	boolean result=simu.loadTestProgram1();
+		printLog(simu.getMessage());
+    	if(result==false)
+    	{
+    		return;
+    	}
+
     	Random rand = new Random();
     	StringBuffer buffer=new StringBuffer();
     	for (int i=0;i<20;i++)
@@ -728,10 +733,11 @@ public class CISCGUI extends javax.swing.JFrame {
     		return;
     	}
     	boolean result=simu.loadTestProgram2();
-    	//printLog(simu.getMessage());
-
+		printLog(simu.getMessage());
     	if(result==false)
+    	{
     		return;
+    	}
     	textAreaSystemIN.setText("");
     	textareaSystemOUT.setText("Press the Run button to start program.\n\n");
     	textAreaSystemIN.setEnabled(false);
@@ -740,7 +746,7 @@ public class CISCGUI extends javax.swing.JFrame {
     /**
      * Get user input data, it control the flow according to the phase of program 
      */    
-    public boolean inputUserData()
+    private boolean inputUserData()
     {	
     	int inputSize=0;
     	int phase = simu.getPhase();
