@@ -4,16 +4,17 @@ import java.util.logging.Logger;
  */
 
 /**
- * @author cozyu
+ * @author cozyu(Yeongmok You)
  * implement bit operation for the simulator
  * all registers and memory implemented based on GBitSet
  */
 public class GBitSet extends java.util.BitSet {
-         private final static Logger LOG = Logger.getGlobal();
+
+	protected final static Logger LOG = Logger.getGlobal();
 	
 	public final int length;
-	private int minValue=0;
-	private int maxValue=0;
+	protected int minValue=0;
+	protected int maxValue=0;
 	
 	/**
 	 * A constructor that create a bit set given length.
@@ -25,6 +26,17 @@ public class GBitSet extends java.util.BitSet {
 		this.length=length;
 		maxValue=(int)Math.pow(2,length)-1;
 	}
+	
+	public void setSigned(boolean isSigned)
+	{
+		if(isSigned==true)
+		{
+			setMinValue((int)(Math.pow(2, length-1)*-1));
+			setMaxValue((int)(Math.pow(2, length-1)-1));
+		}else {
+			maxValue=(int)Math.pow(2,length)-1;
+		}
+	}
 
 	/**
 	 * A constructor that create a bit set given BitSet and length.
@@ -35,7 +47,7 @@ public class GBitSet extends java.util.BitSet {
 	{
 		super(length);
 		this.length=length;
-		maxValue=(int)Math.pow(2,length)-1;
+		maxValue=(int)Math.pow(2,length-1)-1;
 		or(input);
 	}
 	
@@ -47,6 +59,15 @@ public class GBitSet extends java.util.BitSet {
 	public void setMinValue(int minValue)
 	{
 		this.minValue=minValue;
+	}
+	
+	/**
+	 * Set maximum value of a bit set.
+	 * @param minValue minimum value.
+	 */
+	public void setMaxValue(int maxValue)
+	{
+		this.maxValue=maxValue;
 	}
 
 	/**
@@ -70,17 +91,16 @@ public class GBitSet extends java.util.BitSet {
 	/**
 	 * Sets bit set to specified long value 
 	 * @param number a long value.
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean setLong(long number){
 		
 		if (maxValue<number || number<minValue)
-			throw new IllegalArgumentException("Input number("+number+") is out of data range");
+			throw new IllegalArgumentException("Input number("+number+") is out of data range\n");
 		this.clear();
 		long[] temp = new long[1];
 		temp[0]=number;
 		this.or(GBitSet.valueOf(temp));
-		
 		return true;
 	}
 	
@@ -101,24 +121,103 @@ public class GBitSet extends java.util.BitSet {
 	 */
 	public int getInt(){
 		long input=getLong();
-		int result=(int)input;
-		double checkOverflow=result*input;
-		if(checkOverflow<0)
-		{
-			LOG.severe("Buffer overflow");
-			result=-1;
-		}
-		return result;	
+		return (int)input;	
 	}
 
 	/**
 	 * Copy bit set from specified GBitSet 
-	 * @return On case success, true is retured, otherwise false is returned.
+	 * @return On case success, true is returned, otherwise false is returned.
 	 */
 	public boolean copy(GBitSet input){
 		this.clear();
 		this.or(input);
 		return true;
+	}
+
+	/**
+	 * Perform ROTATE operation
+	 * @param isLeft	left(true) or right(false)
+	 * @param count		the number of move
+	 * @param isArith	arithmetic(true) or logical(false)
+	 */
+	public void rotate(boolean isLeft,int count, boolean isArith )
+	{
+		GBitSet copy;
+		count=count%length;
+		if(count<0)
+			count=length+count;
+
+		if(isLeft)
+		{
+			int from=length-count;
+			int end=length;
+			if(isArith==true) {
+				from--;
+				end--;
+			}	
+			copy=subSet(from, end);
+			shift(isLeft,count,isArith);
+			for(int i=count-1;i>=0;i--)
+			{
+				set(i,copy.get(i));
+			}
+		}else {
+			copy=subSet(0, count);
+			shift(isLeft,count,isArith);
+			
+			int from=length-1-count;
+			int end=length-1;
+			if(isArith==true)
+			{
+				from--;
+				end--;
+			}
+			count--;
+			for(int i=end;i>from;i--)
+			{
+				set(i,copy.get(count--));
+			}			
+		}
+	}
+	
+	/**
+	 * Perform SHIFT operation
+	 * @param isLeft	left(true) or right(false)
+	 * @param count		the number of move
+	 * @param isArith	arithmetic(true) or logical(false)
+	 */
+	public void shift(boolean isLeft,int count, boolean isArith )
+	{
+		if(count>length || count<0)
+			throw new IllegalArgumentException("Count must be in range of length : count("+count+")\n");
+
+		boolean MSB=get(length-1);
+		if(isLeft) {
+			int end=length-1;
+			if(isArith) {
+				end--;
+			}
+			for(int i=end;i>=count;i--)
+			{
+				set(i,get(i-count));
+			}
+			for(int i=count-1;i>=0;i--)
+			{
+				set(i,false);
+			}
+		}else {
+			for(int i=count;i<length;i++)
+			{
+				set(i-count,get(i));
+			}
+			boolean fill=false;
+			// if the mode is arithmetic, extend the MSB bit
+			if(isArith) fill=MSB;
+			for(int i=length-1;i>length-1-count;i--)
+			{		
+				set(i,fill);
+			}
+		}
 	}
 	
 	/**

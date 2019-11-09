@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -10,18 +11,22 @@ import java.util.ArrayList;
  */
 
 public class Memory {
-	private WORD memory[];
+	private SignedWORD memory[];
+	private boolean	isMemorys[];
+	
+	private int user_program_end=USER_PROGRAM_START+1;
 	private static final int DEFAULT_MEMORY=2048;
 	private static final int MAX_MEMORY=4096;
-	private static final int MIN_MEMORY=512;
-	private int userMemoryStart;
+	private static final int MIN_MEMORY=2048;
 	
 	public static final int BOOT_MEMORY_START=010;
+	public static final int USER_MEMORY_START=200;
+	public static final int USER_PROGRAM_START=1200;
+	
 	
 	/**
 	 * A constructor
 	 * Initializes memory with the max size 2048. The memory is an array of type WORD.
-	 * Set userMemoryStart to 010.
 	 * @throws IOException 
 	 */
 	public Memory() throws IOException
@@ -36,16 +41,18 @@ public class Memory {
 
 	public boolean setMemory(int size) throws IOException
 	{
-		memory= new WORD[size];
+		memory= new SignedWORD[size];
+		isMemorys=new boolean[size];
 		if(size<MIN_MEMORY || size>MAX_MEMORY)
 		{
-			throw new IOException("Invalid memory size");
+			throw new IOException("Invalid memory size\n");
 		}
 
 		for (int i=0; i<size;i++) {
-			memory[i]=new WORD();
+			memory[i]=new SignedWORD();
+			
 		}
-		userMemoryStart=BOOT_MEMORY_START;	
+		//userMemoryStart=BOOT_MEMORY_START;	
 		return true;
 	}
 	
@@ -58,8 +65,40 @@ public class Memory {
 		for(WORD word:memory) {
 			word.clear();
 		}
+		Arrays.fill(isMemorys, false);
+		
 		return true;
 	}
+	
+	/**
+	 * Set every elements in the memory array to null.
+	 * @param from start address to clear (inclusive)
+	 * @param to end address to clear (exclusive)
+	 * @return true
+	 */
+	public boolean clear(int from, int to)
+	{
+		for(int i=from;i<to;i++) {
+			memory[i].clear();
+			isMemorys[i]=false;
+		}
+		return true;
+	}
+	
+
+	/**
+	 * Load data from a memory given address.
+	 * @param address an integer of the memory address the machine wants to access.
+	 * @return The data stored in the memory slot.
+	 */
+	private WORD load(int address) throws IOException
+	{
+		if(address<0 || address>=memory.length)
+			throw new IOException("==>Memory violation\n==> Out of memory range : "+address+"\n");
+
+		return memory[address];
+	}
+
 	
 	/**
 	 * Store the input data to a memory with specific address.
@@ -68,7 +107,7 @@ public class Memory {
 	 * @return Boolean indicating if the execution is success.
 	 * 
 	 */
-	public boolean store(int address, WORD input) throws IOException
+	private boolean store(int address, WORD input) throws IOException
 	{
 		return store(address,input,false);
 	}
@@ -81,21 +120,51 @@ public class Memory {
 	 * @return Boolean indicating if the execution is success.
 	 * 
 	 */
-	public boolean store(int address, WORD input, boolean isSystem) throws IOException
+	private boolean store(int address, WORD input, boolean isSystem) throws IOException
 	{
-		int limitMemoryStart=BOOT_MEMORY_START;
-		if(isSystem==false) limitMemoryStart=userMemoryStart;
+		int limitMemoryStart=0;
+		if(isSystem==false) limitMemoryStart=USER_MEMORY_START;
 		if(address>=memory.length)
-			throw new IOException("Memory violation : access over memory("+address+")\n");
+			throw new IOException("==> Memory violation\n==> Access over memory("+address+")\n");
+		else if(address<0)
+			throw new IOException("==> Memory violation\n==> Access invalid address("+address+")\n");	
 		else if(address<limitMemoryStart)
-			throw new IOException("Memory violation : access system address("+address+")\n");
+			throw new IOException("==> Memory violation\n==> Access into system address("+address+")\n");
 		if (input==null)
-			throw new IOException("Memory violation : insert null data("+address+")\n");
+			throw new IOException("==> Memory violation\n==> Insert empty data("+address+")\n");
 		
-		memory[address]=input;
+		memory[address].copy(input);
+		isMemorys[address]=true;
 		return true;
 	}
-
+	
+	
+	/**
+	 * Load data from a memory given address.
+	 * Don't use this function and use loadMemory() of CPU class
+	 * @param address an integer of the memory address the machine wants to access.
+	 * @return The data stored in the memory slot.
+	 */	
+	public WORD load(long address,CPU cpu) throws IOException
+	{
+		if(cpu.getMemory()!=this)
+			return null;
+		return load((int)address);
+	}
+	
+	/**
+	 * Store the input data to a memory with specific address.
+	 * Don't use this function and use storeMemory() of CPU class
+	 * @param address A integer indicating the memory slot to access.
+	 * @param input A WORD argument containing the input data for the memory to store.
+	 * @return Boolean indicating if the execution is success.
+	 * 
+	 */
+	public boolean store(long address, WORD input,boolean isSystem, CPU cpu) throws IOException
+	{
+		return store((int)address,input,isSystem);
+	}
+	
 	/**
 	 * Store a list of user code starting from a specified memory address defined by the user
 	 * @param arrCode A WORD array list containing the input code.
@@ -103,7 +172,7 @@ public class Memory {
 	 */
 	public boolean storeUserCode(ArrayList<WORD> arrCode)
 	{
-		int address=userMemoryStart;
+		int address=USER_PROGRAM_START;
 		for(WORD code : arrCode) {
 			try {
 			if(!store(address,code)) return false;
@@ -113,7 +182,27 @@ public class Memory {
 			}
 			address++;
 		}
-		memory[address++].clear();
+		memory[address].setLong(CPU.END_OF_PROGRAM);
+		isMemorys[address]=true;
+		this.user_program_end=address;
+		return true;
+	}
+	
+	public boolean storeUserData(ArrayList<WORD> arrCode)
+	{
+		int address=USER_MEMORY_START;
+		for(WORD code : arrCode) {
+			try {
+			if(!store(address,code)) return false;
+			}catch(IOException e) {
+				e.getStackTrace();
+				return false;
+			}
+			address++;
+		}
+		memory[address].setLong(CPU.END_OF_PROGRAM);
+		isMemorys[address]=true;
+		this.user_program_end=address;
 		return true;
 	}
 	
@@ -124,65 +213,60 @@ public class Memory {
 	 */
 	public boolean storeBootCode(ArrayList<WORD> arrCode) throws IOException
 	{
-		int address=BOOT_MEMORY_START;
+		int address=0;
 		for(WORD word : arrCode) {
 			if(!store(address,word,true)) return false;
 			address++;
 		}
-		memory[address].clear();
-		userMemoryStart=address;
+		memory[address].setLong(CPU.END_OF_PROGRAM);
+		isMemorys[address]=true;
 		return true;
 	}
-	
-	/**
-	 * Load data from a memory given address.
-	 * @param address an integer of the memory address the machine wants to access.
-	 * @return The data stored in the memory slot.
-	 */
-	public WORD load(int address) throws IOException
-	{
-		if(address>=memory.length || address<BOOT_MEMORY_START)
-			throw new IOException("Memory access violation : ["+address+"]\n");
-		return memory[address];
-	}
-	
-	public WORD load(long address) throws IOException
-	{
-		return load((int)address);
-	}
-	
+
+
 	/**
 	 * Get information of each memory slots, including the address and content.
 	 * @return The result in String type.
 	 */
-	public String getString() 
+	public String getString(int from, int to, boolean isDebug) 
 	{
-		StringBuffer buffer=new StringBuffer();
-		for(int i =0; i<memory.length;i++)
+		StringBuffer buffer=new StringBuffer();		
+		for(int i =from; i<to;i++)
 		{
-			if(!memory[i].isEmpty())
+			if(isEmpty(i))
 			{
-				String message=String.format("Memory [%03d]  %s (%d)\n", i,memory[i].getString(),memory[i].getLong());
+				String message="";
+				if (isDebug) {
+					message = String.format("Memory [%04d]  %s (%02X%02X) (%d)\n", i, memory[i].getString(),
+							memory[i].getLong() & 0x00FF, (memory[i].getLong() & 0xFF00) >>> 8, memory[i].getLong());
+				} else {
+					message = String.format("Memory [%04d]  %s (%d)\n", i, memory[i].getString(), memory[i].getLong());
+				}
 				buffer.append(message);
 			}
 		}
-		
 		return buffer.toString();
 	}
 	
-	/**
-	 * Get information of each memory slots, including the address and content.
-	 * @return The result in String type.
-	 */
-	public String toString() 
+	public String toString()
 	{
 		StringBuffer buffer=new StringBuffer();
 		for(int i =0; i<memory.length;i++)
 		{
-			if(!memory[i].isEmpty())
-				buffer.append("Memory ["+i+"] is "+memory[i]+"\n");
+			if(isEmpty(i))
+			{
+				String message = String.format("Memory [%04d]  %s (%02X%02X) (%d)\n", i, memory[i].getString(),
+						  memory[i].getLong()&0x00FF,(memory[i].getLong()&0xFF00)>>>8,memory[i].getLong());
+				buffer.append(message);
+			}
 		}
 		return buffer.toString();
+		
+	}
+	
+	public boolean isEmpty(long address)
+	{
+		return isMemorys[(int)address];
 	}
 	
 
@@ -190,8 +274,8 @@ public class Memory {
 	 * Get starting location for user program.
 	 * @return starting location for user program.
 	 */
-	public int getUserMemoryLocation() {
-		return userMemoryStart;
-	}
+	public int getUserProgramLocation() { return USER_PROGRAM_START;}
+	public int getUserProgramEnd() { return user_program_end; }
+	public int getLength() {return memory.length;}
 
 }
