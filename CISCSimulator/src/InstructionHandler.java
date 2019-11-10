@@ -179,7 +179,7 @@ public class InstructionHandler{
 			handler.execute();
 		}catch(IllegalArgumentException e)
 		{
-			message="[ERROR] "+e.getMessage();
+			message="==> "+e.getMessage()+"\n";
 			LOG.warning(message);
 			return false;
 		}

@@ -1,4 +1,7 @@
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.io.File; 
 import java.io.FileNotFoundException; 
 import java.util.Scanner; 
@@ -60,13 +63,15 @@ public class IOInstHandler extends InstructionHandler {
 			char in=cpu.getInputChar(IOC.CARD_READER);
 			if(in==IOC.NONE_INPUT)
 			{
-				//read from reader.txt
-				File file = new File("reader.txt");
-				Scanner sc = new Scanner(file);
-				sc.useDelimiter("\0");
-			    String readText=sc.next(); 
+				String path="reader.txt";
+				String readText=null;
+				try {
+					readText=Files.readString(Paths.get(path), StandardCharsets.UTF_8);
+				} catch (IOException e) {
+					message = "==> Can't access "+path+" file\n"+e.getMessage()+"\n";
+				}
+				readText=readText.split("\0")[0];
 			    cpu.getIOC().appendIOBuffer(IOC.CARD_READER, readText);
-			    sc.close();
 			    in=cpu.getInputChar(IOC.CARD_READER);
 			}
 			cpu.getGPR(reg).setLong(in);
