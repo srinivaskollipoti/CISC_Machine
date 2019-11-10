@@ -63,23 +63,44 @@ $(function() {
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="#pro-static-attribs">Static Protected Attributes</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="class_instruction_handler-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">InstructionHandler Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+<div class="dynheader">
+Inheritance diagram for InstructionHandler:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="class_instruction_handler.png" usemap="#InstructionHandler_map" alt=""/>
+  <map id="InstructionHandler_map" name="InstructionHandler_map">
+<area href="class_a_l_inst_handler.html" alt="ALInstHandler" shape="rect" coords="0,56,115,80"/>
+<area href="class_i_o_inst_handler.html" alt="IOInstHandler" shape="rect" coords="125,56,240,80"/>
+<area href="class_l_s_inst_handler.html" alt="LSInstHandler" shape="rect" coords="250,56,365,80"/>
+<area href="class_trans_inst_handler.html" alt="TransInstHandler" shape="rect" coords="375,56,490,80"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a82434d2a31ac95ff54e66e5817fd0984"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#a82434d2a31ac95ff54e66e5817fd0984">InstructionHandler</a> (<a class="el" href="class_control_unit.html">ControlUnit</a> controller)</td></tr>
-<tr class="separator:a82434d2a31ac95ff54e66e5817fd0984"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae76b37b03fda9b075841136b088ac407"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#ae76b37b03fda9b075841136b088ac407">InstructionHandler</a> (<a class="el" href="class_c_p_u.html">CPU</a> cpu)</td></tr>
+<tr class="separator:ae76b37b03fda9b075841136b088ac407"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab36c539a43a3e0c5d790983e37323f0f"><td class="memItemLeft" align="right" valign="top"><a id="ab36c539a43a3e0c5d790983e37323f0f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>init</b> ()</td></tr>
+<tr class="separator:ab36c539a43a3e0c5d790983e37323f0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9edd06e6a4fbc9b5367f31b4c8cef4a7"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#a9edd06e6a4fbc9b5367f31b4c8cef4a7">checkOPCode</a> ()</td></tr>
+<tr class="separator:a9edd06e6a4fbc9b5367f31b4c8cef4a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc4129c63dc42da3ecbb26ea0f1d227e"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#afc4129c63dc42da3ecbb26ea0f1d227e">execute</a> ()  throws IOException 	</td></tr>
 <tr class="separator:afc4129c63dc42da3ecbb26ea0f1d227e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d2e0a5516b1d58a6f535497f56eff1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#a6d2e0a5516b1d58a6f535497f56eff1e">showInstruction</a> ()</td></tr>
 <tr class="separator:a6d2e0a5516b1d58a6f535497f56eff1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea0ec692958e9fe34ccd0c2458acb67c"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#aea0ec692958e9fe34ccd0c2458acb67c">getString</a> ()</td></tr>
+<tr class="separator:aea0ec692958e9fe34ccd0c2458acb67c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afa5fca638f7e24c2d5ed2834b59d2a4c"><td class="memItemLeft" align="right" valign="top"><a id="afa5fca638f7e24c2d5ed2834b59d2a4c"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getOPCode</b> ()</td></tr>
 <tr class="separator:afa5fca638f7e24c2d5ed2834b59d2a4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -95,40 +116,32 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>getAddress</b> ()</td>
 <tr class="memitem:a06434bccf8bb7358a031110bf5e64c43"><td class="memItemLeft" align="right" valign="top"><a id="a06434bccf8bb7358a031110bf5e64c43"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>getFlag</b> ()</td></tr>
 <tr class="separator:a06434bccf8bb7358a031110bf5e64c43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa919f638a81ebab3364f116daaa571cf"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#aa919f638a81ebab3364f116daaa571cf">getAsmCode</a> ()</td></tr>
-<tr class="separator:aa919f638a81ebab3364f116daaa571cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abbf7e505fea657340ae36d29a87b7208"><td class="memItemLeft" align="right" valign="top"><a class="el" href="class_w_o_r_d.html">WORD</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#abbf7e505fea657340ae36d29a87b7208">getBinCode</a> (String asmCode)</td></tr>
-<tr class="separator:abbf7e505fea657340ae36d29a87b7208"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa259feb621482f7b99485e28dfc4fad0"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#aa259feb621482f7b99485e28dfc4fad0">getMessage</a> ()</td></tr>
 <tr class="separator:aa259feb621482f7b99485e28dfc4fad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a51d423d4e29bbe36b16000b9c9cec22d"><td class="memItemLeft" align="right" valign="top"><a id="a51d423d4e29bbe36b16000b9c9cec22d"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>getOPCode</b> (<a class="el" href="class_w_o_r_d.html">WORD</a> ir)</td></tr>
+<tr class="separator:a51d423d4e29bbe36b16000b9c9cec22d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
 <tr class="memitem:a54a4d1b818fce13b826607f9f7c5ee41"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#a54a4d1b818fce13b826607f9f7c5ee41">parseIR</a> (<a class="el" href="class_w_o_r_d.html">WORD</a> ir)</td></tr>
 <tr class="separator:a54a4d1b818fce13b826607f9f7c5ee41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace4c4fe8fa3ee1690395a54b3182dfe9"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#ace4c4fe8fa3ee1690395a54b3182dfe9">executeLDR</a> ()  throws IOException </td></tr>
-<tr class="separator:ace4c4fe8fa3ee1690395a54b3182dfe9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac7c46e199ef7c36dd04ab41cab482a02"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#ac7c46e199ef7c36dd04ab41cab482a02">executeLDA</a> ()  throws IOException </td></tr>
-<tr class="separator:ac7c46e199ef7c36dd04ab41cab482a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33762153a6fb575efdea60c35a0fdfcf"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#a33762153a6fb575efdea60c35a0fdfcf">executeSTR</a> ()  throws IOException </td></tr>
-<tr class="separator:a33762153a6fb575efdea60c35a0fdfcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa99db448674e2f01dd7908f1604ed61b"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#aa99db448674e2f01dd7908f1604ed61b">executeLDX</a> ()  throws IOException </td></tr>
-<tr class="separator:aa99db448674e2f01dd7908f1604ed61b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa72e47fb61fc0148015b99c2e2f316c"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#aaa72e47fb61fc0148015b99c2e2f316c">executeSTX</a> ()  throws IOException </td></tr>
-<tr class="separator:aaa72e47fb61fc0148015b99c2e2f316c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9ac5630b3fb12f38982e185b4d10646"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#ac9ac5630b3fb12f38982e185b4d10646">getEAWithoutIX</a> ()  throws IOException 	</td></tr>
 <tr class="separator:ac9ac5630b3fb12f38982e185b4d10646"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4cdcde918b35166efa89c4316b407aa"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_instruction_handler.html#aa4cdcde918b35166efa89c4316b407aa">getEA</a> ()  throws IOException 	</td></tr>
 <tr class="separator:aa4cdcde918b35166efa89c4316b407aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
 <tr class="memitem:a9ee46a1b3a07f437650aafda57e091df"><td class="memItemLeft" align="right" valign="top"><a id="a9ee46a1b3a07f437650aafda57e091df"></a>
-<a class="el" href="class_w_o_r_d.html">WORD</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ir</b> =new <a class="el" href="class_w_o_r_d.html">WORD</a>()</td></tr>
+<a class="el" href="class_w_o_r_d.html">WORD</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ir</b></td></tr>
 <tr class="separator:a9ee46a1b3a07f437650aafda57e091df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addfeebb9eace61a84c10a3b83ebb1262"><td class="memItemLeft" align="right" valign="top"><a id="addfeebb9eace61a84c10a3b83ebb1262"></a>
-<a class="el" href="class_control_unit.html">ControlUnit</a>&#160;</td><td class="memItemRight" valign="bottom"><b>controller</b></td></tr>
-<tr class="separator:addfeebb9eace61a84c10a3b83ebb1262"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaefed1ab9bb8e23ae8790f0c03b1082"><td class="memItemLeft" align="right" valign="top"><a id="afaefed1ab9bb8e23ae8790f0c03b1082"></a>
+<a class="el" href="class_c_p_u.html">CPU</a>&#160;</td><td class="memItemRight" valign="bottom"><b>cpu</b></td></tr>
+<tr class="separator:afaefed1ab9bb8e23ae8790f0c03b1082"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af66e300b377cf8e7c2e264b25c572e86"><td class="memItemLeft" align="right" valign="top"><a id="af66e300b377cf8e7c2e264b25c572e86"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>opcode</b> =0</td></tr>
 <tr class="separator:af66e300b377cf8e7c2e264b25c572e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -144,29 +157,56 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>flag</b> =0</td></tr>
 <tr class="memitem:a7bcca6a054d553eccf6b9d0658aedb45"><td class="memItemLeft" align="right" valign="top"><a id="a7bcca6a054d553eccf6b9d0658aedb45"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>address</b> =0</td></tr>
 <tr class="separator:a7bcca6a054d553eccf6b9d0658aedb45"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6bc9081683ddaec424a467782139fe0"><td class="memItemLeft" align="right" valign="top"><a id="ae6bc9081683ddaec424a467782139fe0"></a>
-Hashtable&lt; Integer, Instruction &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>instSet</b> = new Hashtable&lt; Integer, Instruction&gt;()</td></tr>
-<tr class="separator:ae6bc9081683ddaec424a467782139fe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6faaee2f59b3849800491fdf170b0a76"><td class="memItemLeft" align="right" valign="top"><a id="a6faaee2f59b3849800491fdf170b0a76"></a>
-Hashtable&lt; String, Integer &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>textToCode</b> = new Hashtable&lt; String, Integer&gt;()</td></tr>
-<tr class="separator:a6faaee2f59b3849800491fdf170b0a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae87e0e86b21d4681a352f9c2bec80da6"><td class="memItemLeft" align="right" valign="top"><a id="ae87e0e86b21d4681a352f9c2bec80da6"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>al</b> =0</td></tr>
+<tr class="separator:ae87e0e86b21d4681a352f9c2bec80da6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab927c50f7a5c4ba97dfc98f33753f053"><td class="memItemLeft" align="right" valign="top"><a id="ab927c50f7a5c4ba97dfc98f33753f053"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>lr</b> =0</td></tr>
+<tr class="separator:ab927c50f7a5c4ba97dfc98f33753f053"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab768ba75c5a60896b2d55347db03a64c"><td class="memItemLeft" align="right" valign="top"><a id="ab768ba75c5a60896b2d55347db03a64c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>rx</b> =0</td></tr>
+<tr class="separator:ab768ba75c5a60896b2d55347db03a64c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a632cb47f2af0b0d830136d1aa6ce2fed"><td class="memItemLeft" align="right" valign="top"><a id="a632cb47f2af0b0d830136d1aa6ce2fed"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>ry</b> =0</td></tr>
+<tr class="separator:a632cb47f2af0b0d830136d1aa6ce2fed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a166c5aae62222c5a497885b7941417ae"><td class="memItemLeft" align="right" valign="top"><a id="a166c5aae62222c5a497885b7941417ae"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>count</b> =0</td></tr>
+<tr class="separator:a166c5aae62222c5a497885b7941417ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a674c35d9304f37944ad2bee3cac0481c"><td class="memItemLeft" align="right" valign="top"><a id="a674c35d9304f37944ad2bee3cac0481c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>trapcode</b> =0</td></tr>
+<tr class="separator:a674c35d9304f37944ad2bee3cac0481c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad400d0420ff12583e1931870ed2f3c5a"><td class="memItemLeft" align="right" valign="top"><a id="ad400d0420ff12583e1931870ed2f3c5a"></a>
 String&#160;</td><td class="memItemRight" valign="bottom"><b>message</b> =new String()</td></tr>
 <tr class="separator:ad400d0420ff12583e1931870ed2f3c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-static-attribs"></a>
+Static Protected Attributes</h2></td></tr>
 <tr class="memitem:a7ede0eeecc3651f64ffc08e46e5fca58"><td class="memItemLeft" align="right" valign="top"><a id="a7ede0eeecc3651f64ffc08e46e5fca58"></a>
 static final Logger&#160;</td><td class="memItemRight" valign="bottom"><b>LOG</b> = Logger.getGlobal()</td></tr>
 <tr class="separator:a7ede0eeecc3651f64ffc08e46e5fca58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a5ff290923871054bcede5f936215c32d"><td class="memItemLeft" align="right" valign="top"><a id="a5ff290923871054bcede5f936215c32d"></a>
+<a class="el" href="class_l_s_inst_handler.html">LSInstHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><b>lsInst</b></td></tr>
+<tr class="separator:a5ff290923871054bcede5f936215c32d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80a814d6864ed9a8cf27b6438c6127a1"><td class="memItemLeft" align="right" valign="top"><a id="a80a814d6864ed9a8cf27b6438c6127a1"></a>
+<a class="el" href="class_a_l_inst_handler.html">ALInstHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><b>alInst</b></td></tr>
+<tr class="separator:a80a814d6864ed9a8cf27b6438c6127a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afdedfef8a8ad1b0dd47e049aad9dec48"><td class="memItemLeft" align="right" valign="top"><a id="afdedfef8a8ad1b0dd47e049aad9dec48"></a>
+<a class="el" href="class_i_o_inst_handler.html">IOInstHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ioInst</b></td></tr>
+<tr class="separator:afdedfef8a8ad1b0dd47e049aad9dec48"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33ec73c0e6d4805efc437cca9cf35dda"><td class="memItemLeft" align="right" valign="top"><a id="a33ec73c0e6d4805efc437cca9cf35dda"></a>
+<a class="el" href="class_trans_inst_handler.html">TransInstHandler</a>&#160;</td><td class="memItemRight" valign="bottom"><b>trInst</b></td></tr>
+<tr class="separator:a33ec73c0e6d4805efc437cca9cf35dda"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><dl class="section author"><dt>Author</dt><dd>cozyu </dd>
 <dd>
 youcao documented by youcao. A class that process given instructions. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a82434d2a31ac95ff54e66e5817fd0984"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82434d2a31ac95ff54e66e5817fd0984">&#9670;&nbsp;</a></span>InstructionHandler()</h2>
+<a id="ae76b37b03fda9b075841136b088ac407"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae76b37b03fda9b075841136b088ac407">&#9670;&nbsp;</a></span>InstructionHandler()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,8 +217,8 @@ youcao documented by youcao. A class that process given instructions. </dd></dl>
         <tr>
           <td class="memname">InstructionHandler.InstructionHandler </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="class_control_unit.html">ControlUnit</a>&#160;</td>
-          <td class="paramname"><em>controller</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="class_c_p_u.html">CPU</a>&#160;</td>
+          <td class="paramname"><em>cpu</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -190,7 +230,7 @@ youcao documented by youcao. A class that process given instructions. </dd></dl>
 </div><div class="memdoc">
 <p>A constructor to initializes instruction set. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">controller</td><td>to use this class </td></tr>
+    <tr><td class="paramname">cpu</td><td>to use this class </td></tr>
   </table>
   </dd>
 </dl>
@@ -198,6 +238,32 @@ youcao documented by youcao. A class that process given instructions. </dd></dl>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9edd06e6a4fbc9b5367f31b4c8cef4a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9edd06e6a4fbc9b5367f31b4c8cef4a7">&#9670;&nbsp;</a></span>checkOPCode()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">boolean InstructionHandler.checkOPCode </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Check if the opcode is valid </p><dl class="section return"><dt>Returns</dt><dd>On case valid, true is returned, otherwise false is returned. </dd></dl>
+
+</div>
+</div>
 <a id="afc4129c63dc42da3ecbb26ea0f1d227e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#afc4129c63dc42da3ecbb26ea0f1d227e">&#9670;&nbsp;</a></span>execute()</h2>
 
@@ -220,190 +286,9 @@ youcao documented by youcao. A class that process given instructions. </dd></dl>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Execute instructions and print out the information in register and memory </p><dl class="section return"><dt>Returns</dt><dd>On case success, true is retured, otherwise false is returned. </dd></dl>
+<p>Execute instructions and print out the information in register and memory </p><dl class="section return"><dt>Returns</dt><dd>On case success, true is returned, otherwise false is returned. </dd></dl>
 
-</div>
-</div>
-<a id="ac7c46e199ef7c36dd04ab41cab482a02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac7c46e199ef7c36dd04ab41cab482a02">&#9670;&nbsp;</a></span>executeLDA()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">boolean InstructionHandler.executeLDA </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> throws IOException</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Load register with address </p><dl class="section return"><dt>Returns</dt><dd>On case success, true is retured, otherwise false is returned. </dd></dl>
-
-</div>
-</div>
-<a id="ace4c4fe8fa3ee1690395a54b3182dfe9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace4c4fe8fa3ee1690395a54b3182dfe9">&#9670;&nbsp;</a></span>executeLDR()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">boolean InstructionHandler.executeLDR </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> throws IOException</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Load register from a given memory address. </p><dl class="section return"><dt>Returns</dt><dd>On case success, true is retured, otherwise false is returned. </dd></dl>
-
-</div>
-</div>
-<a id="aa99db448674e2f01dd7908f1604ed61b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa99db448674e2f01dd7908f1604ed61b">&#9670;&nbsp;</a></span>executeLDX()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">boolean InstructionHandler.executeLDX </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> throws IOException</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Load Index Register from <a class="el" href="class_memory.html">Memory</a>. </p><dl class="section return"><dt>Returns</dt><dd>On case success, true is retured, otherwise false is returned. </dd></dl>
-
-</div>
-</div>
-<a id="a33762153a6fb575efdea60c35a0fdfcf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a33762153a6fb575efdea60c35a0fdfcf">&#9670;&nbsp;</a></span>executeSTR()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">boolean InstructionHandler.executeSTR </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> throws IOException</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Store Register To <a class="el" href="class_memory.html">Memory</a>. </p><dl class="section return"><dt>Returns</dt><dd>On case success, true is retured, otherwise false is returned. </dd></dl>
-
-</div>
-</div>
-<a id="aaa72e47fb61fc0148015b99c2e2f316c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa72e47fb61fc0148015b99c2e2f316c">&#9670;&nbsp;</a></span>executeSTX()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">boolean InstructionHandler.executeSTX </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td> throws IOException</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Store Index Register to <a class="el" href="class_memory.html">Memory</a>. </p><dl class="section return"><dt>Returns</dt><dd>On case success, true is returned, otherwise false is returned. </dd></dl>
-
-</div>
-</div>
-<a id="aa919f638a81ebab3364f116daaa571cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa919f638a81ebab3364f116daaa571cf">&#9670;&nbsp;</a></span>getAsmCode()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">String InstructionHandler.getAsmCode </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>get assemble code from current instruction </p><dl class="section return"><dt>Returns</dt><dd>A assemble code string. </dd></dl>
-
-</div>
-</div>
-<a id="abbf7e505fea657340ae36d29a87b7208"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abbf7e505fea657340ae36d29a87b7208">&#9670;&nbsp;</a></span>getBinCode()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="class_w_o_r_d.html">WORD</a> InstructionHandler.getBinCode </td>
-          <td>(</td>
-          <td class="paramtype">String&#160;</td>
-          <td class="paramname"><em>asmCode</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>Convert the input instruction into a machine code. </p><dl class="section return"><dt>Returns</dt><dd>the machine code in <a class="el" href="class_w_o_r_d.html">WORD</a> format. </dd></dl>
+<p>Reimplemented in <a class="el" href="class_a_l_inst_handler.html#a144c31ae18a65a731d3795c14f873e76">ALInstHandler</a>, <a class="el" href="class_trans_inst_handler.html#a10379805518071f1b638d3a3230e7aa5">TransInstHandler</a>, <a class="el" href="class_i_o_inst_handler.html#ad3c87e6bdc4211962609d1a58af4a93b">IOInstHandler</a>, and <a class="el" href="class_l_s_inst_handler.html#aa187d8632a7636452c303c9ada734454">LSInstHandler</a>.</p>
 
 </div>
 </div>
@@ -425,7 +310,7 @@ youcao documented by youcao. A class that process given instructions. </dd></dl>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -451,7 +336,7 @@ youcao documented by youcao. A class that process given instructions. </dd></dl>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -485,6 +370,32 @@ youcao documented by youcao. A class that process given instructions. </dd></dl>
 
 </div>
 </div>
+<a id="aea0ec692958e9fe34ccd0c2458acb67c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea0ec692958e9fe34ccd0c2458acb67c">&#9670;&nbsp;</a></span>getString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">String InstructionHandler.getString </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Get string indicating current instruction. </p><dl class="section return"><dt>Returns</dt><dd>String indicating current instruction </dd></dl>
+
+</div>
+</div>
 <a id="a54a4d1b818fce13b826607f9f7c5ee41"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a54a4d1b818fce13b826607f9f7c5ee41">&#9670;&nbsp;</a></span>parseIR()</h2>
 
@@ -504,7 +415,7 @@ youcao documented by youcao. A class that process given instructions. </dd></dl>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -514,7 +425,7 @@ youcao documented by youcao. A class that process given instructions. </dd></dl>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>On case success, true is retured, otherwise false is returned. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>On case success, true is returned, otherwise false is returned. </dd></dl>
 
 </div>
 </div>

@@ -1,0 +1,208 @@
+\hypertarget{class_memory}{}\doxysection{Memory Class Reference}
+\label{class_memory}\index{Memory@{Memory}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_memory_a18ff0d806d11ea959fbb5e6357a1f63e}{Memory}} ()  throws I\+O\+Exception 	
+\item 
+boolean \mbox{\hyperlink{class_memory_a0838e22ad523751246e4e82bda66643c}{set\+Memory}} (int size)  throws I\+O\+Exception 	
+\item 
+boolean \mbox{\hyperlink{class_memory_af4b36166151e63068919fa9326775e8d}{init}} ()
+\item 
+boolean \mbox{\hyperlink{class_memory_a4e97269709dac80a052d620ab4e8aa30}{store}} (int address, \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} input)  throws I\+O\+Exception 	
+\item 
+boolean \mbox{\hyperlink{class_memory_a1e14e69eaba1d153f3311175af8bc94b}{store}} (int address, \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} input, boolean is\+System)  throws I\+O\+Exception 	
+\item 
+boolean \mbox{\hyperlink{class_memory_a6d6206db516b7f8ef75ba8edce32c2d7}{store\+User\+Code}} (Array\+List$<$ \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} $>$ arr\+Code)
+\item 
+boolean \mbox{\hyperlink{class_memory_a74c8416c64a8b1e1395247409d309614}{store\+Boot\+Code}} (Array\+List$<$ \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} $>$ arr\+Code)  throws I\+O\+Exception 	
+\item 
+\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} \mbox{\hyperlink{class_memory_a36e78c87eaff8adaa861216b5647dffb}{load}} (int address)  throws I\+O\+Exception 	
+\item 
+\mbox{\Hypertarget{class_memory_a8f392b5c83e6e30082f2d26fbb0b33e7}\label{class_memory_a8f392b5c83e6e30082f2d26fbb0b33e7}} 
+\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} {\bfseries load} (long address)  throws I\+O\+Exception 	
+\item 
+String \mbox{\hyperlink{class_memory_a5e399bc0078142345e5122f59f25aaf6}{get\+String}} ()
+\item 
+String \mbox{\hyperlink{class_memory_a45c16fbed000105573cba5d6b1f4e727}{to\+String}} ()
+\item 
+int \mbox{\hyperlink{class_memory_a545ab73548e9c94d8815d97b47e1211d}{get\+User\+Memory\+Location}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_memory_a5d1af4e745565430406405775ec86c8c}\label{class_memory_a5d1af4e745565430406405775ec86c8c}} 
+static final int {\bfseries B\+O\+O\+T\+\_\+\+M\+E\+M\+O\+R\+Y\+\_\+\+S\+T\+A\+RT} =010
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_memory_a7d42738bd77a30ead79962fe6c563e14}\label{class_memory_a7d42738bd77a30ead79962fe6c563e14}} 
+\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} {\bfseries memory} \mbox{[}$\,$\mbox{]}
+\item 
+\mbox{\Hypertarget{class_memory_add6564444ebd4f7dc74375e7517aab29}\label{class_memory_add6564444ebd4f7dc74375e7517aab29}} 
+int {\bfseries user\+Memory\+Start}
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_memory_a3a6b202abdd87147979dca8dbb27715e}\label{class_memory_a3a6b202abdd87147979dca8dbb27715e}} 
+static final int {\bfseries D\+E\+F\+A\+U\+L\+T\+\_\+\+M\+E\+M\+O\+RY} =2048
+\item 
+\mbox{\Hypertarget{class_memory_afcdd4049333d611606c5c90502ae8209}\label{class_memory_afcdd4049333d611606c5c90502ae8209}} 
+static final int {\bfseries M\+A\+X\+\_\+\+M\+E\+M\+O\+RY} =4096
+\item 
+\mbox{\Hypertarget{class_memory_a3f5658cf8acb8d0a35c4d1439fb30eb8}\label{class_memory_a3f5658cf8acb8d0a35c4d1439fb30eb8}} 
+static final int {\bfseries M\+I\+N\+\_\+\+M\+E\+M\+O\+RY} =512
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+cozyu 
+
+youcao documented by youcao. This class manages memory of the simulator, see details below. 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_memory_a18ff0d806d11ea959fbb5e6357a1f63e}\label{class_memory_a18ff0d806d11ea959fbb5e6357a1f63e}} 
+\index{Memory@{Memory}!Memory@{Memory}}
+\index{Memory@{Memory}!Memory@{Memory}}
+\doxysubsubsection{\texorpdfstring{Memory()}{Memory()}}
+{\footnotesize\ttfamily Memory.\+Memory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}}
+
+A constructor Initializes memory with the max size 2048. The memory is an array of type \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}}. Set user\+Memory\+Start to 010. 
+\begin{DoxyExceptions}{Exceptions}
+{\em I\+O\+Exception} & \\
+\hline
+\end{DoxyExceptions}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_memory_a5e399bc0078142345e5122f59f25aaf6}\label{class_memory_a5e399bc0078142345e5122f59f25aaf6}} 
+\index{Memory@{Memory}!getString@{getString}}
+\index{getString@{getString}!Memory@{Memory}}
+\doxysubsubsection{\texorpdfstring{getString()}{getString()}}
+{\footnotesize\ttfamily String Memory.\+get\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get information of each memory slots, including the address and content. \begin{DoxyReturn}{Returns}
+The result in String type. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_memory_a545ab73548e9c94d8815d97b47e1211d}\label{class_memory_a545ab73548e9c94d8815d97b47e1211d}} 
+\index{Memory@{Memory}!getUserMemoryLocation@{getUserMemoryLocation}}
+\index{getUserMemoryLocation@{getUserMemoryLocation}!Memory@{Memory}}
+\doxysubsubsection{\texorpdfstring{getUserMemoryLocation()}{getUserMemoryLocation()}}
+{\footnotesize\ttfamily int Memory.\+get\+User\+Memory\+Location (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get starting location for user program. \begin{DoxyReturn}{Returns}
+starting location for user program. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_memory_af4b36166151e63068919fa9326775e8d}\label{class_memory_af4b36166151e63068919fa9326775e8d}} 
+\index{Memory@{Memory}!init@{init}}
+\index{init@{init}!Memory@{Memory}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily boolean Memory.\+init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set every elements in the memory array to null. \begin{DoxyReturn}{Returns}
+true 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_memory_a36e78c87eaff8adaa861216b5647dffb}\label{class_memory_a36e78c87eaff8adaa861216b5647dffb}} 
+\index{Memory@{Memory}!load@{load}}
+\index{load@{load}!Memory@{Memory}}
+\doxysubsubsection{\texorpdfstring{load()}{load()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} Memory.\+load (\begin{DoxyParamCaption}\item[{int}]{address }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}}
+
+Load data from a memory given address. 
+\begin{DoxyParams}{Parameters}
+{\em address} & an integer of the memory address the machine wants to access. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+The data stored in the memory slot. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_memory_a0838e22ad523751246e4e82bda66643c}\label{class_memory_a0838e22ad523751246e4e82bda66643c}} 
+\index{Memory@{Memory}!setMemory@{setMemory}}
+\index{setMemory@{setMemory}!Memory@{Memory}}
+\doxysubsubsection{\texorpdfstring{setMemory()}{setMemory()}}
+{\footnotesize\ttfamily boolean Memory.\+set\+Memory (\begin{DoxyParamCaption}\item[{int}]{size }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}}
+
+Initializes memory with given size. \begin{DoxyReturn}{Returns}
+true 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_memory_a4e97269709dac80a052d620ab4e8aa30}\label{class_memory_a4e97269709dac80a052d620ab4e8aa30}} 
+\index{Memory@{Memory}!store@{store}}
+\index{store@{store}!Memory@{Memory}}
+\doxysubsubsection{\texorpdfstring{store()}{store()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily boolean Memory.\+store (\begin{DoxyParamCaption}\item[{int}]{address,  }\item[{\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}}}]{input }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}}
+
+Store the input data to a memory with specific address. 
+\begin{DoxyParams}{Parameters}
+{\em address} & A integer indicating the memory slot to access. \\
+\hline
+{\em input} & A \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} argument containing the input data for the memory to store. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Boolean indicating if the execution is success. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_memory_a1e14e69eaba1d153f3311175af8bc94b}\label{class_memory_a1e14e69eaba1d153f3311175af8bc94b}} 
+\index{Memory@{Memory}!store@{store}}
+\index{store@{store}!Memory@{Memory}}
+\doxysubsubsection{\texorpdfstring{store()}{store()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily boolean Memory.\+store (\begin{DoxyParamCaption}\item[{int}]{address,  }\item[{\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}}}]{input,  }\item[{boolean}]{is\+System }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}}
+
+Store the input data to a memory with specific address. 
+\begin{DoxyParams}{Parameters}
+{\em address} & A integer indicating the memory slot to access. \\
+\hline
+{\em input} & A \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} argument containing the input data for the memory to store. \\
+\hline
+{\em is\+System} & A boolean indicating to access boot address. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Boolean indicating if the execution is success. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_memory_a74c8416c64a8b1e1395247409d309614}\label{class_memory_a74c8416c64a8b1e1395247409d309614}} 
+\index{Memory@{Memory}!storeBootCode@{storeBootCode}}
+\index{storeBootCode@{storeBootCode}!Memory@{Memory}}
+\doxysubsubsection{\texorpdfstring{storeBootCode()}{storeBootCode()}}
+{\footnotesize\ttfamily boolean Memory.\+store\+Boot\+Code (\begin{DoxyParamCaption}\item[{Array\+List$<$ \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} $>$}]{arr\+Code }\end{DoxyParamCaption}) throws I\+O\+Exception\hspace{0.3cm}{\ttfamily [inline]}}
+
+Store a list of boot code starting from a specified memory address. 
+\begin{DoxyParams}{Parameters}
+{\em arr\+Code} & A \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} array list containing the input code. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A boolean indicating if the execution is success. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_memory_a6d6206db516b7f8ef75ba8edce32c2d7}\label{class_memory_a6d6206db516b7f8ef75ba8edce32c2d7}} 
+\index{Memory@{Memory}!storeUserCode@{storeUserCode}}
+\index{storeUserCode@{storeUserCode}!Memory@{Memory}}
+\doxysubsubsection{\texorpdfstring{storeUserCode()}{storeUserCode()}}
+{\footnotesize\ttfamily boolean Memory.\+store\+User\+Code (\begin{DoxyParamCaption}\item[{Array\+List$<$ \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} $>$}]{arr\+Code }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Store a list of user code starting from a specified memory address defined by the user 
+\begin{DoxyParams}{Parameters}
+{\em arr\+Code} & A \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} array list containing the input code. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+A boolean indicating if the execution is success. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_memory_a45c16fbed000105573cba5d6b1f4e727}\label{class_memory_a45c16fbed000105573cba5d6b1f4e727}} 
+\index{Memory@{Memory}!toString@{toString}}
+\index{toString@{toString}!Memory@{Memory}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily String Memory.\+to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get information of each memory slots, including the address and content. \begin{DoxyReturn}{Returns}
+The result in String type. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Memory.\+java\end{DoxyCompactItemize}
