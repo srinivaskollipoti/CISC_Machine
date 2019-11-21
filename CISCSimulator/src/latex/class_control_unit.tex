@@ -1,0 +1,226 @@
+\hypertarget{class_control_unit}{}\doxysection{Control\+Unit Class Reference}
+\label{class_control_unit}\index{ControlUnit@{ControlUnit}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries C\+P\+U\+State}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_control_unit_aaf64c5d8f0fc990b64553c336a442408}\label{class_control_unit_aaf64c5d8f0fc990b64553c336a442408}} 
+{\bfseries Control\+Unit} (\mbox{\hyperlink{class_c_i_s_c_simulator}{C\+I\+S\+C\+Simulator}} simulator)
+\item 
+boolean \mbox{\hyperlink{class_control_unit_ae61d40514fe004fcc70dbb676c9c5b1b}{show\+Memory}} ()
+\item 
+boolean \mbox{\hyperlink{class_control_unit_a92bf51fe8a317f555f5ddd02e7f0c6e4}{show\+Register}} ()
+\item 
+boolean \mbox{\hyperlink{class_control_unit_a1eecc4ce00744ce4e03d181e86c580b2}{init}} ()
+\item 
+boolean \mbox{\hyperlink{class_control_unit_a746aec3989874a3be6c9c2126e86f745}{is\+Current\+Instruction}} ()
+\item 
+boolean \mbox{\hyperlink{class_control_unit_a6334a40b581ecf69e2d9f98821ac302b}{clock}} ()
+\item 
+boolean \mbox{\hyperlink{class_control_unit_a4d888544fff0504f2a1fc4b7ee695070}{set\+Boot\+Code}} ()
+\item 
+boolean \mbox{\hyperlink{class_control_unit_ae994880e5891756b45cbf56003893e40}{set\+User\+Code}} (String\mbox{[}$\,$\mbox{]} arr\+Asm\+Code)
+\item 
+void \mbox{\hyperlink{class_control_unit_a5ece1f72ab7698be3c3325dd7d8f1f79}{add\+Message}} (String message)
+\item 
+\mbox{\Hypertarget{class_control_unit_a997d4ee98f837bb16e9be26c324708c7}\label{class_control_unit_a997d4ee98f837bb16e9be26c324708c7}} 
+String {\bfseries get\+Message} ()
+\item 
+\mbox{\Hypertarget{class_control_unit_ac50abe8ede7ad88bc010ad7047c663dd}\label{class_control_unit_ac50abe8ede7ad88bc010ad7047c663dd}} 
+\mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}} {\bfseries get\+G\+PR} (int i)
+\item 
+\mbox{\Hypertarget{class_control_unit_aeb5d92aa1f70f7a2b3aa650f829becbb}\label{class_control_unit_aeb5d92aa1f70f7a2b3aa650f829becbb}} 
+\mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}} {\bfseries get\+IX} (int i)
+\item 
+\mbox{\Hypertarget{class_control_unit_a676d83809cd31a1c0713cd69328fb6b8}\label{class_control_unit_a676d83809cd31a1c0713cd69328fb6b8}} 
+\mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}} {\bfseries get\+PC} ()
+\item 
+\mbox{\Hypertarget{class_control_unit_acdd2f6001f78d5e921f357f7c1bba41d}\label{class_control_unit_acdd2f6001f78d5e921f357f7c1bba41d}} 
+\mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}} {\bfseries get\+CC} ()
+\item 
+\mbox{\Hypertarget{class_control_unit_af41a1749553584421392ef76bb0cc984}\label{class_control_unit_af41a1749553584421392ef76bb0cc984}} 
+\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} {\bfseries get\+M\+AR} ()
+\item 
+\mbox{\Hypertarget{class_control_unit_af6ce3d3b7d7150d2fbca95236d9defeb}\label{class_control_unit_af6ce3d3b7d7150d2fbca95236d9defeb}} 
+\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} {\bfseries get\+M\+BR} ()
+\item 
+\mbox{\Hypertarget{class_control_unit_a9add560eddaaf5c5f996bc7ed3eeef67}\label{class_control_unit_a9add560eddaaf5c5f996bc7ed3eeef67}} 
+\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} {\bfseries get\+M\+FR} ()
+\item 
+\mbox{\Hypertarget{class_control_unit_a6e8cbfd1487d70ec7e3d19ed783efe7c}\label{class_control_unit_a6e8cbfd1487d70ec7e3d19ed783efe7c}} 
+\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} {\bfseries get\+IR} ()
+\item 
+\mbox{\Hypertarget{class_control_unit_aed4845eb76aaf4aef4913d175230369d}\label{class_control_unit_aed4845eb76aaf4aef4913d175230369d}} 
+\mbox{\hyperlink{class_memory}{Memory}} {\bfseries get\+Memory} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+boolean \mbox{\hyperlink{class_control_unit_a3db0eca8d662e588c2e2a98fd7418b4c}{is\+Next\+Instruction}} ()
+\item 
+boolean \mbox{\hyperlink{class_control_unit_a42008c4c574707bc62520ce54341dba3}{increase\+PC}} ()
+\item 
+boolean \mbox{\hyperlink{class_control_unit_a45d1570db37aa395779e1522c3197cd9}{execute}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_control_unit_a6a4cea5235695c6a3448586a406c3662}\label{class_control_unit_a6a4cea5235695c6a3448586a406c3662}} 
+\mbox{\hyperlink{class_memory}{Memory}} {\bfseries memory}
+\item 
+\mbox{\Hypertarget{class_control_unit_ad05dd303963a56596dc5e99b197fba72}\label{class_control_unit_ad05dd303963a56596dc5e99b197fba72}} 
+\mbox{\hyperlink{class_instruction_handler}{Instruction\+Handler}} {\bfseries ih} =new \mbox{\hyperlink{class_instruction_handler}{Instruction\+Handler}}(this)
+\item 
+\mbox{\Hypertarget{class_control_unit_a68f32698e0cde912d63fd9ee0bba4c86}\label{class_control_unit_a68f32698e0cde912d63fd9ee0bba4c86}} 
+C\+P\+U\+State {\bfseries state} =C\+P\+U\+State.\+L\+O\+A\+D\+\_\+\+M\+AR
+\item 
+\mbox{\Hypertarget{class_control_unit_a1b25fbd0f954976696a03d4fba39eda7}\label{class_control_unit_a1b25fbd0f954976696a03d4fba39eda7}} 
+\mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}} {\bfseries PC} =new \mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}}(12)
+\item 
+\mbox{\Hypertarget{class_control_unit_abca4b6baee49cdff55cb6b8d5f2df1b7}\label{class_control_unit_abca4b6baee49cdff55cb6b8d5f2df1b7}} 
+\mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}} {\bfseries G\+PR} \mbox{[}$\,$\mbox{]} = new \mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}}\mbox{[}4\mbox{]}
+\item 
+\mbox{\Hypertarget{class_control_unit_ae1e7e8cb984533c12ff8d43a42a4e055}\label{class_control_unit_ae1e7e8cb984533c12ff8d43a42a4e055}} 
+\mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}} {\bfseries IX} \mbox{[}$\,$\mbox{]} = new \mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}}\mbox{[}4\mbox{]}
+\item 
+\mbox{\Hypertarget{class_control_unit_a49df530c2ea9015e9f9663e170900e04}\label{class_control_unit_a49df530c2ea9015e9f9663e170900e04}} 
+\mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}} {\bfseries CC} =new \mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}}(4)
+\item 
+\mbox{\Hypertarget{class_control_unit_a6d4c2a9cf595a68b452661742e7ee7de}\label{class_control_unit_a6d4c2a9cf595a68b452661742e7ee7de}} 
+\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} {\bfseries M\+BR} =new \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}}()
+\item 
+\mbox{\Hypertarget{class_control_unit_aec87e0bfb2c465d0329c2a70eef6506e}\label{class_control_unit_aec87e0bfb2c465d0329c2a70eef6506e}} 
+\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} {\bfseries M\+AR} =new \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}}()
+\item 
+\mbox{\Hypertarget{class_control_unit_a8569af78b403537d1dc6123d553707be}\label{class_control_unit_a8569af78b403537d1dc6123d553707be}} 
+\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} {\bfseries M\+FR} =new \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}}()
+\item 
+\mbox{\Hypertarget{class_control_unit_a3a868b133fb5271acb3dd0c7b4187a39}\label{class_control_unit_a3a868b133fb5271acb3dd0c7b4187a39}} 
+\mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}} {\bfseries IR} =new \mbox{\hyperlink{class_w_o_r_d}{W\+O\+RD}}()
+\item 
+\mbox{\Hypertarget{class_control_unit_adcc34f0e8346e8c4e86747d22f59126c}\label{class_control_unit_adcc34f0e8346e8c4e86747d22f59126c}} 
+String {\bfseries message} =new String()
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_control_unit_ac331de2916632f6acab9b2a9c2a0d257}\label{class_control_unit_ac331de2916632f6acab9b2a9c2a0d257}} 
+static final Logger {\bfseries L\+OG} = Logger.\+get\+Global()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+cozyu 
+
+youcao documented by youcao. cpu of simulato it execute instruction and has registers for instructions. also it controls memory loading and saving. 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_control_unit_a5ece1f72ab7698be3c3325dd7d8f1f79}\label{class_control_unit_a5ece1f72ab7698be3c3325dd7d8f1f79}} 
+\index{ControlUnit@{ControlUnit}!addMessage@{addMessage}}
+\index{addMessage@{addMessage}!ControlUnit@{ControlUnit}}
+\doxysubsubsection{\texorpdfstring{addMessage()}{addMessage()}}
+{\footnotesize\ttfamily void Control\+Unit.\+add\+Message (\begin{DoxyParamCaption}\item[{String}]{message }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Append new message to the original one. 
+\begin{DoxyParams}{Parameters}
+{\em message} & a string message wanted to be appended. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_control_unit_a6334a40b581ecf69e2d9f98821ac302b}\label{class_control_unit_a6334a40b581ecf69e2d9f98821ac302b}} 
+\index{ControlUnit@{ControlUnit}!clock@{clock}}
+\index{clock@{clock}!ControlUnit@{ControlUnit}}
+\doxysubsubsection{\texorpdfstring{clock()}{clock()}}
+{\footnotesize\ttfamily boolean Control\+Unit.\+clock (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+perform appropriate operation considering current state at every clock. \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_control_unit_a45d1570db37aa395779e1522c3197cd9}\label{class_control_unit_a45d1570db37aa395779e1522c3197cd9}} 
+\index{ControlUnit@{ControlUnit}!execute@{execute}}
+\index{execute@{execute}!ControlUnit@{ControlUnit}}
+\doxysubsubsection{\texorpdfstring{execute()}{execute()}}
+{\footnotesize\ttfamily boolean Control\+Unit.\+execute (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Execute instructions. \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_control_unit_a42008c4c574707bc62520ce54341dba3}\label{class_control_unit_a42008c4c574707bc62520ce54341dba3}} 
+\index{ControlUnit@{ControlUnit}!increasePC@{increasePC}}
+\index{increasePC@{increasePC}!ControlUnit@{ControlUnit}}
+\doxysubsubsection{\texorpdfstring{increasePC()}{increasePC()}}
+{\footnotesize\ttfamily boolean Control\+Unit.\+increase\+PC (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Increase program counter \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_control_unit_a1eecc4ce00744ce4e03d181e86c580b2}\label{class_control_unit_a1eecc4ce00744ce4e03d181e86c580b2}} 
+\index{ControlUnit@{ControlUnit}!init@{init}}
+\index{init@{init}!ControlUnit@{ControlUnit}}
+\doxysubsubsection{\texorpdfstring{init()}{init()}}
+{\footnotesize\ttfamily boolean Control\+Unit.\+init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Initialize all register and memory, and then transfer control to boot program. \mbox{\Hypertarget{class_control_unit_a746aec3989874a3be6c9c2126e86f745}\label{class_control_unit_a746aec3989874a3be6c9c2126e86f745}} 
+\index{ControlUnit@{ControlUnit}!isCurrentInstruction@{isCurrentInstruction}}
+\index{isCurrentInstruction@{isCurrentInstruction}!ControlUnit@{ControlUnit}}
+\doxysubsubsection{\texorpdfstring{isCurrentInstruction()}{isCurrentInstruction()}}
+{\footnotesize\ttfamily boolean Control\+Unit.\+is\+Current\+Instruction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Check if there is current instruction in IR \begin{DoxyReturn}{Returns}
+On case existing current instruction, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_control_unit_a3db0eca8d662e588c2e2a98fd7418b4c}\label{class_control_unit_a3db0eca8d662e588c2e2a98fd7418b4c}} 
+\index{ControlUnit@{ControlUnit}!isNextInstruction@{isNextInstruction}}
+\index{isNextInstruction@{isNextInstruction}!ControlUnit@{ControlUnit}}
+\doxysubsubsection{\texorpdfstring{isNextInstruction()}{isNextInstruction()}}
+{\footnotesize\ttfamily boolean Control\+Unit.\+is\+Next\+Instruction (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [private]}}
+
+Check if there is next instruction \begin{DoxyReturn}{Returns}
+On case existing next instruction, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_control_unit_a4d888544fff0504f2a1fc4b7ee695070}\label{class_control_unit_a4d888544fff0504f2a1fc4b7ee695070}} 
+\index{ControlUnit@{ControlUnit}!setBootCode@{setBootCode}}
+\index{setBootCode@{setBootCode}!ControlUnit@{ControlUnit}}
+\doxysubsubsection{\texorpdfstring{setBootCode()}{setBootCode()}}
+{\footnotesize\ttfamily boolean Control\+Unit.\+set\+Boot\+Code (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Load instructions from the rom.\+txt file. \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_control_unit_ae994880e5891756b45cbf56003893e40}\label{class_control_unit_ae994880e5891756b45cbf56003893e40}} 
+\index{ControlUnit@{ControlUnit}!setUserCode@{setUserCode}}
+\index{setUserCode@{setUserCode}!ControlUnit@{ControlUnit}}
+\doxysubsubsection{\texorpdfstring{setUserCode()}{setUserCode()}}
+{\footnotesize\ttfamily boolean Control\+Unit.\+set\+User\+Code (\begin{DoxyParamCaption}\item[{String\mbox{[}$\,$\mbox{]}}]{arr\+Asm\+Code }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Convert a list of insturctions to a list of binary codes and print out the memory status. 
+\begin{DoxyParams}{Parameters}
+{\em arr\+Asm\+Code} & a string list storing multiple instructions \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_control_unit_ae61d40514fe004fcc70dbb676c9c5b1b}\label{class_control_unit_ae61d40514fe004fcc70dbb676c9c5b1b}} 
+\index{ControlUnit@{ControlUnit}!showMemory@{showMemory}}
+\index{showMemory@{showMemory}!ControlUnit@{ControlUnit}}
+\doxysubsubsection{\texorpdfstring{showMemory()}{showMemory()}}
+{\footnotesize\ttfamily boolean Control\+Unit.\+show\+Memory (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Print out memory status. \mbox{\Hypertarget{class_control_unit_a92bf51fe8a317f555f5ddd02e7f0c6e4}\label{class_control_unit_a92bf51fe8a317f555f5ddd02e7f0c6e4}} 
+\index{ControlUnit@{ControlUnit}!showRegister@{showRegister}}
+\index{showRegister@{showRegister}!ControlUnit@{ControlUnit}}
+\doxysubsubsection{\texorpdfstring{showRegister()}{showRegister()}}
+{\footnotesize\ttfamily boolean Control\+Unit.\+show\+Register (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Print out register status. 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Control\+Unit.\+java\end{DoxyCompactItemize}

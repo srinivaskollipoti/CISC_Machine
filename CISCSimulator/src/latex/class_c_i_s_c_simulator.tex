@@ -1,0 +1,146 @@
+\hypertarget{class_c_i_s_c_simulator}{}\doxysection{C\+I\+S\+C\+Simulator Class Reference}
+\label{class_c_i_s_c_simulator}\index{CISCSimulator@{CISCSimulator}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+enum {\bfseries State\+Type}
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_c_i_s_c_simulator_a3baa735d78c248104a5e36e831b2b42a}{C\+I\+S\+C\+Simulator}} (\mbox{\hyperlink{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}} panel)
+\item 
+boolean \mbox{\hyperlink{class_c_i_s_c_simulator_a05422388f0bcc1da46d8174376f97745}{init\+Processor}} ()
+\item 
+void \mbox{\hyperlink{class_c_i_s_c_simulator_a2be3b7cb449ff7999e2eb7e25cf13efe}{power\+Off}} ()
+\item 
+boolean \mbox{\hyperlink{class_c_i_s_c_simulator_ae5372c91ac84b44626d52d8c82a4a7cd}{run}} ()
+\item 
+boolean \mbox{\hyperlink{class_c_i_s_c_simulator_ad915fbbde2d496fa2b61b5c79c4a9f12}{single\+Step}} ()
+\item 
+boolean \mbox{\hyperlink{class_c_i_s_c_simulator_aebf982df180a2fae5e5193efa7753a73}{load\+Register}} (long R0, long R1, long R2, long R3, long I\+X1, long I\+X2, long I\+X3, long IR, long PC, long CC, long M\+AR, long M\+BR, long M\+FR)
+\item 
+boolean \mbox{\hyperlink{class_c_i_s_c_simulator_aab74410d409de4157b528fcbae891072}{set\+User\+Code}} (String\mbox{[}$\,$\mbox{]} arr\+Inst)
+\item 
+boolean \mbox{\hyperlink{class_c_i_s_c_simulator_a82c46633ece7545ca567fd497d8f0a56}{is\+Power\+Off}} ()
+\item 
+\mbox{\Hypertarget{class_c_i_s_c_simulator_abf78473f01529afa993f5bd7928c95e5}\label{class_c_i_s_c_simulator_abf78473f01529afa993f5bd7928c95e5}} 
+\mbox{\hyperlink{class_control_unit}{Control\+Unit}} {\bfseries get\+C\+PU} ()
+\item 
+\mbox{\Hypertarget{class_c_i_s_c_simulator_abb3534a565f28718f110c2ba7e2abda2}\label{class_c_i_s_c_simulator_abb3534a565f28718f110c2ba7e2abda2}} 
+\mbox{\hyperlink{class_memory}{Memory}} {\bfseries get\+Memory} ()
+\item 
+\mbox{\Hypertarget{class_c_i_s_c_simulator_ac2bafc84c463836766cab8deab8e9c8c}\label{class_c_i_s_c_simulator_ac2bafc84c463836766cab8deab8e9c8c}} 
+State\+Type {\bfseries get\+State} ()
+\item 
+\mbox{\Hypertarget{class_c_i_s_c_simulator_a70ecfe2e6603617c51c7a0cd380dbcde}\label{class_c_i_s_c_simulator_a70ecfe2e6603617c51c7a0cd380dbcde}} 
+String {\bfseries get\+Message} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_c_i_s_c_simulator_a9b8090e66818776be069a74e3984c228}\label{class_c_i_s_c_simulator_a9b8090e66818776be069a74e3984c228}} 
+\mbox{\hyperlink{class_control_unit}{Control\+Unit}} {\bfseries controller}
+\item 
+\mbox{\Hypertarget{class_c_i_s_c_simulator_a03563884ded775aa96d92699762ec7df}\label{class_c_i_s_c_simulator_a03563884ded775aa96d92699762ec7df}} 
+\mbox{\hyperlink{class_memory}{Memory}} {\bfseries memory}
+\item 
+\mbox{\Hypertarget{class_c_i_s_c_simulator_a081d9971158ff03ee60971fec675a8ab}\label{class_c_i_s_c_simulator_a081d9971158ff03ee60971fec675a8ab}} 
+\mbox{\hyperlink{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}} {\bfseries panel}
+\item 
+\mbox{\Hypertarget{class_c_i_s_c_simulator_adce82cb506b1f4320efac8de8e5aa430}\label{class_c_i_s_c_simulator_adce82cb506b1f4320efac8de8e5aa430}} 
+State\+Type {\bfseries state}
+\item 
+\mbox{\Hypertarget{class_c_i_s_c_simulator_accfc175ebd479c7a72edf21e96d7a777}\label{class_c_i_s_c_simulator_accfc175ebd479c7a72edf21e96d7a777}} 
+String {\bfseries message} =new String()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+cozyu 
+
+youcao documented by youcao. Operates the simulator(basic machine) according to the user input. See below for detailed descriptions. 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_c_i_s_c_simulator_a3baa735d78c248104a5e36e831b2b42a}\label{class_c_i_s_c_simulator_a3baa735d78c248104a5e36e831b2b42a}} 
+\index{CISCSimulator@{CISCSimulator}!CISCSimulator@{CISCSimulator}}
+\index{CISCSimulator@{CISCSimulator}!CISCSimulator@{CISCSimulator}}
+\doxysubsubsection{\texorpdfstring{CISCSimulator()}{CISCSimulator()}}
+{\footnotesize\ttfamily C\+I\+S\+C\+Simulator.\+C\+I\+S\+C\+Simulator (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_c_i_s_c_g_u_i}{C\+I\+S\+C\+G\+UI}}}]{panel }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+A constructor that create a simulator given a G\+UI panel with state on P\+O\+W\+E\+R\+O\+FF. 
+\begin{DoxyParams}{Parameters}
+{\em panel} & A graphic user interface. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_c_i_s_c_simulator_a05422388f0bcc1da46d8174376f97745}\label{class_c_i_s_c_simulator_a05422388f0bcc1da46d8174376f97745}} 
+\index{CISCSimulator@{CISCSimulator}!initProcessor@{initProcessor}}
+\index{initProcessor@{initProcessor}!CISCSimulator@{CISCSimulator}}
+\doxysubsubsection{\texorpdfstring{initProcessor()}{initProcessor()}}
+{\footnotesize\ttfamily boolean C\+I\+S\+C\+Simulator.\+init\+Processor (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Initialize all register and memory and load boot program from \mbox{\hyperlink{class_r_o_m}{R\+OM}} and transfers control to the boot program and set state to ready. \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_c_i_s_c_simulator_a82c46633ece7545ca567fd497d8f0a56}\label{class_c_i_s_c_simulator_a82c46633ece7545ca567fd497d8f0a56}} 
+\index{CISCSimulator@{CISCSimulator}!isPowerOff@{isPowerOff}}
+\index{isPowerOff@{isPowerOff}!CISCSimulator@{CISCSimulator}}
+\doxysubsubsection{\texorpdfstring{isPowerOff()}{isPowerOff()}}
+{\footnotesize\ttfamily boolean C\+I\+S\+C\+Simulator.\+is\+Power\+Off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+check if the simulator is turned off \begin{DoxyReturn}{Returns}
+A boolean indicating if the simulator is turned off. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_c_i_s_c_simulator_aebf982df180a2fae5e5193efa7753a73}\label{class_c_i_s_c_simulator_aebf982df180a2fae5e5193efa7753a73}} 
+\index{CISCSimulator@{CISCSimulator}!loadRegister@{loadRegister}}
+\index{loadRegister@{loadRegister}!CISCSimulator@{CISCSimulator}}
+\doxysubsubsection{\texorpdfstring{loadRegister()}{loadRegister()}}
+{\footnotesize\ttfamily boolean C\+I\+S\+C\+Simulator.\+load\+Register (\begin{DoxyParamCaption}\item[{long}]{R0,  }\item[{long}]{R1,  }\item[{long}]{R2,  }\item[{long}]{R3,  }\item[{long}]{I\+X1,  }\item[{long}]{I\+X2,  }\item[{long}]{I\+X3,  }\item[{long}]{IR,  }\item[{long}]{PC,  }\item[{long}]{CC,  }\item[{long}]{M\+AR,  }\item[{long}]{M\+BR,  }\item[{long}]{M\+FR }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Load the register with given data. \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_c_i_s_c_simulator_a2be3b7cb449ff7999e2eb7e25cf13efe}\label{class_c_i_s_c_simulator_a2be3b7cb449ff7999e2eb7e25cf13efe}} 
+\index{CISCSimulator@{CISCSimulator}!powerOff@{powerOff}}
+\index{powerOff@{powerOff}!CISCSimulator@{CISCSimulator}}
+\doxysubsubsection{\texorpdfstring{powerOff()}{powerOff()}}
+{\footnotesize\ttfamily void C\+I\+S\+C\+Simulator.\+power\+Off (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Turn off the simulator \mbox{\Hypertarget{class_c_i_s_c_simulator_ae5372c91ac84b44626d52d8c82a4a7cd}\label{class_c_i_s_c_simulator_ae5372c91ac84b44626d52d8c82a4a7cd}} 
+\index{CISCSimulator@{CISCSimulator}!run@{run}}
+\index{run@{run}!CISCSimulator@{CISCSimulator}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily boolean C\+I\+S\+C\+Simulator.\+run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Execute the whole process for the input instruction. \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_c_i_s_c_simulator_aab74410d409de4157b528fcbae891072}\label{class_c_i_s_c_simulator_aab74410d409de4157b528fcbae891072}} 
+\index{CISCSimulator@{CISCSimulator}!setUserCode@{setUserCode}}
+\index{setUserCode@{setUserCode}!CISCSimulator@{CISCSimulator}}
+\doxysubsubsection{\texorpdfstring{setUserCode()}{setUserCode()}}
+{\footnotesize\ttfamily boolean C\+I\+S\+C\+Simulator.\+set\+User\+Code (\begin{DoxyParamCaption}\item[{String\mbox{[}$\,$\mbox{]}}]{arr\+Inst }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set the user code to controller. \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_c_i_s_c_simulator_ad915fbbde2d496fa2b61b5c79c4a9f12}\label{class_c_i_s_c_simulator_ad915fbbde2d496fa2b61b5c79c4a9f12}} 
+\index{CISCSimulator@{CISCSimulator}!singleStep@{singleStep}}
+\index{singleStep@{singleStep}!CISCSimulator@{CISCSimulator}}
+\doxysubsubsection{\texorpdfstring{singleStep()}{singleStep()}}
+{\footnotesize\ttfamily boolean C\+I\+S\+C\+Simulator.\+single\+Step (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Execute only one more clock from the last step according to the instruction. \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+I\+S\+C\+Simulator.\+java\end{DoxyCompactItemize}

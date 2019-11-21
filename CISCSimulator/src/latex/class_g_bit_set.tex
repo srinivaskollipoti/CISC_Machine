@@ -1,0 +1,166 @@
+\hypertarget{class_g_bit_set}{}\doxysection{G\+Bit\+Set Class Reference}
+\label{class_g_bit_set}\index{GBitSet@{GBitSet}}
+Inheritance diagram for G\+Bit\+Set\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=3.000000cm]{class_g_bit_set}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{class_g_bit_set_a72751b827cba685cb218b517bf8d073f}{G\+Bit\+Set}} (int length)
+\item 
+void \mbox{\hyperlink{class_g_bit_set_abb194389c245e3b224d35431028e7826}{set\+Min\+Value}} (int min\+Value)
+\item 
+\mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}} \mbox{\hyperlink{class_g_bit_set_a752ff5327ec9f225dacd53ee58bfb60f}{sub\+Set}} (int from, int to)
+\item 
+boolean \mbox{\hyperlink{class_g_bit_set_aa9c50eb76c2dac7171eb56f58e6a8404}{set\+Long}} (long number)
+\item 
+long \mbox{\hyperlink{class_g_bit_set_a992e945c2490dbe859394cf364c72729}{get\+Long}} ()
+\item 
+int \mbox{\hyperlink{class_g_bit_set_a555cd0db5030b86c9de1857028d6ab1b}{get\+Int}} ()
+\item 
+boolean \mbox{\hyperlink{class_g_bit_set_a758e694e1d119e33563dfbf342d4a09a}{copy}} (\mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}} input)
+\item 
+String \mbox{\hyperlink{class_g_bit_set_adf6d9042b7ba5a38402ca6853e5e9fb2}{get\+String}} ()
+\item 
+String \mbox{\hyperlink{class_g_bit_set_ad52e00669b5bce4e2a9ee4b7ea0bc7a2}{to\+String}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_g_bit_set_af9779316cf71a7994c61b5b5dd7a03f1}\label{class_g_bit_set_af9779316cf71a7994c61b5b5dd7a03f1}} 
+final int {\bfseries length}
+\end{DoxyCompactItemize}
+\doxysubsection*{Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_g_bit_set_a919f80ee2adc54c6c924887eb9467075}\label{class_g_bit_set_a919f80ee2adc54c6c924887eb9467075}} 
+int {\bfseries min\+Value} =0
+\item 
+\mbox{\Hypertarget{class_g_bit_set_a10907614da36a4123a86f3bdaddf3d77}\label{class_g_bit_set_a10907614da36a4123a86f3bdaddf3d77}} 
+int {\bfseries max\+Value} =0
+\end{DoxyCompactItemize}
+\doxysubsection*{Static Private Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{class_g_bit_set_ae5cca8ad08f670ca767382b48318be83}\label{class_g_bit_set_ae5cca8ad08f670ca767382b48318be83}} 
+static final Logger {\bfseries L\+OG} = Logger.\+get\+Global()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyAuthor}{Author}
+cozyu implement bit operation for the simulator all registers and memory implemented based on \mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}} 
+\end{DoxyAuthor}
+
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{class_g_bit_set_a72751b827cba685cb218b517bf8d073f}\label{class_g_bit_set_a72751b827cba685cb218b517bf8d073f}} 
+\index{GBitSet@{GBitSet}!GBitSet@{GBitSet}}
+\index{GBitSet@{GBitSet}!GBitSet@{GBitSet}}
+\doxysubsubsection{\texorpdfstring{GBitSet()}{GBitSet()}}
+{\footnotesize\ttfamily G\+Bit\+Set.\+G\+Bit\+Set (\begin{DoxyParamCaption}\item[{int}]{length }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+A constructor that create a bit set given length. 
+\begin{DoxyParams}{Parameters}
+{\em length} & of bit set. \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{class_g_bit_set_a758e694e1d119e33563dfbf342d4a09a}\label{class_g_bit_set_a758e694e1d119e33563dfbf342d4a09a}} 
+\index{GBitSet@{GBitSet}!copy@{copy}}
+\index{copy@{copy}!GBitSet@{GBitSet}}
+\doxysubsubsection{\texorpdfstring{copy()}{copy()}}
+{\footnotesize\ttfamily boolean G\+Bit\+Set.\+copy (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}}}]{input }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Copy bit set from specified \mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}} \begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_g_bit_set_a555cd0db5030b86c9de1857028d6ab1b}\label{class_g_bit_set_a555cd0db5030b86c9de1857028d6ab1b}} 
+\index{GBitSet@{GBitSet}!getInt@{getInt}}
+\index{getInt@{getInt}!GBitSet@{GBitSet}}
+\doxysubsubsection{\texorpdfstring{getInt()}{getInt()}}
+{\footnotesize\ttfamily int G\+Bit\+Set.\+get\+Int (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get int value from bit set \begin{DoxyReturn}{Returns}
+A int indicating bit set. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_g_bit_set_a992e945c2490dbe859394cf364c72729}\label{class_g_bit_set_a992e945c2490dbe859394cf364c72729}} 
+\index{GBitSet@{GBitSet}!getLong@{getLong}}
+\index{getLong@{getLong}!GBitSet@{GBitSet}}
+\doxysubsubsection{\texorpdfstring{getLong()}{getLong()}}
+{\footnotesize\ttfamily long G\+Bit\+Set.\+get\+Long (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get long value from bit set \begin{DoxyReturn}{Returns}
+A long indicating bit set. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_g_bit_set_adf6d9042b7ba5a38402ca6853e5e9fb2}\label{class_g_bit_set_adf6d9042b7ba5a38402ca6853e5e9fb2}} 
+\index{GBitSet@{GBitSet}!getString@{getString}}
+\index{getString@{getString}!GBitSet@{GBitSet}}
+\doxysubsubsection{\texorpdfstring{getString()}{getString()}}
+{\footnotesize\ttfamily String G\+Bit\+Set.\+get\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get binary string from bit set ~\newline
+ \begin{DoxyReturn}{Returns}
+A binary string 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_g_bit_set_aa9c50eb76c2dac7171eb56f58e6a8404}\label{class_g_bit_set_aa9c50eb76c2dac7171eb56f58e6a8404}} 
+\index{GBitSet@{GBitSet}!setLong@{setLong}}
+\index{setLong@{setLong}!GBitSet@{GBitSet}}
+\doxysubsubsection{\texorpdfstring{setLong()}{setLong()}}
+{\footnotesize\ttfamily boolean G\+Bit\+Set.\+set\+Long (\begin{DoxyParamCaption}\item[{long}]{number }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Sets bit set to specified long value 
+\begin{DoxyParams}{Parameters}
+{\em number} & a long value. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+On case success, true is retured, otherwise false is returned. 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_g_bit_set_abb194389c245e3b224d35431028e7826}\label{class_g_bit_set_abb194389c245e3b224d35431028e7826}} 
+\index{GBitSet@{GBitSet}!setMinValue@{setMinValue}}
+\index{setMinValue@{setMinValue}!GBitSet@{GBitSet}}
+\doxysubsubsection{\texorpdfstring{setMinValue()}{setMinValue()}}
+{\footnotesize\ttfamily void G\+Bit\+Set.\+set\+Min\+Value (\begin{DoxyParamCaption}\item[{int}]{min\+Value }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Set minimum value of a bit set. 
+\begin{DoxyParams}{Parameters}
+{\em minimum} & value. \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{class_g_bit_set_a752ff5327ec9f225dacd53ee58bfb60f}\label{class_g_bit_set_a752ff5327ec9f225dacd53ee58bfb60f}} 
+\index{GBitSet@{GBitSet}!subSet@{subSet}}
+\index{subSet@{subSet}!GBitSet@{GBitSet}}
+\doxysubsubsection{\texorpdfstring{subSet()}{subSet()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{class_g_bit_set}{G\+Bit\+Set}} G\+Bit\+Set.\+sub\+Set (\begin{DoxyParamCaption}\item[{int}]{from,  }\item[{int}]{to }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Return a subset of this bit set. 
+\begin{DoxyParams}{Parameters}
+{\em from} & the beginning index, inclusive. \\
+\hline
+{\em from} & the ending index, exclusive. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the specified subset 
+\end{DoxyReturn}
+\mbox{\Hypertarget{class_g_bit_set_ad52e00669b5bce4e2a9ee4b7ea0bc7a2}\label{class_g_bit_set_ad52e00669b5bce4e2a9ee4b7ea0bc7a2}} 
+\index{GBitSet@{GBitSet}!toString@{toString}}
+\index{toString@{toString}!GBitSet@{GBitSet}}
+\doxysubsubsection{\texorpdfstring{toString()}{toString()}}
+{\footnotesize\ttfamily String G\+Bit\+Set.\+to\+String (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+Get binary string and long value from bit set ~\newline
+ \begin{DoxyReturn}{Returns}
+A binary string and long value 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+G\+Bit\+Set.\+java\end{DoxyCompactItemize}
