@@ -36,6 +36,8 @@ public class FloatingWORD extends GBitSet {
 		return res;
 	}
 	public long setFloat(float f) {
+		if(f < 0) this.set(1);
+		else this.set(0);
 		
 		return 0;
 	}
