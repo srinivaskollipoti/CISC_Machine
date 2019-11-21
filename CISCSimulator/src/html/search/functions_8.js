@@ -1,10 +1,14 @@
 var searchData=
 [
-  ['load_251',['load',['../class_memory.html#a36e78c87eaff8adaa861216b5647dffb',1,'Memory.load(int address)'],['../class_memory.html#a72fe088544267aa6731a5e686f038918',1,'Memory.load(long address, CPU cpu)']]],
-  ['loadmemory_252',['loadMemory',['../class_c_p_u.html#a88d1c67068fe190018d35ef01ca835dc',1,'CPU']]],
-  ['loadprogram_253',['loadProgram',['../class_c_i_s_c_simulator.html#a6f560cb19a111d597bf03977926977ec',1,'CISCSimulator']]],
-  ['loadregister_254',['loadRegister',['../class_c_i_s_c_simulator.html#aebf982df180a2fae5e5193efa7753a73',1,'CISCSimulator']]],
-  ['loadtestprogram1_255',['loadTestProgram1',['../class_c_i_s_c_simulator.html#a5768cd36e0fdb6dea639be79342dbc1a',1,'CISCSimulator']]],
-  ['loadtestprogram2_256',['loadTestProgram2',['../class_c_i_s_c_simulator.html#af226308a3bf2ba741227149814ae1e56',1,'CISCSimulator']]],
-  ['loaduserinstruction_257',['loadUserInstruction',['../class_c_i_s_c_g_u_i.html#a8365b928e9e5c1ec1d7dec5131899755',1,'CISCGUI']]]
+  ['increasepc_258',['increasePC',['../class_c_p_u.html#a8811ebd966ab117691ac0679437a097c',1,'CPU']]],
+  ['init_259',['init',['../class_c_p_u.html#a486a402e7686cfe3fd2d4540165122dd',1,'CPU.init()'],['../class_memory.html#af4b36166151e63068919fa9326775e8d',1,'Memory.init()']]],
+  ['initcomponents_260',['initComponents',['../class_c_i_s_c_g_u_i.html#aea33bf9e851f98342f9df2f52bd00132',1,'CISCGUI']]],
+  ['initprocessor_261',['initProcessor',['../class_c_i_s_c_simulator.html#a05422388f0bcc1da46d8174376f97745',1,'CISCSimulator']]],
+  ['initstatus_262',['initStatus',['../class_c_i_s_c_simulator.html#adf1aae33252aefc017b9371cf06a6dfd',1,'CISCSimulator']]],
+  ['inputuserdata_263',['inputUserData',['../class_c_i_s_c_g_u_i.html#a608904f00f75df8a9d3dd5694cd30ebd',1,'CISCGUI']]],
+  ['inputusertext_264',['inputUserText',['../class_c_i_s_c_simulator.html#a0cd9a22795906559bc9aa04d39e9aa06',1,'CISCSimulator']]],
+  ['instructionhandler_265',['InstructionHandler',['../class_instruction_handler.html#ae76b37b03fda9b075841136b088ac407',1,'InstructionHandler']]],
+  ['isinstruction_266',['isInstruction',['../class_c_p_u.html#a63d8e1dcdcecb29a104b4fc0a865563b',1,'CPU']]],
+  ['isiobuffer_267',['isIOBuffer',['../class_i_o_c.html#ac981e243bacee8e38757bb8d39ff1de0',1,'IOC']]],
+  ['ispoweroff_268',['isPowerOff',['../class_c_i_s_c_simulator.html#a82c46633ece7545ca567fd497d8f0a56',1,'CISCSimulator']]]
 ];
