@@ -1,11 +1,19 @@
 var searchData=
 [
-  ['load_94',['load',['../class_memory.html#a36e78c87eaff8adaa861216b5647dffb',1,'Memory.load(int address)'],['../class_memory.html#a72fe088544267aa6731a5e686f038918',1,'Memory.load(long address, CPU cpu)']]],
-  ['loadmemory_95',['loadMemory',['../class_c_p_u.html#a88d1c67068fe190018d35ef01ca835dc',1,'CPU']]],
-  ['loadprogram_96',['loadProgram',['../class_c_i_s_c_simulator.html#a6f560cb19a111d597bf03977926977ec',1,'CISCSimulator']]],
-  ['loadregister_97',['loadRegister',['../class_c_i_s_c_simulator.html#aebf982df180a2fae5e5193efa7753a73',1,'CISCSimulator']]],
-  ['loadtestprogram1_98',['loadTestProgram1',['../class_c_i_s_c_simulator.html#a5768cd36e0fdb6dea639be79342dbc1a',1,'CISCSimulator']]],
-  ['loadtestprogram2_99',['loadTestProgram2',['../class_c_i_s_c_simulator.html#af226308a3bf2ba741227149814ae1e56',1,'CISCSimulator']]],
-  ['loaduserinstruction_100',['loadUserInstruction',['../class_c_i_s_c_g_u_i.html#a8365b928e9e5c1ec1d7dec5131899755',1,'CISCGUI']]],
-  ['lsinsthandler_101',['LSInstHandler',['../class_l_s_inst_handler.html',1,'']]]
+  ['increasepc_87',['increasePC',['../class_c_p_u.html#a8811ebd966ab117691ac0679437a097c',1,'CPU']]],
+  ['init_88',['init',['../class_c_p_u.html#a486a402e7686cfe3fd2d4540165122dd',1,'CPU.init()'],['../class_memory.html#af4b36166151e63068919fa9326775e8d',1,'Memory.init()']]],
+  ['initcomponents_89',['initComponents',['../class_c_i_s_c_g_u_i.html#aea33bf9e851f98342f9df2f52bd00132',1,'CISCGUI']]],
+  ['initprocessor_90',['initProcessor',['../class_c_i_s_c_simulator.html#a05422388f0bcc1da46d8174376f97745',1,'CISCSimulator']]],
+  ['initstatus_91',['initStatus',['../class_c_i_s_c_simulator.html#adf1aae33252aefc017b9371cf06a6dfd',1,'CISCSimulator']]],
+  ['inputuserdata_92',['inputUserData',['../class_c_i_s_c_g_u_i.html#a608904f00f75df8a9d3dd5694cd30ebd',1,'CISCGUI']]],
+  ['inputusertext_93',['inputUserText',['../class_c_i_s_c_simulator.html#a0cd9a22795906559bc9aa04d39e9aa06',1,'CISCSimulator']]],
+  ['instructionhandler_94',['InstructionHandler',['../class_instruction_handler.html',1,'InstructionHandler'],['../class_instruction_handler.html#ae76b37b03fda9b075841136b088ac407',1,'InstructionHandler.InstructionHandler()']]],
+  ['ioc_95',['IOC',['../class_i_o_c.html',1,'IOC'],['../class_c_i_s_c_simulator.html#a8bbb924ef7aedbedd8c524d5733c6424',1,'CISCSimulator.ioc()']]],
+  ['ioinsthandler_96',['IOInstHandler',['../class_i_o_inst_handler.html',1,'']]],
+  ['ir_97',['IR',['../class_c_p_u.html#aad60bd246353794cd76ca5189f5968f3',1,'CPU']]],
+  ['isinstruction_98',['isInstruction',['../class_c_p_u.html#a63d8e1dcdcecb29a104b4fc0a865563b',1,'CPU']]],
+  ['isiobuffer_99',['isIOBuffer',['../class_i_o_c.html#ac981e243bacee8e38757bb8d39ff1de0',1,'IOC']]],
+  ['isneedreload_100',['isNeedReload',['../class_c_i_s_c_simulator.html#a074edfebdb68872526f3c69c561794f3',1,'CISCSimulator']]],
+  ['ispoweroff_101',['isPowerOff',['../class_c_i_s_c_simulator.html#a82c46633ece7545ca567fd497d8f0a56',1,'CISCSimulator']]],
+  ['ix_102',['IX',['../class_c_p_u.html#a4dcfc394344ce574e38b5d3bc0f2584d',1,'CPU']]]
 ];

@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['reloadrom_267',['reloadROM',['../class_c_i_s_c_simulator.html#a231df585f172d5b4b850f47b12850f14',1,'CISCSimulator']]],
-  ['restoreregister_268',['restoreRegister',['../class_c_p_u.html#a55930a8cf065df4a00d1d581865c9e63',1,'CPU']]],
-  ['rotate_269',['rotate',['../class_a_l_u.html#a621b808d4c94c4910d1f88c042363ca9',1,'ALU.rotate()'],['../class_g_bit_set.html#a0f4604547123f2000e695f90a9a62dbd',1,'GBitSet.rotate()']]],
-  ['run_270',['run',['../class_c_i_s_c_simulator.html#afbdeadc91d2001561a2bd157dca0c373',1,'CISCSimulator']]]
+  ['parseir_281',['parseIR',['../class_instruction_handler.html#a54a4d1b818fce13b826607f9f7c5ee41',1,'InstructionHandler']]],
+  ['poweroff_282',['powerOff',['../class_c_i_s_c_simulator.html#a2be3b7cb449ff7999e2eb7e25cf13efe',1,'CISCSimulator']]],
+  ['printlog_283',['printLog',['../class_c_i_s_c_g_u_i.html#ad3e22308927db07bea05f0135b714e96',1,'CISCGUI']]],
+  ['printscreen_284',['printScreen',['../class_c_i_s_c_g_u_i.html#a14923edccfae68d233c0223e738bbd65',1,'CISCGUI']]]
 ];
