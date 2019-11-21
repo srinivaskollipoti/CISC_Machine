@@ -15,6 +15,7 @@ public class InstructionHandler{
 	private ALInstHandler alInst;
 	private IOInstHandler ioInst;
 	private TransInstHandler trInst;
+	private FloatInstHandler flInst;
 	
 	protected int opcode=0;
 	protected int reg=0;		// register
@@ -47,6 +48,7 @@ public class InstructionHandler{
 		alInst=new ALInstHandler(cpu);
 		ioInst=new IOInstHandler(cpu);
 		trInst=new TransInstHandler(cpu);
+		flInst=new FloatInstHandler(cpu);
 	}
 	
 	/**
@@ -165,6 +167,9 @@ public class InstructionHandler{
 			break;
 		case IO_MISC_INST:	
 			handler=ioInst;
+			break;
+		case FP_VEC_INST:
+			handler=flInst;
 			break;
 		default:
 			break;

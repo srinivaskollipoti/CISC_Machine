@@ -67,7 +67,7 @@ public class FloatInstHandler extends InstructionHandler {
 	 */
 	private boolean executeFADD() throws IOException{	
 		int eAddress=getEA();
-		WORD param=new SignedWORD();
+		WORD param=new FloatingWORD();
 		param.setLong(cpu.loadMemory(eAddress).getLong()+cpu.getFR(reg).getLong());
 		if(param.getLong() > 64) {
 			message+="==> FR"+reg+"+"+cpu.loadMemory(eAddress)+"  = OVERFLOW "+"\n";
@@ -126,8 +126,12 @@ public class FloatInstHandler extends InstructionHandler {
 	 */
 	private boolean executeLDFR() throws IOException {
 		int eAddress=getEA();
-		cpu.getFR(0).copy(cpu.loadMemory(eAddress));
-		cpu.getFR(1).copy(cpu.loadMemory(eAddress));
+		WORD param1=new FloatingWORD();
+		WORD param2=new FloatingWORD();
+		param1.copy(cpu.loadMemory(eAddress));
+		param2.copy(cpu.loadMemory(eAddress));
+		cpu.getFR(0).setLong(param1.getLong());
+		cpu.getFR(1).setLong(param2.getLong());
 		message+="==> FR0"+" = mem["+eAddress+"] = "+cpu.getFR(0).getLong()+"\n";
 		message+="==> FR1"+" = mem["+eAddress+1+"] = "+cpu.getFR(1).getLong()+"\n";
 		return true;
@@ -140,8 +144,8 @@ public class FloatInstHandler extends InstructionHandler {
 	 */
 	private boolean executeSTFR() throws IOException {
 		int eAddress=getEA();
-		WORD param1=new SignedWORD();
-		WORD param2=new SignedWORD();
+		WORD param1=new FloatingWORD();
+		WORD param2=new FloatingWORD();
 	    param1.copy(cpu.getFR(0));
 	    param2.copy(cpu.getFR(1));
 		cpu.storeMemory(eAddress,param1);
