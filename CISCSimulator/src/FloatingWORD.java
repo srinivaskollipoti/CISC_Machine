@@ -32,7 +32,7 @@ public class FloatingWORD extends GBitSet {
 	        if(this.get(i))
 	            mant |= (1 << i);
 		float res = (float)(Math.pow(mant, exp-8));
-		if(this.toLongArray()[0] == 1) res = -1*res;
+		res = -1*this.toLongArray()[0]*res;
 		return res;
 	}
 	public long setFloat(float f) {
