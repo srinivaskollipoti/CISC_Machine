@@ -22,9 +22,15 @@ public class FloatingWORD extends GBitSet {
 	public float getFloat() {
 		if(this.isEmpty())
 			return 0;
-		long exp = this.get(2,7).toLongArray()[0];
-		if(this.get(1,1).toLongArray()[0] == 1) exp = -1*exp;
-		long mant = this.get(8,15).toLongArray()[0];
+		int exp = 0;
+		for(int i = 2 ; i < 7; i++)
+	        if(this.get(i))
+	            exp |= (1 << i);
+		if(this.toLongArray()[1] == 1) exp = -1*exp;
+		int mant = 0;
+		for(int i = 8 ; i < 15; i++)
+	        if(this.get(i))
+	            mant |= (1 << i);
 		float res = (float)(Math.pow(mant, exp-8));
 		if(this.toLongArray()[0] == 1) res = -1*res;
 		return res;
