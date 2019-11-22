@@ -84,8 +84,17 @@ public class FloatInstHandler extends InstructionHandler {
 	 * @throws IOException
 	 */
 	private boolean executeFSUB() throws IOException {
-		
+		int eAddress=getEA();
+		WORD param=new SignedWORD();
+		param.setLong(cpu.loadMemory(eAddress).getLong()-cpu.getFR(reg).getLong());
+		if(param.getLong() < -63) {
+			message+="==> FR"+reg+"+"+cpu.loadMemory(eAddress)+"  = OVERFLOW "+"\n";
+			return true;
+		}
+		cpu.getFR(reg).copy(param);
+		message+="==> FR"+reg+"+"+cpu.loadMemory(eAddress)+" = "+cpu.getFR(reg).getLong()+"\n";
 	    return true;
+		
 	}
 	
 	/**
