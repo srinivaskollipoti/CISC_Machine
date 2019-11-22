@@ -40,7 +40,7 @@ public class CPU {
 	private WORD MFR=new WORD();			/// Machine Fault Register
 	
 	private SignedWORD GPR[] = new SignedWORD[4];	/// General Purpose Register
-	private SignedWORD FR[] = new SignedWORD[2];/// Floating-points Register
+	private FloatingWORD FR[] = new FloatingWORD[2];/// Floating-points Register
 	private SignedWORD IX[] = new SignedWORD[4];	/// Index Register
 	
 	private GBitSet CC=new GBitSet(4);		/// Condition Code
@@ -669,7 +669,7 @@ public class CPU {
 	public String getMessage(){ return message;}
 	public SignedWORD getGPR(int i) { return GPR[i]; }
 	public SignedWORD getIX(int i) { return IX[i]; }
-	public SignedWORD getFR(int i) {return FR[i];}
+	public FloatingWORD getFR(int i) {return FR[i];}
 	public GBitSet getPC() { return PC; }
 	public boolean setPC(long value) {PC.setLong(value); return true;}
 	public GBitSet getCC() { return CC; }
