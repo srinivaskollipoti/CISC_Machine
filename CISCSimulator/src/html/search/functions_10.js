@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['updatedisplay_296',['updateDisplay',['../class_c_i_s_c_g_u_i.html#a4f1af03defa8959e1fc3b07f76be0d92',1,'CISCGUI.updateDisplay()'],['../class_c_i_s_c_g_u_i.html#a05e0700e28790086acf45b3e5f61a157',1,'CISCGUI.updateDisplay(boolean isMessage)']]]
+  ['tostring_312',['toString',['../class_g_bit_set.html#ad52e00669b5bce4e2a9ee4b7ea0bc7a2',1,'GBitSet']]],
+  ['transinsthandler_313',['TransInstHandler',['../class_trans_inst_handler.html#a140f630ad6e5e383b5d72fcde26ab2fb',1,'TransInstHandler']]]
 ];
