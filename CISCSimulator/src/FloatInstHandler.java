@@ -67,7 +67,7 @@ public class FloatInstHandler extends InstructionHandler {
 	 */
 	private boolean executeFADD() throws IOException{	
 		int eAddress=getEA();
-		WORD param=new FloatingWORD();
+		FloatingWORD param=new FloatingWORD();
 		param.setLong(cpu.loadMemory(eAddress).getLong()+cpu.getFR(reg).getLong());
 		if(param.getLong() > 64) {
 			message+="==> FR"+reg+"+"+cpu.loadMemory(eAddress)+"  = OVERFLOW "+"\n";
@@ -85,7 +85,8 @@ public class FloatInstHandler extends InstructionHandler {
 	 */
 	private boolean executeFSUB() throws IOException {
 		int eAddress=getEA();
-		WORD param=new SignedWORD();
+		FloatingWORD param=new FloatingWORD();
+		
 		param.setLong(cpu.loadMemory(eAddress).getLong()-cpu.getFR(reg).getLong());
 		if(param.getLong() < -63) {
 			message+="==> FR"+reg+"+"+cpu.loadMemory(eAddress)+"  = OVERFLOW "+"\n";
@@ -104,7 +105,25 @@ public class FloatInstHandler extends InstructionHandler {
 	 */
 	
 	private boolean executeVADD() throws IOException {
+		int eAddress = getEA();
+		int eAddress1 = getEA()+1;
 		
+		FloatingWORD param=new FloatingWORD();
+		float size = cpu.getFR(reg).getFloat();
+		
+		
+		for (int i=0; i<size; i++) {
+			
+			long V1 = cpu.loadMemory(eAddress).getLong()+i;
+			long V2 = cpu.loadMemory(eAddress1).getLong()+i;
+			
+			long result = V1+V2;
+			V1++;
+			V2++;
+			//cpu.storeMemory(eAddress,result);			
+			
+		}
+		message+="==> VADD"+reg+"+"+cpu.loadMemory(eAddress)+""+cpu.loadMemory(eAddress);
 	    return true;
 	}
 	
@@ -115,6 +134,26 @@ public class FloatInstHandler extends InstructionHandler {
 	 */
 	private boolean executeVSUB() throws IOException {
 		
+		int eAddress = getEA();
+		int eAddress1 = getEA()+1;
+		
+		FloatingWORD param=new FloatingWORD();
+		
+		float size = cpu.getFR(reg).getFloat();
+		
+		
+		
+		for (int i=0; i<size; i++) {
+			
+			long V1 = cpu.loadMemory(eAddress).getLong()+i;
+			long V2 = cpu.loadMemory(eAddress1).getLong()+i;
+			long result = V1-V2;
+			V1++;
+			V2++;
+		    //cpu.storeMemory(eAddress,result);
+		
+		}
+		message+="==> VADD"+reg+"+"+cpu.loadMemory(eAddress)+""+cpu.loadMemory(eAddress);
 		return true;
 	}
 	
@@ -153,8 +192,8 @@ public class FloatInstHandler extends InstructionHandler {
 	 */
 	private boolean executeSTFR() throws IOException {
 		int eAddress=getEA();
-		WORD param1=new FloatingWORD();
-		WORD param2=new FloatingWORD();
+		FloatingWORD param1=new FloatingWORD();
+		FloatingWORD param2=new FloatingWORD();
 	    param1.copy(cpu.getFR(0));
 	    param2.copy(cpu.getFR(1));
 		cpu.storeMemory(eAddress,param1);

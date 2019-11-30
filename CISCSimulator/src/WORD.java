@@ -8,6 +8,7 @@
  */
 public class WORD extends GBitSet {
 	static final int SIZE=16;
+	static final int SIZE1=6;
 	public WORD() {
 		super(WORD.SIZE);
 	}
