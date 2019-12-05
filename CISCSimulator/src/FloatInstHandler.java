@@ -126,8 +126,8 @@ public class FloatInstHandler extends InstructionHandler {
 	 */
 	private boolean executeLDFR() throws IOException {
 		int eAddress=getEA();
-		WORD param1=new FloatingWORD();
-		WORD param2=new FloatingWORD();
+		FloatingWORD param1=new FloatingWORD();
+		FloatingWORD param2=new FloatingWORD();
 		param1.copy(cpu.loadMemory(eAddress));
 		param2.copy(cpu.loadMemory(eAddress));
 		cpu.getFR(0).setLong(param1.getLong());
@@ -144,8 +144,8 @@ public class FloatInstHandler extends InstructionHandler {
 	 */
 	private boolean executeSTFR() throws IOException {
 		int eAddress=getEA();
-		WORD param1=new FloatingWORD();
-		WORD param2=new FloatingWORD();
+		WORD param1=new SignedWORD();
+		WORD param2=new SignedWORD();
 	    param1.copy(cpu.getFR(0));
 	    param2.copy(cpu.getFR(1));
 		cpu.storeMemory(eAddress,param1);

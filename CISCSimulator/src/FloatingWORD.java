@@ -4,6 +4,10 @@
  *
  */
 public class FloatingWORD extends GBitSet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	static final int SIZE=6;
 	public FloatingWORD() {
 		super(FloatingWORD.SIZE);
