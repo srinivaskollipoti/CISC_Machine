@@ -3,6 +3,7 @@
  * @author cozyu
  *
  */
+<<<<<<< HEAD
 public class FloatingWORD extends GBitSet {
 	/**
 	 * 
@@ -18,6 +19,19 @@ public class FloatingWORD extends GBitSet {
 	public FloatingWORD(java.util.BitSet input)
 	{
 		super(FloatingWORD.SIZE);
+=======
+public class FloatingWORD extends WORD {
+	static final int SIZE=6;
+	public FloatingWORD() {
+		super();
+		setMinValue((int)(Math.pow(2, FloatingWORD.SIZE-1)*-1));
+		setMaxValue((int)(Math.pow(2, FloatingWORD.SIZE)));
+	}
+	
+	public FloatingWORD(java.util.BitSet input)
+	{
+		super();
+>>>>>>> refs/remotes/origin/master
 		setMinValue((int)(Math.pow(2, FloatingWORD.SIZE-1)*-1));
 		setMaxValue((int)(Math.pow(2, FloatingWORD.SIZE)));
 		or(input);
