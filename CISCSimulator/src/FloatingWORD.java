@@ -4,18 +4,18 @@
  *
  */
 public class FloatingWORD extends WORD {
-	static final int SIZE=6;
+	static final int SIZE=16;
 	public FloatingWORD() {
 		super();
 		setMinValue((int)(Math.pow(2, FloatingWORD.SIZE-1)*-1));
-		setMaxValue((int)(Math.pow(2, FloatingWORD.SIZE)));
+		setMaxValue((int)(Math.pow(2, FloatingWORD.SIZE-1)));
 	}
 	
 	public FloatingWORD(java.util.BitSet input)
 	{
 		super();
 		setMinValue((int)(Math.pow(2, FloatingWORD.SIZE-1)*-1));
-		setMaxValue((int)(Math.pow(2, FloatingWORD.SIZE)));
+		setMaxValue((int)(Math.pow(2, FloatingWORD.SIZE-1)));
 		or(input);
 	}
 	

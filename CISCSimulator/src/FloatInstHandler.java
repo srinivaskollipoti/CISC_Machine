@@ -163,8 +163,31 @@ public class FloatInstHandler extends InstructionHandler {
 	 * @throws IOException
 	 */
 	private boolean executeCNVRT() throws IOException {
-		
-	    return true;
+		int fixedOrFloat = cpu.getGPR(rx).getInt();
+		int eAddress = getEA();
+
+		if(fixedOrFloat==0) {
+			int result = (cpu.loadMemory(eAddress).getInt()/10);
+			cpu.getGPR(rx).setLong(result);
+			message+="==> CNVRT - "+"ADDR : "+ eAddress +" VALUE: " +cpu.loadMemory(eAddress).getLong() + " to fixed point = " + result;
+		} else {
+			int memoryValue = cpu.loadMemory(eAddress).getInt();
+			String num = Integer.toBinaryString(memoryValue);
+			String sign = memoryValue > 0 ? "0" : "1";
+			int length=num.length();
+			int exp=length-1;
+			String exponent=Integer.toBinaryString(exp);
+			while(exponent.length()<=7)
+				exponent="0"+exponent;
+			while(num.length()<=8)
+				num+="0";
+			String mantissa=num;
+			String binaryFloat=sign + exponent + mantissa;
+			int result = Integer.parseInt(binaryFloat, 2);
+			cpu.getFR(0).setLong(result);
+			message+="==> CNVRT - "+"ADDR : "+ eAddress +" VALUE: " +cpu.loadMemory(eAddress).getLong() + " to float number FR0 = " + result;
+		}
+		return true;
 	}
 	
 	/**
